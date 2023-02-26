@@ -2,12 +2,15 @@ from ursina import *
 
 
 class TitleText(Text):
-    def __init__(self, text: str, container:Entity = None):
+    def __init__(self, text: str, hidden=False):
         super().__init__(
             text,
-            position=container.position + (0, 0.15, 0) if container else (0, 0.15, 0),
+            position=(0, 0.15, 0),
             origin=(0, 0),
             color=color.black,
             text_style="bold",
-            size=5,
+            scale=(5, 5),
+            alpha=0 if hidden else 1
         )
+
+

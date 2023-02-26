@@ -29,11 +29,6 @@ class Character(GameEntity):
         self.speed_points = speed_points
 
         self.stats = Stats()
-        #self.ui =
-        self.health = self.stats.health.get_value()
-        self.health_bar = HealthBar(max_value=self.stats.health.get_value(), position=(-0.25, -0.45))
-        self.health_bar.parent = camera.ui
-        self.health_bar.value = self.health
 
         self.experience_bar = HealthBar(max_value=self.experience.get_xp_required(star_rating), position=(-0.25, -0.40), bar_color=color.blue)
         self.experience_bar.value = self.experience.xp
@@ -46,7 +41,7 @@ class Character(GameEntity):
         self.crit_damage_info_text = Text(self.stats.crit_damage, position=(-0.85, 0.34), color=color.black)
         self.speed_info_text = Text(self.stats.speed, position=(-0.85, 0.31), color=color.black)
 
-        #self.name_tag = Entity(model=Text(self.name), parent=self, y=self.scale_y / 2 + 0.1)
+        self.name_tag = Entity(model=Text(self.name), parent=self, y=self.scale_y / 2 + 0.1)
 
 
     def update_stats(self):

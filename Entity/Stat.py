@@ -7,6 +7,7 @@ class Stat:
         self._default_value = value
         self._additional_value = 0
         self._value = self._default_value + self._additional_value
+        self.current_value = self._value
 
     def calculate_value(self):
         self._value = self._default_value + self._additional_value
