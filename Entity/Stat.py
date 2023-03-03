@@ -11,6 +11,7 @@ class Stat:
 
     def calculate_value(self):
         self._value = self._default_value + self._additional_value
+        self.current_value = self._value
 
     def get_name(self):
         return self._name

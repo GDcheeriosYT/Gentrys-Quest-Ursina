@@ -15,7 +15,7 @@ class TextureMapping:
             self._damage_textures = damage_textures
 
     def get_idle_texture(self):
-        return Texture(random.choice(self._idle_textures))
+        return random.choice(self._idle_textures)
 
     def get_damage_texture(self):
-        return Texture(random.choice(self._damage_textures))
+        return random.choice(self._damage_textures)
