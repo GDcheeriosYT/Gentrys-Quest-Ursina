@@ -10,6 +10,7 @@ from BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 
 # screens
 from Screens.Play.Gameplay import GameplayScreen
+from Screens.MainMenu.MainMenu import MainMenu
 
 # external packages
 from ursina import *
@@ -40,17 +41,7 @@ window.fps_counter.disable()
 # variables
 version = "Super Dooper Beta"
 
-def gameplay_loader():
-    character = BraydenMesserschmidt()
-    gameplay_screen = GameplayScreen(character)
-
-
-title = TitleText("Gentry's Quest", hidden=True)
-title.fade_in(1, 2)
-version = VersionText(version)
-play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
-play_button.on_click = gameplay_loader
-settings_button = Button("Settings", position=(0, -0.2), scale=(0.2, 0.05))
+MainMenu()
 
 
 app.run()
