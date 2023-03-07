@@ -41,7 +41,6 @@ window.fps_counter.disable()
 # variables
 version = "Super Dooper Beta"
 
-MainMenu()
-
+MainMenu(version)
 
 app.run()

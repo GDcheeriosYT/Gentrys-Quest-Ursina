@@ -1,8 +1,10 @@
-from ursina.scene import Scene
-from utils.Event import Event
+from ursina import *
 
 
-class Screen(Scene):
+
+class Screen(Entity):
+    def __init__(self):
+        if self.allow_back: self.back_button = Button("back", position=(-0.5, -0.4), scale=(0.2, 0.05))
 
     @property
     def name(self) -> str:
