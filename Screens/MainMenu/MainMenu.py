@@ -6,16 +6,7 @@ from BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 from .LoginBox import LoginBox
 
 from ursina import *
-import argparse
 
-
-parser = argparse.ArgumentParser(
-    prog="Gentry's Quest",
-    description="A game"
-)
-parser.add_argument("-s", "--server")
-parser.add_argument("-c", "--character")
-args = parser.parse_args()
 
 class MainMenu(Screen):
     def __init__(self, version: str):

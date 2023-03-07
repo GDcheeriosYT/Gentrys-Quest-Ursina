@@ -25,8 +25,6 @@ parser = argparse.ArgumentParser(
     description="A game"
 )
 
-parser.add_argument("-u", "--username")
-parser.add_argument("-p", "--password")
 parser.add_argument("-s", "--server")
 parser.add_argument("-c", "--character")
 args = parser.parse_args()
