@@ -16,3 +16,4 @@ class User:
         self.username = value
 
     def login(self) -> None:
+        pass

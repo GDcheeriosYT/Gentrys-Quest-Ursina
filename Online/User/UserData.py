@@ -1,4 +1,4 @@
 class UserData:
+    pass
 
-    @property
-    def
+    #def

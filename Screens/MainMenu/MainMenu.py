@@ -5,13 +5,14 @@ from ..Play.Gameplay import GameplayScreen
 from BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 from .LoginBox import LoginBox
 
+
 from ursina import *
 
 
 class MainMenu(Screen):
     def __init__(self, version: str):
         super().__init__()
-        self.title = TitleText("Gentry's Quest", hidden=True)
+        self.title = TitleText("Gentry's Quest")
         self.version = VersionText(version)
         self.play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
         self.play_button.on_click = self.play
@@ -26,7 +27,7 @@ class MainMenu(Screen):
         return False
 
     def on_show(self) -> None:
-        self.title.fade_in(1, 2)
+        self.title.fade_in(1, 1)
 
     def on_hide(self) -> None:
         self.title.fade_out(0, 0.5)
