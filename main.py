@@ -29,7 +29,6 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("-s", "--server")
-parser.add_argument("-c", "--character")
 args = parser.parse_args()
 
 # window initialization
@@ -59,7 +58,7 @@ invoke(lambda: engine_description.fade_in(0, fade_time * 4), delay=fade_delay * 
 # variables
 version = "Super Dooper Beta"
 
-server = ServerConnection()
+server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
 
 invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13)
 invoke(lambda: MainMenu(version), delay=13)

@@ -1,6 +1,6 @@
 from ursina import *
 from ursina.prefabs.input_field import InputField
-from Online.User.User import User
+from User.User import User
 
 
 class LoginBox(Entity):

@@ -1,5 +1,5 @@
 from ursina import *
-from ..GameEntity import GameEntity
+from ..GameEntityBase import GameEntity
 from ..Stats import Stats
 from ursina.prefabs.health_bar import HealthBar
 from typing import Union

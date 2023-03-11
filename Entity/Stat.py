@@ -9,6 +9,19 @@ class Stat:
         self._value = self._default_value + self._additional_value
         self.current_value = self._value
 
+    @property
+    def points(self) -> int:
+
+        '''
+        The points of the Stat
+        '''
+
+        return 0
+
+    @points.setter
+    def points(self, value) -> None:
+        self.points = value
+
     def calculate_value(self):
         self._value = self._default_value + self._additional_value
         self.current_value = self._value

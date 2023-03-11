@@ -1,4 +1,0 @@
-class UserData:
-    pass
-
-    #def

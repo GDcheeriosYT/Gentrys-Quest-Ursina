@@ -1,38 +1,12 @@
 from ursina import *
-from ..GameEntity import GameEntity
+from ..GameUnit import GameUnit
 from ..Stats import Stats
 from ursina.prefabs.health_bar import HealthBar
 from typing import Union
 from ..TextureMapping import TextureMapping
 
 
-class Character(GameEntity):
-    def __init__(self, name: str, star_rating: int, health_points: int = 0, attack_points: int = 0, defense_points=0,
-                 crit_rate_points: int = 0, crit_damage_points: int = 0, speed_points: int = 0,
-                 texture_mapping: TextureMapping = TextureMapping()):
-        if star_rating > 5:
-            star_rating = 5
-        elif star_rating < 1:
-            star_rating = 1
-        else:
-            star_rating = star_rating
-
-        super().__init__(
-            name,
-            star_rating,
-            texture_mapping
-        )
-
-        self.health_points = health_points
-        self.attack_points = attack_points
-        self.defense_points = defense_points
-        self.crit_rate_points = crit_rate_points
-        self.crit_damage_points = crit_damage_points
-        self.speed_points = speed_points
-
-        self.stats = Stats()
-
-        self.name_tag = Entity(model=Text(self.name), parent=self, y=self.scale_y / 2 + 0.1)
+class Character(GameUnit):
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -71,20 +45,6 @@ class Character(GameEntity):
 
         # speed stats
         self.stats.speed.set_default_value(self.difficulty + self.speed_points)
-
-    def damage(self, amount):
-        self.health -= amount
-        self.on_damage()
-
-    def on_damage(self):
-        if self.stats.health.current_value <= 0:
-            self.on_death()
-
-    def on_death(self):
-        self.revive()
-
-    def revive(self):
-        self.health = self.stats.health.get_value()
 
     def update(self):
         if held_keys['left arrow']:

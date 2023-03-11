@@ -3,16 +3,23 @@ from .Experience import Experience
 from .TextureMapping import TextureMapping
 
 
-class GameEntity(Entity):
-    def __init__(self, name: str, star_rating: int = 0, texture_mapping: TextureMapping = TextureMapping()):
-        super().__init__(
-            model="quad",
-            texture=texture_mapping.get_idle_texture()
-        )
-        self.texture_mapping = texture_mapping
-        self.star_rating = star_rating
-        self.name = name
-        self.experience = Experience()
+class GameEntityBase(Entity):
+
+    @property
+    def name(self) -> str:
+
+        '''
+        The name of the GameEntity
+        '''
+
+        raise NotImplementedError
+
+    @property
+    def experience(self) -> Experience:
+        '''
+        The experience of the GameEntity
+        '''
+        return Experience()
 
     def add_xp(self, amount):
         self.experience.xp += amount

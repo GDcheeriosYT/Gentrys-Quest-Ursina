@@ -15,5 +15,6 @@ class User:
     def username(self, value) -> str:
         self.username = value
 
-    def login(self) -> None:
-        pass
+    def login(self, is_guest: bool, username: str = None, password: str = None) -> None:
+        if is_guest:
+
