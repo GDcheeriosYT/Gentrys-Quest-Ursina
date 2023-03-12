@@ -9,5 +9,5 @@ class UserData:
         characters = []
         return characters
 
-    @property
-    def weapons
+    #@property
+    #def weapons

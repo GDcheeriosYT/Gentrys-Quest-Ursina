@@ -14,3 +14,4 @@ class Inventory:
 
     @property
     def weapons(self) -> List[]:
+        pass

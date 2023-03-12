@@ -1,8 +1,6 @@
 from ..Screen import Screen
 from Graphics.TextStyles.TitleText import TitleText
 from Graphics.TextStyles.VersionText import VersionText
-from ..Play.Gameplay import GameplayScreen
-from BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 from .LoginBox import LoginBox
 
 

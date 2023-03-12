@@ -1,10 +1,16 @@
 from .GameEntityBase import GameEntityBase
-from .Experience import Experience
 from .Stats import Stats
 from .TextureMapping import TextureMapping
+from utils.Event import Event
+from .EntityOverHead import EntityOverhead
+from ursina import *
 
 
 class GameUnit(GameEntityBase):
+
+    @property
+    def overhead(self) -> EntityOverhead:
+        raise NotImplementedError
 
     @property
     def difficulty(self) -> int:
@@ -22,38 +28,58 @@ class GameUnit(GameEntityBase):
     def texture_mapping(self) -> TextureMapping:
         return TextureMapping()
 
+    def set_idle_texture(self):
+        self.texture = self.texture_mapping.get_idle_texture()
+
+    def set_damage_texture(self):
+        self.texture = self.texture_mapping.get_damage_texture()
+
     def damage(self, amount):
         self.stats.health.current_value -= amount
+        self.on_damage()
+        if self.stats.health.current_value <= 0:
+            self.die()
 
     def heal(self, amount):
         self.stats.health.current_value += amount
+        self.on_heal()
+
+    def die(self):
+        self.on_death()
+
+    def move_left(self):
+        self.x -= self.stats.speed.get_value() * time.dt
+        self.on_move()
+
+    def move_right(self):
+        self.x += self.stats.speed.get_value() * time.dt
+        self.on_move()
+
+    def move_up(self):
+        self.y += self.stats.speed.get_value() * time.dt
+        self.on_move()
+
+    def move_down(self):
+        self.y -= self.stats.speed.get_value() * time.dt
+        self.on_move()
 
     # events
+    @property
+    def on_heal(self) -> Event:
+        return Event("OnHeal", 0)
 
-    @staticmethod
-    def on_heal(func):
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
+    @property
+    def on_damage(self) -> Event:
+        return Event("OnDamage", 0)
 
-        return wrapper
+    @property
+    def on_attack(self) -> Event:
+        return Event("OnAttack", 0)
 
-    @staticmethod
-    def on_move(func):
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
+    @property
+    def on_death(self) -> Event:
+        return Event("OnDeath", 0)
 
-        return wrapper
-
-    @staticmethod
-    def on_damage(func):
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    @staticmethod
-    def on_death(func):
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
-
-        return wrapper
+    @property
+    def on_move(self) -> Event:
+        return Event("OnMove", 0)

@@ -17,4 +17,7 @@ class User:
 
     def login(self, is_guest: bool, username: str = None, password: str = None) -> None:
         if is_guest:
+            pass
+
+        pass
 

@@ -1,18 +1,11 @@
 from ursina import *
-from ..GameEntityBase import GameEntity
-from ..Stats import Stats
-from ursina.prefabs.health_bar import HealthBar
+from ..GameUnit import GameUnit
 from typing import Union
+from ..EntityOverHead import EntityOverhead
 
 
-class Enemy(GameEntity):
-    def __init__(self, name: str):
-        super().__init__(
-            name,
-            1
-        )
+class Enemy(GameUnit):
 
-        self.stats = Stats()
-        self.health = self.stats.health.get_value()
-        self.health_bar = HealthBar(max_value=self.stats.health.get_value())
-
+    @property
+    def overhead(self) -> EntityOverhead:
+        return EntityOverhead(self.name, self.stats.health.get_value())
