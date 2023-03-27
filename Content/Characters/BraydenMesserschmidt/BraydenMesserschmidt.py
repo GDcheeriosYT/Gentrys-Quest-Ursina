@@ -3,6 +3,8 @@ from Entity.TextureMapping import TextureMapping
 
 
 class BraydenMesserschmidt(Character):
+    def __init__(self):
+        super().__init__()
 
     @property
     def name(self) -> str:

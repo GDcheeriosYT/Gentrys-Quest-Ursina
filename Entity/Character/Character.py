@@ -5,6 +5,8 @@ from ..EntityOverHead import EntityOverhead
 
 
 class Character(GameUnit):
+    def __init__(self):
+        super().__init__()
 
     @property
     def star_rating(self) -> int:
@@ -22,26 +24,13 @@ class Character(GameUnit):
         self.difficulty = int(1 + (self.experience.level / 20))
 
         # health stats
-        self.stats.health.set_default_value(int((calculate(self.experience.level, 57) + calculate(self.experience.level,
-                                                                                                  calculate(
-                                                                                                      self.star_rating,
-                                                                                                      2)) + calculate(
-            self.experience.level, calculate(self.check_minimum(self.stats.health.points, 4)))) + calculate(
-            self.difficulty, 1000) + calculate(self.stats.health.points, 10) + calculate(self.star_rating, 5)))
+        self.stats.health.set_default_value(self.experience.level * 5)
 
         # attack stats
-        self.stats.attack.set_default_value(int((calculate(self.experience.level, 1.25) + calculate(self.star_rating,
-                                                                                                    1.50) + calculate(
-            self.star_rating, calculate(self.check_minimum(self.stats.attack.points))) + calculate(
-            self.difficulty - 1, 20)) + 45 + calculate(self.check_minimum(self.stats.attack.points, 3)) + calculate(
-            self.star_rating, 3)))
+        self.stats.attack.set_default_value(self.experience.level * 5)
 
         # defense stats
-        self.stats.defense.set_default_value(
-            int((calculate(self.experience.level, 2.25) + calculate(self.star_rating, 2.50) + calculate(
-                self.star_rating, calculate(self.check_minimum(self.stats.defense.points)))) + calculate(50,
-                                                                                                   self.difficulty) + calculate(
-                self.check_minimum(self.stats.defense.points, 3)) + calculate(self.star_rating, 3)))
+        self.stats.defense.set_default_value(self.experience.level * 5)
 
         # crit rate stats
         self.stats.crit_rate.set_default_value(5 + self.stats.crit_rate.points)
@@ -50,23 +39,24 @@ class Character(GameUnit):
         self.stats.crit_damage.set_default_value(100 + calculate(self.stats.crit_damage.points, 5))
 
         # speed stats
-        self.stats.speed.set_default_value(self.difficulty + self.stats.speed.points)
+        self.stats.speed.set_default_value(self.difficulty + self.stats.speed.points + (self.star_rating * 0.10))
 
     def update(self):
         self.set_idle_texture()
         if held_keys['left arrow']:
             self.move_left()
-        elif held_keys['right arrow']:
+        if held_keys['right arrow']:
             self.move_right()
         if held_keys['up arrow']:
             self.move_up()
-        elif held_keys['down arrow']:
+        if held_keys['down arrow']:
             self.move_down()
-        elif held_keys["-"]:
+        if held_keys["-"]:
+            print("pressed -")
             if self.experience.level > 1:
                 self.experience.level -= 1
-                self.update_stats()
-        elif held_keys["="]:
+        if held_keys["="]:
+            print("pressed =")
             self.level_up()
-        elif held_keys["/"]:
+        if held_keys["/"]:
             self.damage(5)

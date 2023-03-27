@@ -7,6 +7,19 @@ from ursina import *
 
 
 class GameUnit(GameEntityBase):
+    def __init__(self):
+        super().__init__()
+
+        # event initialization
+        self.on_heal = Event("OnHeal", 0)
+        self.on_damage = Event("OnDamage", 0)
+        self.on_attack = Event("OnAttack", 0)
+        self.on_death = Event("OnDeath", 0)
+        self.on_move = Event("OnMove", 0)
+
+        self.on_level_up += self.print_data
+        self.on_level_up += self.update_stats
+
 
     @property
     def overhead(self) -> EntityOverhead:
@@ -48,38 +61,22 @@ class GameUnit(GameEntityBase):
         self.on_death()
 
     def move_left(self):
-        self.x -= self.stats.speed.get_value() * time.dt
+        self.x -= self.stats.speed.current_value * time.dt
         self.on_move()
 
     def move_right(self):
-        self.x += self.stats.speed.get_value() * time.dt
+        self.x += self.stats.speed.current_value * time.dt
         self.on_move()
 
     def move_up(self):
-        self.y += self.stats.speed.get_value() * time.dt
+        self.y += self.stats.speed.current_value * time.dt
         self.on_move()
 
     def move_down(self):
-        self.y -= self.stats.speed.get_value() * time.dt
+        self.y -= self.stats.speed.current_value * time.dt
         self.on_move()
 
-    # events
-    @property
-    def on_heal(self) -> Event:
-        return Event("OnHeal", 0)
-
-    @property
-    def on_damage(self) -> Event:
-        return Event("OnDamage", 0)
-
-    @property
-    def on_attack(self) -> Event:
-        return Event("OnAttack", 0)
-
-    @property
-    def on_death(self) -> Event:
-        return Event("OnDeath", 0)
-
-    @property
-    def on_move(self) -> Event:
-        return Event("OnMove", 0)
+    def print_data(self, *_) -> None:
+        print(self.name)
+        print(self.experience)
+        print(self.stats)

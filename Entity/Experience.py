@@ -1,9 +1,3 @@
-from typing import Union
-from Entity.Character import Character
-from ursina import *
-from Graphics.Containers.Container import Container
-
-
 class Experience:
     def __init__(self):
         self.xp = 0
@@ -15,3 +9,6 @@ class Experience:
             return int((((self.level * 2) * 75) + ((star_rating * (self.level * 0.25)) * 25)) * ((self.level / 20) + 1))
         else:
             return self.xp
+
+    def __repr__(self):
+        return f"{self.level}{f'/{self.limit}' if self.limit else ''} {self.xp}xp"

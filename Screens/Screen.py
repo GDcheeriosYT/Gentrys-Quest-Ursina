@@ -1,9 +1,9 @@
 from ursina import *
 
 
-
 class Screen(Entity):
     def __init__(self):
+        super().__init__()
         if self.allow_back: self.back_button = Button("back", position=(-0.5, -0.4), scale=(0.2, 0.05))
 
     @property

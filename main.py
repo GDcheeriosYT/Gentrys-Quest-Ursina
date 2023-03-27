@@ -4,12 +4,13 @@ import GameConfiguration
 # graphics
 
 # Entity
-from Content.Enemies.TestEnemy import TestEnemey
+#from Content.Enemies.TestEnemy import TestEnemey
 from Content.Characters.TestCharacter import TestCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 
 # screens
 from Screens.MainMenu.MainMenu import MainMenu
+from Screens.Play.Gameplay import GameplayScreen
 
 # online packages
 from Online.ServerConnection import ServerConnection
@@ -57,10 +58,10 @@ if GameConfiguration.play_intro:
 
 server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
 
-invoke(lambda: BraydenMesserschmidt(), delay=13 if GameConfiguration.play_intro else 0)
-invoke(lambda: TestEnemey(), delay=13 if GameConfiguration.play_intro else 0)
+invoke(lambda: GameplayScreen(BraydenMesserschmidt()), delay=13 if GameConfiguration.play_intro else 0)
+#invoke(lambda: TestEnemey(), delay=13 if GameConfiguration.play_intro else 0)
 
 invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
-invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
+#invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
 
 app.run()

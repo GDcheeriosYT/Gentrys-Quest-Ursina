@@ -10,6 +10,8 @@ class GameEntityBase(Entity):
             model="quad",
             texture="huh.png"
         )
+        self.on_level_up = Event("OnLevelUp", 0)
+        self.on_add_xp = Event("OnAddXp", 0)
 
     @property
     def name(self) -> str:
@@ -37,7 +39,7 @@ class GameEntityBase(Entity):
 
     def level_up(self):
         self.experience.level += 1
-        self.update_stats()
+        self.on_level_up()
 
     def update_stats(self):
         pass
@@ -48,11 +50,3 @@ class GameEntityBase(Entity):
             return 1 if not subtract_one_true else 0
         else:
             return variable * multiplier
-
-    @property
-    def on_level_up(self) -> Event:
-        return Event("OnLevelUp", 0)
-
-    @property
-    def on_add_xp(self) -> Event:
-        return Event("OnAddXp", 0)

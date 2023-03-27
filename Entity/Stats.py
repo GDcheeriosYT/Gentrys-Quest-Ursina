@@ -34,3 +34,4 @@ class Stats:
         print(self.crit_rate)
         print(self.crit_damage)
         print(self.speed)
+        return ""
