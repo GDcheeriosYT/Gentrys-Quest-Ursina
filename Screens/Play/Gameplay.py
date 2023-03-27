@@ -8,6 +8,8 @@ class GameplayScreen(Screen):
         super().__init__()
         self.player = player
         self.ui = GameplayUI(player)
+        self.ui.update_data()
 
     def update(self):
-        self.ui.update_data()
+        #self.ui.update_data()
+        pass

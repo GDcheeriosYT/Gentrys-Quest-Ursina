@@ -34,10 +34,12 @@ args = parser.parse_args()
 
 # window initialization
 window.title = "Gentry's Quest"
-window.borderless = False
+window.borderless = GameConfiguration.borderless
+window.fullscreen = GameConfiguration.fullscreen
 window.exit_button.visible = False
 window.exit_button.disable()
-window.fps_counter.disable()
+window.fps_counter.color = rgb(0, 0, 0)
+if GameConfiguration.hide_fps: window.fps_counter.disable()
 
 # intro
 if GameConfiguration.play_intro:
