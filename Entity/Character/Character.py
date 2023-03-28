@@ -13,6 +13,10 @@ class Character(GameUnit):
         raise NotImplementedError
 
     @property
+    def is_equipped(self) -> bool:
+        return False
+
+    @property
     def overhead(self) -> EntityOverhead:
         return EntityOverhead(self.name, self.stats.health.get_value(), True)
 
@@ -55,6 +59,7 @@ class Character(GameUnit):
             print("pressed -")
             if self.experience.level > 1:
                 self.experience.level -= 1
+                self.update_stats()
         if held_keys["="]:
             print("pressed =")
             self.level_up()

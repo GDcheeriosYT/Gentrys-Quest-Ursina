@@ -10,6 +10,10 @@ class GameplayScreen(Screen):
         self.ui = GameplayUI(player)
         self.ui.update_data()
 
+    @property
+    def allow_back(self) -> bool:
+        return False
+
     def update(self):
         #self.ui.update_data()
         pass
