@@ -11,5 +11,5 @@ class GenerateToken(APIRequest):
         return "GenerateToken"
 
     @request_handler
-    def create_request(self):
+    def create_request(self) -> str:
         return requests.get(f"{self.server_url}/api/generate-token").text

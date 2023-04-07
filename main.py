@@ -2,9 +2,10 @@
 import GameConfiguration
 
 # graphics
+from Graphics.Gradient import Gradient
 
 # Entity
-#from Content.Enemies.TestEnemy import TestEnemey
+from Content.Enemies.TestEnemy import TestEnemey
 from Content.Characters.TestCharacter import TestCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 
@@ -30,6 +31,7 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("-s", "--server")
+parser.add_argument("-d", "--debug", action='store_true')
 args = parser.parse_args()
 
 # window initialization
@@ -60,10 +62,16 @@ if GameConfiguration.play_intro:
 
 server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
 
-invoke(lambda: GameplayScreen(BraydenMesserschmidt()), delay=13 if GameConfiguration.play_intro else 0)
-#invoke(lambda: TestEnemey(), delay=13 if GameConfiguration.play_intro else 0)
+if args.debug:
+    print("cock nuts")
 
-invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
-#invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
+else:
+    invoke(lambda: GameplayScreen(BraydenMesserschmidt()), delay=13 if GameConfiguration.play_intro else 0)
+    invoke(lambda: TestEnemey(), delay=13 if GameConfiguration.play_intro else 0)
+
+    invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
+    #invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
+
+Gradient(rgb(114, 190, 0, 255), rgb(85, 110, 0, 255), "vertical")
 
 app.run()

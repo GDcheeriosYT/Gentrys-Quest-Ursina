@@ -12,6 +12,7 @@ class GameEntityBase(Entity):
         )
         self.on_level_up = Event("OnLevelUp", 0)
         self.on_add_xp = Event("OnAddXp", 0)
+        self.disable()
 
     @property
     def name(self) -> str:

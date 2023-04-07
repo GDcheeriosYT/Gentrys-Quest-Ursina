@@ -1,5 +1,7 @@
 from Entity.Character.Character import Character
 from Entity.TextureMapping import TextureMapping
+from Entity.AudioMapping import AudioMapping
+from ursina import *
 
 
 class BraydenMesserschmidt(Character):
@@ -19,3 +21,13 @@ class BraydenMesserschmidt(Character):
     @property
     def star_rating(self) -> int:
         return 5
+
+    @property
+    def audio_mapping(self) -> AudioMapping:
+        return AudioMapping(
+            ["Audio/spawn.mp3"]
+        )
+
+    def spawn(self):
+        self.enable()
+        Audio(self.audio_mapping.get_spawn_sound())

@@ -3,6 +3,7 @@ from Entity.Character.ExperienceBar import ExperienceBar
 from ursina import *
 from ursina.prefabs.health_bar import HealthBar
 from Graphics.Container import Container
+from time import perf_counter
 
 
 class GameplayUI:
@@ -41,7 +42,7 @@ class GameplayUI:
             position=(-0.5, 0),
             origin=(-0.5, 0.5),
             color=rgb(0, 0, 0),
-            scale=(4, 10),
+            scale=(4, 12),
             parent=self.experience_container
         )
 

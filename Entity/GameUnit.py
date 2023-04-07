@@ -1,6 +1,7 @@
 from .GameEntityBase import GameEntityBase
 from .Stats import Stats
 from .TextureMapping import TextureMapping
+from .AudioMapping import AudioMapping
 from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
@@ -41,6 +42,10 @@ class GameUnit(GameEntityBase):
     def texture_mapping(self) -> TextureMapping:
         return TextureMapping()
 
+    @property
+    def audio_mapping(self) -> AudioMapping:
+        return AudioMapping()
+
     def set_idle_texture(self):
         self.texture = self.texture_mapping.get_idle_texture()
 
@@ -75,6 +80,13 @@ class GameUnit(GameEntityBase):
     def move_down(self):
         self.y -= self.stats.speed.current_value * time.dt
         self.on_move()
+
+    def spawn(self) -> None:
+        self.enable()
+        self.spawn_sequence()
+
+    def spawn_sequence(self) -> None:
+        Audio(self.audio_mapping.get_spawn_sound())
 
     def print_data(self, *_) -> None:
         print(self.name)
