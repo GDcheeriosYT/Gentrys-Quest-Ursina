@@ -5,12 +5,12 @@ import random
 class TextureMapping:
     def __init__(self, idle_textures: list = None, damage_textures: list = None):
         if not idle_textures:
-            self._idle_textures = ["huh.png"]
+            self._idle_textures = ["Textures/huh.png"]
         else:
             self._idle_textures = idle_textures
 
         if not damage_textures:
-            self._damage_textures = ["huh.png"]
+            self._damage_textures = ["Textures/huh.png"]
         else:
             self._damage_textures = damage_textures
 
