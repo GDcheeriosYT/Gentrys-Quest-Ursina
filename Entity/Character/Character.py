@@ -16,10 +16,6 @@ class Character(GameUnit):
     def is_equipped(self) -> bool:
         return False
 
-    @property
-    def overhead(self) -> EntityOverhead:
-        return EntityOverhead(self.name, self.stats.health.get_value(), True)
-
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
             return variable * multiplier

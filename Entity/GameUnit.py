@@ -20,15 +20,16 @@ class GameUnit(GameEntityBase):
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
-
-
-    @property
-    def overhead(self) -> EntityOverhead:
-        raise NotImplementedError
+        print("We just created a GameUnit!")
 
     @property
     def difficulty(self) -> int:
         return 1
+
+    @property
+    def overhead(self) -> EntityOverhead:
+        print("I'm making a overhead")
+        return EntityOverhead(self)
 
     @difficulty.setter
     def difficulty(self, value) -> None:
