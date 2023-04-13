@@ -10,25 +10,24 @@ class GameEntityBase(Entity):
             model="quad",
             texture="huh.png"
         )
+        self._experience = Experience()
         self.on_level_up = Event("OnLevelUp", 0)
         self.on_add_xp = Event("OnAddXp", 0)
         self.disable()
 
     @property
     def name(self) -> str:
-
-        '''
+        """
         The name of the GameEntity
-        '''
-
+        """
         raise NotImplementedError
 
     @property
     def experience(self) -> Experience:
-        '''
+        """
         The experience of the GameEntity
-        '''
-        return Experience()
+        """
+        return self._experience
 
     def add_xp(self, amount):
         self.experience.xp += amount

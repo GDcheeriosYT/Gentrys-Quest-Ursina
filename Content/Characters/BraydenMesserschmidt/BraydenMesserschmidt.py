@@ -27,7 +27,3 @@ class BraydenMesserschmidt(Character):
         return AudioMapping(
             ["Audio/spawn.mp3"]
         )
-
-    def spawn(self):
-        self.enable()
-        Audio(self.audio_mapping.get_spawn_sound())

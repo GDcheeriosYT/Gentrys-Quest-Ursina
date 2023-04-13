@@ -10,6 +10,9 @@ from ursina import *
 class GameUnit(GameEntityBase):
     def __init__(self):
         super().__init__()
+        self._stats = Stats()
+        self._overhead = EntityOverhead(self)
+        self._difficulty = 1
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -17,27 +20,26 @@ class GameUnit(GameEntityBase):
         self.on_attack = Event("OnAttack", 0)
         self.on_death = Event("OnDeath", 0)
         self.on_move = Event("OnMove", 0)
+        self.on_spawn = Event("OnSpawn", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
-        print("We just created a GameUnit!")
+        self.on_spawn += self.update_stats
 
     @property
     def difficulty(self) -> int:
-        return 1
+        return self._difficulty
 
     @property
     def overhead(self) -> EntityOverhead:
-        print("I'm making a overhead")
-        return EntityOverhead(self)
-
-    @difficulty.setter
-    def set_difficulty(self, value) -> None:
-        self.difficulty = value
+        return self._overhead
 
     @property
     def stats(self) -> Stats:
-        return Stats()
+        """
+        The stats of the Entity
+        """
+        return self._stats
 
     @property
     def texture_mapping(self) -> TextureMapping:
@@ -84,12 +86,13 @@ class GameUnit(GameEntityBase):
 
     def spawn(self) -> None:
         self.enable()
+        self.on_spawn()
         self.spawn_sequence()
 
     def spawn_sequence(self) -> None:
         Audio(self.audio_mapping.get_spawn_sound())
 
     def print_data(self, *_) -> None:
-        print(self.name)
-        print(self.experience)
-        print(self.stats)
+        print(self.name, self._difficulty)
+        print(self._experience)
+        print(self._stats)

@@ -1,6 +1,7 @@
 from ursina import *
 from ursina.prefabs.health_bar import HealthBar
 
+
 class EntityOverhead(Entity):
     def __init__(self, entity):
         print(entity)

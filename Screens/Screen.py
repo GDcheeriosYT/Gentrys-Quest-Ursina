@@ -8,6 +8,7 @@ class Screen(Entity):
 
     @property
     def name(self) -> str:
+        print("screen name given")
         """
         The name of the screen. This should be a unique identifier.
         """

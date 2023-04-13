@@ -2,30 +2,37 @@ from .Stat import Stat
 
 
 class Stats:
+    def __init__(self):
+        self._health = Stat("Health", 100)
+        self._attack = Stat("Attack", 16)
+        self._defense = Stat("Defense", 12)
+        self._crit_rate = Stat("CritRate", 5)
+        self._crit_damage = Stat("CritDamage", 50)
+        self._speed = Stat("Speed")
 
     @property
     def health(self) -> Stat:
-        return Stat("Health", 100)
+        return self._health
 
     @property
     def attack(self) -> Stat:
-        return Stat("Attack")
+        return self._attack
 
     @property
     def defense(self) -> Stat:
-        return Stat("Defense")
+        return self._defense
 
     @property
     def crit_rate(self) -> Stat:
-        return Stat("CritRate", 5.00)
+        return self._crit_rate
 
     @property
     def crit_damage(self) -> Stat:
-        return Stat("CritDamage", 100.00)
+        return self._crit_damage
 
     @property
     def speed(self) -> Stat:
-        return Stat("Speed")
+        return self._speed
 
     def __repr__(self):
         print(self.health)

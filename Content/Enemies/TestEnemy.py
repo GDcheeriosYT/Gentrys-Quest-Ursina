@@ -1,7 +1,7 @@
 from Entity.Enemy.Enemy import Enemy
 
 
-class TestEnemey(Enemy):
+class TestEnemy(Enemy):
     def __init__(self):
         super().__init__()
     

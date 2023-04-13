@@ -4,26 +4,21 @@ from typing import Union
 class Stat:
     def __init__(self, name: str, value: Union[int, float] = 1):
         self._name = name
-        self._default_value = value
+        self._minimum_value = value
+        self._default_value = 0
         self._additional_value = 0
-        self._value = self._default_value + self._additional_value
+        self.calculate_value()
         self.current_value = self._value
 
     @property
     def points(self) -> int:
-
-        '''
+        """
         The points of the Stat
-        '''
-
+        """
         return 0
 
-    @points.setter
-    def points(self, value) -> None:
-        self.points = value
-
     def calculate_value(self):
-        self._value = self._default_value + self._additional_value
+        self._value = self._minimum_value + self._default_value + self._additional_value
         self.current_value = self._value
 
     def get_name(self):

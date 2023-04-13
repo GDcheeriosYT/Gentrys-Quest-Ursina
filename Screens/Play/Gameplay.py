@@ -10,8 +10,11 @@ class GameplayScreen(Screen):
         self.player = player
         self.ui = GameplayUI(player)
         self.player.spawn()
+        self.player.print_data()
         self.player.on_damage += self.ui.update_data
         self.player.on_heal += self.ui.update_data
+        self.player.on_level_up += self.ui.update_data
+        self.player.on_add_xp += self.ui.update_data
         self.ui.update_data()
 
     @property
