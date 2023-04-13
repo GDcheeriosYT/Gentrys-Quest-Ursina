@@ -32,7 +32,7 @@ class GameUnit(GameEntityBase):
         return EntityOverhead(self)
 
     @difficulty.setter
-    def difficulty(self, value) -> None:
+    def set_difficulty(self, value) -> None:
         self.difficulty = value
 
     @property
