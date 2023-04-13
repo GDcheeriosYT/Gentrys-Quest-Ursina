@@ -60,10 +60,11 @@ class Stats:
             return self._speed
 
     def __repr__(self):
-        print(self.health)
-        print(self.attack)
-        print(self.defense)
-        print(self.crit_rate)
-        print(self.crit_damage)
-        print(self.speed)
-        return ""
+        return f'''
+{self.health}
+{self.attack}
+{self.defense}
+{self.crit_rate}
+{self.crit_damage}
+{self.speed}
+        '''

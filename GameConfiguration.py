@@ -6,3 +6,4 @@ borderless = False
 fullscreen = False
 server = "https://gdcheerios.com"
 debug = False
+extra_ui_info = True

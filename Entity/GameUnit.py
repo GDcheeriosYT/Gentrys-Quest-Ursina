@@ -24,7 +24,11 @@ class GameUnit(GameEntityBase):
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
+        self.on_level_up += self._overhead.update_data
+        self.on_level_up += lambda: Audio(self.audio_mapping.get_levelup_sound(), time=5)
         self.on_spawn += self.update_stats
+        self.on_heal += self._overhead.update_data
+        self.on_damage += self._overhead.update_data
 
     @property
     def difficulty(self) -> int:
