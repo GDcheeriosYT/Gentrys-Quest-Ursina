@@ -7,7 +7,7 @@ import GameConfiguration
 from Content.Enemies.TestEnemy import TestEnemy
 from Content.Characters.TestCharacter import TestCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
-from Entity.EntityOverHead import EntityOverhead
+from Content.ArtifactFamilies.BraydenMesserschmidt.OsuPen.Artifact import OsuPen
 
 # screens
 from Screens.MainMenu.MainMenu import MainMenu
@@ -69,8 +69,9 @@ else:
     enemy = TestEnemy()
     invoke(lambda: GameplayScreen(BraydenMesserschmidt()), delay=13 if GameConfiguration.play_intro else 0)
     invoke(lambda: enemy.spawn(), delay=13 if GameConfiguration.play_intro else 0)
+    invoke(lambda: OsuPen, delay=0)
 
     invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
-    invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
+    #invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
 
 app.run()

@@ -25,7 +25,7 @@ class Character(GameUnit):
         self._difficulty = int(1 + (self.experience.level / 20))
 
         # health stats
-        self._stats.health.set_default_value(self.experience.level * 5)
+        self._stats.health.set_default_value(int((calculate(self._experience.level, 57) + calculate(self._experience.level, calculate(self.star_rating, 2)) + calculate(self._experience.level, calculate(self.check_minimum(self._stats.health.points, 4)))) + calculate(self._difficulty, 1000) + calculate(self._stats.health.points, 10) + calculate(self.star_rating, 5)))
 
         # attack stats
         self._stats.attack.set_default_value(self.experience.level * 5)
@@ -40,7 +40,7 @@ class Character(GameUnit):
         self._stats.crit_damage.set_default_value(calculate(self.stats.crit_damage.points, 5))
 
         # speed stats
-        self._stats.speed.set_default_value((self.difficulty * 0.2) + self.stats.speed.points + (self.star_rating * 0.1))
+        self._stats.speed.set_default_value(((self.difficulty - 1) * 0.2) + self.stats.speed.points + (self.star_rating * 0.1))
 
     def update(self):
         self.set_idle_texture()

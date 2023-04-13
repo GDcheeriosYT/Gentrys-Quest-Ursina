@@ -2,18 +2,17 @@ from .UserData import UserData
 
 
 class User:
+    def __init__(self, username: str):
+        self._username = username
+        self._user_data = UserData()
 
     @property
     def username(self) -> str:
-        return "Username"
+        return self._username
 
     @property
     def user_data(self) -> None:
         return None
-
-    @username.setter
-    def username(self, value) -> str:
-        self.username = value
 
     def login(self, is_guest: bool, username: str = None, password: str = None) -> None:
         if is_guest:

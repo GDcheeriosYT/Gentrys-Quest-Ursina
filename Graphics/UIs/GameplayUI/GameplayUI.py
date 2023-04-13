@@ -25,7 +25,7 @@ class GameplayUI:
             parent=self.bars_container
         )
         self._level = Text(
-            f"{self.player.experience.level}{f'/{self.player.experience.limit}' if self.player.experience.limit else ''}",
+            f"lvl. {self.player.experience.level}{f'/{self.player.experience.limit}' if self.player.experience.limit else ''}",
             position=(-0.45, 0),
             origin=(0.5, 0.5),
             color=rgb(0, 0, 0),
@@ -65,5 +65,5 @@ class GameplayUI:
         # bars container info update
         self.health_bar.max_value = self.player.stats.health.get_value()
         self.health_bar.value = self.player.stats.health.current_value
-        self.level.text = self.player.experience.level
+        self.level.text = f"lvl. {self.player.experience.level}"
         self.experience_bar.update_data(self.player.experience.xp, self.player.experience.get_xp_required(self.player.star_rating))

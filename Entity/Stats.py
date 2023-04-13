@@ -34,6 +34,31 @@ class Stats:
     def speed(self) -> Stat:
         return self._speed
 
+    @staticmethod
+    def get_stat_strings() -> list:
+        return [
+            "Health",
+            "Attack",
+            "Defense",
+            "CritRate",
+            "CritDamage",
+            "Speed",
+        ]
+
+    def get_stat_by_string(self, string: str):
+        if string == "Health":
+            return self._health
+        elif string == "Attack":
+            return self._attack
+        elif string == "Defense":
+            return self._defense
+        elif string == "CritRate":
+            return self._crit_rate
+        elif string == "CritDamage":
+            return self._crit_damage
+        elif string == "Speed":
+            return self._speed
+
     def __repr__(self):
         print(self.health)
         print(self.attack)
