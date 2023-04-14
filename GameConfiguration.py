@@ -1,6 +1,6 @@
 volume = 1
 version = "Super Dooper Beta"
-play_intro = False
+play_intro = True
 hide_fps = False
 borderless = False
 fullscreen = False
