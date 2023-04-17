@@ -1,3 +1,4 @@
+import GameConfiguration
 from Entity.Character.Character import Character
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
@@ -30,4 +31,4 @@ class MasonJames(Character):
 
     def spawn(self):
         self.enable()
-        Audio(self.audio_mapping.get_spawn_sound())
+        Audio(self.audio_mapping.get_spawn_sound(), volume=GameConfiguration.volume)

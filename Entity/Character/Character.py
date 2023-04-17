@@ -8,6 +8,7 @@ class Character(GameUnit):
     def __init__(self):
         super().__init__()
         self._is_equipped = False
+        self.artifacts = []
 
     @property
     def star_rating(self) -> int:
@@ -44,13 +45,13 @@ class Character(GameUnit):
 
     def update(self):
         self.set_idle_texture()
-        if held_keys['left arrow']:
+        if held_keys['a']:
             self.move_left()
-        if held_keys['right arrow']:
+        if held_keys['d']:
             self.move_right()
-        if held_keys['up arrow']:
+        if held_keys['w']:
             self.move_up()
-        if held_keys['down arrow']:
+        if held_keys['s']:
             self.move_down()
         if held_keys["-"]:
             if self.experience.level > 1:

@@ -1,3 +1,4 @@
+import GameConfiguration
 from .GameEntityBase import GameEntityBase
 from .Stats import Stats
 from .TextureMapping import TextureMapping
@@ -25,7 +26,7 @@ class GameUnit(GameEntityBase):
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
         self.on_level_up += self._overhead.update_data
-        self.on_level_up += lambda: Audio(self.audio_mapping.get_levelup_sound(), time=5)
+        self.on_level_up += lambda: Audio(self.audio_mapping.get_levelup_sound(), time=5, volume=GameConfiguration.volume + 0.2)
         self.on_spawn += self.update_stats
         self.on_heal += self._overhead.update_data
         self.on_damage += self._overhead.update_data
@@ -94,7 +95,7 @@ class GameUnit(GameEntityBase):
         self.spawn_sequence()
 
     def spawn_sequence(self) -> None:
-        Audio(self.audio_mapping.get_spawn_sound())
+        Audio(self.audio_mapping.get_spawn_sound(), volume=GameConfiguration.volume)
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)
