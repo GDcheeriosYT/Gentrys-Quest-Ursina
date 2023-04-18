@@ -1,5 +1,5 @@
 from Entity.Weapon.Weapon import Weapon
-from Entity.Weapon.WeaponTypes import WeaponTypes
+from ursina import *
 
 
 class BraydensOsuPen(Weapon):
@@ -17,3 +17,7 @@ class BraydensOsuPen(Weapon):
     @property
     def weapon_type(self) -> str:
         return "Pen"
+
+    @property
+    def weapon_sprite(self) -> Texture:
+        return Texture("Textures/Weapon")

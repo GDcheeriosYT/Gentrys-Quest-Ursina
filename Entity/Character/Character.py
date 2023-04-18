@@ -1,4 +1,6 @@
 from ursina import *
+from ursina.camera import Camera
+
 from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
@@ -44,14 +46,15 @@ class Character(GameUnit):
         self._stats.speed.set_default_value(((self.difficulty - 1) * 0.2) + self.stats.speed.points + (self.star_rating * 0.1))
 
     def update(self):
+        camera.position = (self.x, self.y, -20)
         self.set_idle_texture()
-        if held_keys['a']:
+        if held_keys['a'] or held_keys['left arrow']:
             self.move_left()
-        if held_keys['d']:
+        if held_keys['d'] or held_keys['right arrow']:
             self.move_right()
-        if held_keys['w']:
+        if held_keys['w'] or held_keys['up arrow']:
             self.move_up()
-        if held_keys['s']:
+        if held_keys['s'] or held_keys['down arrow']:
             self.move_down()
         if held_keys["-"]:
             if self.experience.level > 1:
@@ -61,4 +64,4 @@ class Character(GameUnit):
         if held_keys["="]:
             self.level_up()
         if held_keys["/"]:
-            self.damage(5)
+            self.damage(50)

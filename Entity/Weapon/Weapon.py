@@ -1,4 +1,5 @@
 from ..GameEntityBase import GameEntityBase
+from ursina import *
 
 
 class Weapon(GameEntityBase):
@@ -18,4 +19,5 @@ class Weapon(GameEntityBase):
         raise NotImplementedError
 
     @property
-    def weapon_sprite(self) -> :
+    def weapon_sprite(self) -> Texture:
+        raise NotImplementedError

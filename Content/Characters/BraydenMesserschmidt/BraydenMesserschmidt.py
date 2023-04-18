@@ -25,5 +25,6 @@ class BraydenMesserschmidt(Character):
     @property
     def audio_mapping(self) -> AudioMapping:
         return AudioMapping(
-            ["Audio/spawn.mp3"]
+            spawn_sounds=["Audio/spawn.mp3"],
+            damage_sounds=["Audio/damage.mp3"]
         )
