@@ -12,13 +12,5 @@ class TestEnemy(Enemy):
         return "Test Enemy"
 
     def update(self):
-        if held_keys['/']:
+        if held_keys['o']:
             self.damage(5)
-
-        if held_keys['=']:
-            self.level_up()
-        if held_keys["-"]:
-            if self.experience.level > 1:
-                self.experience.level -= 1
-                self.on_level_up()
-                self.update_stats()

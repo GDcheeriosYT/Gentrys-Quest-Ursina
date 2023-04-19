@@ -1,4 +1,7 @@
 from ursina import *
+
+from Overlays.NoficationsManager import NotificationManager
+from Overlays.Notification import Notification
 from .Experience import Experience
 from .TextureMapping import TextureMapping
 from utils.Event import Event
@@ -39,6 +42,8 @@ class GameEntityBase(Entity):
 
     def level_up(self):
         self.experience.level += 1
+        notification = Notification(f"{self.name} is now level {self.experience.level}", color.blue)
+        NotificationManager.add_nofication(notification)
         self.on_level_up()
 
     def update_stats(self):

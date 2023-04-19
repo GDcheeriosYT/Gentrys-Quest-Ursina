@@ -8,6 +8,8 @@ from Content.Enemies.TestEnemy import TestEnemy
 from Content.Characters.TestCharacter import TestCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 from Content.ArtifactFamilies.BraydenMesserschmidt.OsuPen.Artifact import OsuPen
+from Overlays.NoficationsManager import NotificationManager
+from Overlays.Notification import Notification
 
 # screens
 from Screens.MainMenu.MainMenu import MainMenu

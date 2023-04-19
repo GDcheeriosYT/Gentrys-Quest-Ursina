@@ -14,8 +14,6 @@ class GameUnit(GameEntityBase):
         self._stats = Stats()
         self._overhead = EntityOverhead(self)
         self._difficulty = 1
-        self._texture_mapping = TextureMapping()
-        self._audio_mapping = AudioMapping()
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -28,12 +26,12 @@ class GameUnit(GameEntityBase):
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
         self.on_level_up += self._overhead.update_data
-        self.on_level_up += lambda: Audio(self._audio_mapping.get_levelup_sound(), volume=GameConfiguration.volume)
+        self.on_level_up += lambda: Audio(self.audio_mapping.get_levelup_sound(), volume=GameConfiguration.volume)
         self.on_spawn += self.update_stats
         self.on_heal += self._overhead.update_data
         self.on_damage += self._overhead.update_data
-        self.on_damage += lambda: Audio(self._audio_mapping.get_damage_sounds(), volume=GameConfiguration.volume)
-        self.on_death += lambda: Audio(self._audio_mapping.get_death_sounds(), volume=GameConfiguration.volume)
+        self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), volume=GameConfiguration.volume)
+        self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), volume=GameConfiguration.volume)
 
     @property
     def difficulty(self) -> int:
@@ -52,11 +50,11 @@ class GameUnit(GameEntityBase):
 
     @property
     def texture_mapping(self) -> TextureMapping:
-        return self._texture_mapping
+        return TextureMapping()
 
     @property
     def audio_mapping(self) -> AudioMapping:
-        return self._audio_mapping
+        return AudioMapping()
 
     def set_idle_texture(self):
         self.texture = self.texture_mapping.get_idle_texture()
@@ -70,7 +68,7 @@ class GameUnit(GameEntityBase):
         damage_text = Text(str(amount), scale=(15, 15), origin=(0, 0), position=(0, 0.5, -1), color=rgb(255, 12, 12), parent=self)
         damage_text.animate_position((damage_text.x + 0.1, damage_text.y + 0.5), 1)
         damage_text.fade_out(0, 1)
-        #invoke(destroy(damage_text), delay=1.5)
+        destroy(damage_text, delay=1.5)
         if self.stats.health.current_value <= 0:
             self.die()
 
