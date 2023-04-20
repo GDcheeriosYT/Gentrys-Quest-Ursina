@@ -4,6 +4,7 @@ from ursina.camera import Camera
 from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
+from Content.Enemies.TestEnemy import TestEnemy
 
 
 class Character(GameUnit):
@@ -65,3 +66,10 @@ class Character(GameUnit):
             self.level_up()
         if held_keys["/"]:
             self.damage(50)
+
+    def input(self, key):
+        if key == "p":
+            test_enemy = TestEnemy()
+            test_enemy.position = self.position
+            test_enemy.update_follow_script(self)
+            test_enemy.spawn()

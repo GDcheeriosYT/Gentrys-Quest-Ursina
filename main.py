@@ -69,7 +69,8 @@ if args.debug:
 
 else:
     enemy = TestEnemy()
-    invoke(lambda: GameplayScreen(BraydenMesserschmidt()), delay=13 if GameConfiguration.play_intro else 0)
+    player = BraydenMesserschmidt()
+    invoke(lambda: GameplayScreen(player), delay=13 if GameConfiguration.play_intro else 0)
     invoke(lambda: enemy.spawn(), delay=13 if GameConfiguration.play_intro else 0)
     invoke(lambda: OsuPen, delay=0)
 
