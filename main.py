@@ -33,7 +33,6 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("-s", "--server")
-parser.add_argument("-d", "--debug", action='store_true')
 args = parser.parse_args()
 
 # window initialization
@@ -62,21 +61,11 @@ if GameConfiguration.play_intro:
     invoke(lambda: engine_title.fade_in(0, fade_time * 4), delay=fade_delay * 10)
     invoke(lambda: engine_description.fade_in(0, fade_time * 4), delay=fade_delay * 12)
 else:
-    Audio("songtoplay.mp3", volume=GameConfiguration.volume/2)
+    Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=GameConfiguration.volume, loop=True)
 
 server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
 
-if args.debug:
-    print("cock nuts")
-
-else:
-    enemy = TestEnemy()
-    player = BraydenMesserschmidt()
-    invoke(lambda: GameplayScreen(player), delay=13 if GameConfiguration.play_intro else 0)
-    invoke(lambda: enemy.spawn(), delay=13 if GameConfiguration.play_intro else 0)
-    invoke(lambda: OsuPen, delay=0)
-
-    invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
-    #invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
+invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
+invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
 
 app.run()
