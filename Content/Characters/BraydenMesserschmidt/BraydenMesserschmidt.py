@@ -7,6 +7,7 @@ from ursina import *
 class BraydenMesserschmidt(Character):
     def __init__(self):
         super().__init__()
+        self._overhead.health_bar.disable()
 
     @property
     def name(self) -> str:

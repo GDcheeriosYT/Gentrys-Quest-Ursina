@@ -61,6 +61,8 @@ if GameConfiguration.play_intro:
     invoke(lambda: engine_icon.fade_in(0, fade_time * 4), delay=fade_delay * 10)
     invoke(lambda: engine_title.fade_in(0, fade_time * 4), delay=fade_delay * 10)
     invoke(lambda: engine_description.fade_in(0, fade_time * 4), delay=fade_delay * 12)
+else:
+    Audio("songtoplay.mp3", volume=GameConfiguration.volume/2)
 
 server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
 

@@ -41,3 +41,10 @@ class Enemy(GameUnit):
 
         # speed stats
         self._stats.speed.set_default_value(((self.difficulty - 1) * 0.2) + self.stats.speed.points)
+
+    def input(self, key):
+        if key == "l":
+            self.level_up()
+        elif key == "k":
+            if self._experience.level > 1:
+                self._experience.level -= 1
