@@ -8,8 +8,8 @@ class LoginBox(Entity):
         super().__init__(
             model="quad",
             origin=(0, 0),
-            scale=(0.8, 0.6),
-            color=rgb(17, 17, 17, 100),
+            scale=(0.95, 0.8),
+            color=rgb(117, 117, 117),
             parent=camera.ui,
             **kwargs
         )

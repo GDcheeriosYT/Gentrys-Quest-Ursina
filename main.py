@@ -45,9 +45,9 @@ window.fps_counter.color = rgb(0, 0, 0)
 if GameConfiguration.hide_fps: window.fps_counter.disable()
 
 # intro
+game_theme = Audio("Audio/GentrysTheme.mp3", loop=True, time=4, volume=0, autoplay=True)
+game_theme.fade_in(GameConfiguration.volume, 4.5, delay=0.5, curve=in_sine)
 if GameConfiguration.play_intro:
-    game_theme = Audio("Audio/GentrysTheme.mp3", loop=True, time=4, volume=0, autoplay=True)
-    game_theme.fade_in(GameConfiguration.volume, 4.5, delay=0.5, curve=in_sine)
     engine_icon = Entity(model="quad", scale=(0.25, 0.25), texture="Graphics/Textures/ursina_chan_alpha.png", alpha=0, parent=camera.ui)
     engine_info_container = Entity(aplha=0, parent=camera.ui)
     engine_title = Text("ursina engine", alpha=0, origin=(0, 0), position=(0, -0.25), scale=(3, 3), parent=engine_info_container)
@@ -60,12 +60,10 @@ if GameConfiguration.play_intro:
     invoke(lambda: engine_icon.fade_in(0, fade_time * 4), delay=fade_delay * 10)
     invoke(lambda: engine_title.fade_in(0, fade_time * 4), delay=fade_delay * 10)
     invoke(lambda: engine_description.fade_in(0, fade_time * 4), delay=fade_delay * 12)
-else:
-    Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=GameConfiguration.volume, loop=True)
 
 server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
 
 invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
-invoke(lambda: MainMenu(GameConfiguration.version), delay=13 if GameConfiguration.play_intro else 0)
+invoke(lambda: MainMenu(GameConfiguration.version, game_theme), delay=13 if GameConfiguration.play_intro else 0)
 
 app.run()
