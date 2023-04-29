@@ -9,7 +9,7 @@ class LoginBox(Entity):
             model="quad",
             origin=(0, 0),
             scale=(0.95, 0.8),
-            color=rgb(117, 117, 117),
+            color=rgb(117, 117, 117, 0),
             parent=camera.ui,
             **kwargs
         )
