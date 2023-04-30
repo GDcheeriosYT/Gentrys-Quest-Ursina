@@ -14,7 +14,6 @@ class LoginBox(Entity):
             **kwargs
         )
 
-        self.title = Text("Login", color=rgb(0, 0, 0), origin=(0, 0), scale=(4, 4.2), position=(0, 0.4), parent=self)
         self.username_box = InputField("Username", position=(0, 0.2), parent=self)
         self.password_box = InputField("Password", position=(0, -0.1), hide_content=True, parent=self)
         self.login_status = Text("", position=(0, 0.28), origin=(0, 0), scale=(3, 3.2), parent=self)

@@ -13,13 +13,13 @@ class NotificationManager:
         NotificationManager.notifications.append(notification)
         y = 0.55 - len(NotificationManager.notifications) * 0.12
         notification.animate_position(
-            (1, y, 0),
+            (1, y, -2),
             duration=2,
             curve=in_expo
         )
 
         invoke(lambda: notification.animate_position(
-            (1.5, y, 0),
+            (1.5, y, -2),
             duration=2,
             curve=out_expo
         ), delay=5)

@@ -5,7 +5,7 @@ class Notification(Text):
     def __init__(self, text: str, color: Color = rgb(17, 17, 17)):
         super().__init__(
             text,
-            position=(1.5, 0.5),
+            position=(1.5, 0.5, -2),
             origin=(0.8, 0.5),
             parent=camera.ui,
         )
