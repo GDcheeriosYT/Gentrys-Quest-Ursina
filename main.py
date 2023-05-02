@@ -18,6 +18,9 @@ from Screens.Play.Gameplay import GameplayScreen
 # online packages
 from Online.ServerConnection import ServerConnection
 
+# built-in packages
+import os
+
 # external packages
 from ursina import *
 from ursina.curve import *
@@ -26,6 +29,10 @@ import argparse
 # initialization
 app = Ursina()
 app.setBackgroundColor(0, 0, 0)
+#if os.path.isdir('Data'):
+#    pass
+#else:
+#    os.mkdir("Data")
 
 parser = argparse.ArgumentParser(
     prog="Gentry's Quest",

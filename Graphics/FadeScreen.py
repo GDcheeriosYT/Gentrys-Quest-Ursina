@@ -6,7 +6,7 @@ class FadeScreen(Entity):
         super().__init__(
             model='quad',
             color=rgb(0, 0, 0),
-            position=(0, 0, -1),
+            position=(0, 0, -2),
             origin=(0, 0),
             scale=(2, 2),
             parent=camera.ui

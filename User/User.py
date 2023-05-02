@@ -1,22 +1,24 @@
 from .UserData import UserData
+from GPSystem.GPRater import GPRater
 
 
 class User:
     def __init__(self, username: str):
         self._username = username
         self._user_data = UserData()
+        self._gp = 0
 
     @property
     def username(self) -> str:
         return self._username
 
     @property
-    def user_data(self) -> None:
-        return None
+    def user_data(self) -> UserData:
+        return self._user_data
 
-    def login(self, is_guest: bool, username: str = None, password: str = None) -> None:
-        if is_guest:
-            pass
+    @property
+    def gp(self) -> int:
+        return self._gp
 
-        pass
-
+    def replace_data(self, json_str):
+        self._user_data = UserData(json_str)

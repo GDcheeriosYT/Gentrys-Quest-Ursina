@@ -1,3 +1,5 @@
+import random
+
 import GameConfiguration
 from .GameEntityBase import GameEntityBase
 from .Stats import Stats
@@ -6,6 +8,9 @@ from .AudioMapping import AudioMapping
 from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
+
+low = GameConfiguration.random_pitch_range[0]
+high = GameConfiguration.random_pitch_range[1]
 
 
 class GameUnit(GameEntityBase):
@@ -30,8 +35,8 @@ class GameUnit(GameEntityBase):
         self.on_spawn += self.update_stats
         self.on_heal += self._overhead.update_data
         self.on_damage += self._overhead.update_data
-        self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), volume=GameConfiguration.volume)
-        self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), volume=GameConfiguration.volume)
+        self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
 
     @property
     def difficulty(self) -> int:
@@ -102,7 +107,7 @@ class GameUnit(GameEntityBase):
         self.spawn_sequence()
 
     def spawn_sequence(self) -> None:
-        Audio(self.audio_mapping.get_spawn_sound(), volume=GameConfiguration.volume)
+        Audio(self.audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)
