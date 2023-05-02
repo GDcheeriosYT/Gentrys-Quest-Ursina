@@ -1,8 +1,7 @@
 from Overlays.NoficationsManager import NotificationManager
+from GameStates import GameStates
 
 
-class Game:
-    def __init__(self, user):
-        self._user = None
-        self._notifications = NotificationManager
-        
+state = GameStates.mainMenu
+user = None
+notifications = NotificationManager

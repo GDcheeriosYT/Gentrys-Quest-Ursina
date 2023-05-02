@@ -1,7 +1,11 @@
 from ursina import *
 import os
+import json
 
 from User.User import User
+from Overlays.NoficationsManager import NotificationManager
+from Overlays.Notification import Notification
+from .GuestElement import GuestElement
 
 
 class GuestUI(Entity):
@@ -39,23 +43,44 @@ class GuestUI(Entity):
         self._username_entry.scale_y = 0.04
 
         self._add_button.on_click = self.create_guest
+        self.update_list()
 
     def load_guest_data(self) -> None:
+        self._user_list = []
         for file in os.listdir('Data'):
-            user = User(file[:-5])
-            user.replace_data(open(file, 'r').read())
+            user = User(file[:-5], True)
+            user.replace_data(open(f"Data/{file}", 'r').read())
             self._user_list.append(user)
 
     def create_guest(self) -> None:
-        self._user_list.append(User(self._username_entry.text))
-        self._username_entry.text = "username"
-        self.update_list()
+        username = self._username_entry.text
+        username_available = True
+        for file in os.listdir("Data"):
+            if file[:-5] == username:
+                username_available = False
+                break
 
-    def update_list(self):
-        self._guest_entity_list.clear()
+        if username_available:
+            with open(f"Data/{username}.json", "w+") as user_file:
+                user = User(username, True)
+                user_file.write(json.dumps(user.user_data.jsonify_data(), indent=4))
+                user_file.close()
+
+            self._username_entry.text = "username"
+            self.update_list()
+        else:
+            NotificationManager.add_nofication(Notification("Username taken", color.red))
+
+    def update_list(self) -> None:
+        [destroy(guest) for guest in self._guest_entity_list]
+        self.load_guest_data()
+        self._guest_entity_list = []
         y = 0.25
+        if len(self._guest_entity_list) == 0:
+            self._guest_entity_list.append(Text("No guest users found...", scale=(2.5, 2.5), origin=(0, 0), position=(0, 0.25), parent=self))
+
         for user in self._user_list:
             self._guest_entity_list.append(
-                Text(f"{user.username} {user.gp} GP", position=(-0.35, y), scale=(2.5, 1.5), parent=self)
+                GuestElement(user.username, user.gp, position=(0, y), parent=self)
             )
-            y -= 0.05
+            y -= 0.12

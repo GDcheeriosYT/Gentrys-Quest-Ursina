@@ -6,7 +6,8 @@ from Graphics.FadeScreen import FadeScreen
 from Graphics.Buttons.TabButton import TabButton
 from .LoginUI import LoginUI
 from .GuestUI import GuestUI
-from utils.BooleanMethods import switch
+import Game
+from GameStates import GameStates
 
 from ursina import *
 
@@ -28,8 +29,8 @@ def _login_click():
 
 
 class MainMenu(Screen):
-    is_guest_menu = True
-    is_login_menu = False
+    is_guest_menu = False
+    is_login_menu = True
 
     def __init__(self, version: str, intro_music: Audio):
         super().__init__()
@@ -103,3 +104,14 @@ class MainMenu(Screen):
                 destroy(self.screen)
                 self.screen = LoginUI()
                 already_updated = True
+
+        if Game.state == GameStates.started:
+            Game.state = GameStates.inGame
+            destroy(self.screen)
+            destroy(self.menu)
+            destroy(self.title)
+            destroy(self.version)
+            destroy(self.play_button)
+            destroy(self.login_button)
+            destroy(self.guest_button)
+            self.disable()

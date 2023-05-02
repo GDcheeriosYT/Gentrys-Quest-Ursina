@@ -4,11 +4,16 @@ from ursina import *
 from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
+from Entity.TextureMapping import TextureMapping
+from Entity.AudioMapping import AudioMapping
 
 
 class Enemy(GameUnit):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping()):
+        super().__init__(
+            texture_mapping,
+            audio_mapping
+        )
         self.on_death += lambda: self.scripts.clear()
         self.on_death += lambda: destroy(self)
 

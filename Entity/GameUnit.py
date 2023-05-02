@@ -14,11 +14,13 @@ high = GameConfiguration.random_pitch_range[1]
 
 
 class GameUnit(GameEntityBase):
-    def __init__(self):
+    def __init__(self, texture_mapping: TextureMapping, audio_mapping: AudioMapping):
         super().__init__()
         self._stats = Stats()
         self._overhead = EntityOverhead(self)
         self._difficulty = 1
+        self._texture_mapping = texture_mapping
+        self._audio_mapping = audio_mapping
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -43,10 +45,6 @@ class GameUnit(GameEntityBase):
         return self._difficulty
 
     @property
-    def overhead(self) -> EntityOverhead:
-        return self._overhead
-
-    @property
     def stats(self) -> Stats:
         """
         The stats of the Entity
@@ -55,17 +53,17 @@ class GameUnit(GameEntityBase):
 
     @property
     def texture_mapping(self) -> TextureMapping:
-        return TextureMapping()
+        return self._texture_mapping
 
     @property
     def audio_mapping(self) -> AudioMapping:
-        return AudioMapping()
+        return self._audio_mapping
 
     def set_idle_texture(self):
-        self.texture = self.texture_mapping.get_idle_texture()
+        self.texture = self._texture_mapping.get_idle_texture()
 
     def set_damage_texture(self):
-        self.texture = self.texture_mapping.get_damage_texture()
+        self.texture = self._texture_mapping.get_damage_texture()
 
     def damage(self, amount):
         self.stats.health.current_value -= amount
@@ -107,7 +105,7 @@ class GameUnit(GameEntityBase):
         self.spawn_sequence()
 
     def spawn_sequence(self) -> None:
-        Audio(self.audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)

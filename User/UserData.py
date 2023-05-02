@@ -42,7 +42,7 @@ class UserData:
         weapons = [weapon.jsonify() for weapon in self._weapons]
 
         return {
-            "startupamount": self._startup_amount,
+            "startup amount": self._startup_amount,
             "inventory": {
                 "characters": characters,
                 "artifacts": artifacts,
@@ -50,3 +50,11 @@ class UserData:
                 "money": self._money
             }
         }
+
+    def __repr__(self):
+        print(self._startup_amount)
+        print(f"${self._money}")
+        print(self._characters)
+        print(self._artifacts)
+        print(self._weapons)
+        return ""

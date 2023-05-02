@@ -5,13 +5,19 @@ from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
 from Content.Enemies.TestEnemy import TestEnemy
+from Entity.TextureMapping import TextureMapping
+from Entity.AudioMapping import AudioMapping
 
 
 class Character(GameUnit):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping()):
+        super().__init__(
+            texture_mapping=texture_mapping,
+            audio_mapping=audio_mapping
+        )
         self._is_equipped = False
         self.artifacts = []
+        self._overhead.disable()
 
     @property
     def star_rating(self) -> int:

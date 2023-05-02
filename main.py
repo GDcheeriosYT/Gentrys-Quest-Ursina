@@ -4,12 +4,7 @@ import GameConfiguration
 # graphics
 
 # Entity
-from Content.Enemies.TestEnemy import TestEnemy
-from Content.Characters.TestCharacter import TestCharacter
-from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
-from Content.ArtifactFamilies.BraydenMesserschmidt.OsuPen.Artifact import OsuPen
-from Overlays.NoficationsManager import NotificationManager
-from Overlays.Notification import Notification
+from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
 
 # screens
 from Screens.MainMenu.MainMenu import MainMenu
@@ -29,10 +24,10 @@ import argparse
 # initialization
 app = Ursina()
 app.setBackgroundColor(0, 0, 0)
-#if os.path.isdir('Data'):
-#    pass
-#else:
-#    os.mkdir("Data")
+if os.path.isdir('Data'):
+    pass
+else:
+    os.mkdir("Data")
 
 parser = argparse.ArgumentParser(
     prog="Gentry's Quest",
@@ -68,9 +63,12 @@ if GameConfiguration.play_intro:
     invoke(lambda: engine_title.fade_in(0, fade_time * 4), delay=fade_delay * 10)
     invoke(lambda: engine_description.fade_in(0, fade_time * 4), delay=fade_delay * 12)
 
-server = ServerConnection("https://gdcheerios.com" if args.server is None else args.server)
+server_url = "http://localhost" if GameConfiguration.local_dev_branch else "https://gdcheerios.com"
+
+server = ServerConnection(server_url if args.server is None else args.server)
 
 invoke(lambda: app.setBackgroundColor(177, 177, 177), delay=13 if GameConfiguration.play_intro else 0)
 invoke(lambda: MainMenu(GameConfiguration.version, game_theme), delay=13 if GameConfiguration.play_intro else 0)
+GameplayScreen(StarterCharacter("Joe"))
 
 app.run()

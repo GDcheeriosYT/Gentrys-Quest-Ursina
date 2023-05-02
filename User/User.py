@@ -3,9 +3,10 @@ from GPSystem.GPRater import GPRater
 
 
 class User:
-    def __init__(self, username: str):
+    def __init__(self, username: str, is_guest: bool):
         self._username = username
         self._user_data = UserData()
+        self._is_guest = is_guest
         self._gp = 0
 
     @property
@@ -22,3 +23,7 @@ class User:
 
     def replace_data(self, json_str):
         self._user_data = UserData(json_str)
+
+    def __repr__(self):
+        print(self._username, self._gp, "GP")
+        return ""
