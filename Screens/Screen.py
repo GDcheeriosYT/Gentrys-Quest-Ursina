@@ -1,14 +1,20 @@
 from ursina import *
+from utils.Event import Event
 
 
 class Screen(Entity):
     def __init__(self):
-        super().__init__()
-        if self.allow_back: self.back_button = Button("back", position=(-0.5, -0.4), scale=(0.2, 0.05))
+        super().__init__(
+            parent=camera.ui
+        )
+        # if self.allow_back: self.back_button = Button("back", position=(-0.5, -0.4), scale=(0.2, 0.05))
+        self.on_show = Event('OnShow', 0)
+        self.on_show += self.enable
+        self.on_hide = Event('OnHide', 0)
+        self.on_hide += self.disable
 
     @property
     def name(self) -> str:
-        print("screen name given")
         """
         The name of the screen. This should be a unique identifier.
         """
@@ -30,20 +36,12 @@ class Screen(Entity):
         """
         return False
 
+    def disable_audio(self, audio: Audio, fade_time: int):
+        audio.fade_out(duration=fade_time)
+        invoke(audio.disable(), delay=fade_time * 2)
+
     def show(self) -> None:
         self.on_show()
 
     def hide(self) -> None:
         self.on_hide()
-
-    def on_show(self) -> None:
-        """
-        Called when this screen is shown.
-        """
-        pass
-
-    def on_hide(self) -> None:
-        """
-        Called when this screen is hidden.
-        """
-        pass

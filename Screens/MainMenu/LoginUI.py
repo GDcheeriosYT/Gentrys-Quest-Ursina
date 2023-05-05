@@ -25,7 +25,3 @@ class LoginUI(Entity):
         user = User()
         username = self.username_box.text
         password = self.password_box.text
-
-
-    def on_guest_submit(self) -> None:
-        pass

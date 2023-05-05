@@ -36,6 +36,14 @@ class UserData:
     def weapons(self) -> List[Weapon]:
         return self._weapons
 
+    @property
+    def money(self):
+        return self._money
+
+    @property
+    def startup_amount(self):
+        return self._startup_amount
+
     def jsonify_data(self) -> dict:
         characters = [character.jsonify() for character in self._characters]
         artifacts = [artifact.jsonify() for artifact in self._artifacts]

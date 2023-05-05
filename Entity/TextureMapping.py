@@ -5,9 +5,6 @@ import os
 
 class TextureMapping:
     def __init__(self, idle_textures: list = None, damage_textures: list = None):
-        print(idle_textures)
-        print(damage_textures)
-        print(os.getcwd())
         if not idle_textures:
             self._idle_textures = ["Textures/huh.png"]
         else:

@@ -32,10 +32,10 @@ class MainMenu(Screen):
     is_guest_menu = False
     is_login_menu = True
 
-    def __init__(self, version: str, intro_music: Audio):
+    def __init__(self):
         super().__init__()
-        self.intro_music = intro_music
-        self.version = VersionText(version)
+        self.music = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True)
+        self.version = VersionText(GameConfiguration.version)
         self.title = TitleText("Gentry's Quest")
         self.play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
         self.guest_button = TabButton("Guest", position=(-0.17, 0.45, 0))
@@ -50,8 +50,14 @@ class MainMenu(Screen):
         self.screen.disable()
         self.guest_button.disable()
         self.login_button.disable()
+        self.title.disable()
+        self.play_button.disable()
+        self.version.disable()
+        self.music.disable()
         self.play_button.on_click = self.play
-        self.show()
+
+        self.on_show += self._show
+        self.on_hide += self._hide
 
     @property
     def name(self) -> str:
@@ -71,22 +77,37 @@ class MainMenu(Screen):
     def menu_toggle(self) -> None:
         self.in_menu = not self.in_menu
 
+    def _show(self):
+        self.title.enable()
+        self.version.enable()
+        self.play_button.enable()
+
+    def _hide(self):
+        self.disable_audio(self.music, GameConfiguration.fade_time)
+        self.screen.disable()
+        self.menu.disable()
+        self.version.disable()
+        self.guest_button.disable()
+        self.login_button.disable()
+        self.title.disable()
+        self.play_button.disable()
+        self.screen.disable()
+        self.screen.disable()
+        self.screen.disable()
+
     def play(self) -> None:
-        time = 0.6
-        self.intro_music.fade_out(0, time)
-        invoke(lambda: self.intro_music.disable(), delay=time)
         fade_screen = FadeScreen()
-        fade_screen.fade_in(1, time)
-        invoke(lambda: self.play_button.disable(), delay=time * 2)
-        invoke(lambda: self.title.disable(), delay=time * 2)
-        invoke(lambda: self.guest_button.enable(), delay=time * 2)
-        invoke(lambda: self.login_button.enable(), delay=time * 2)
-        invoke(lambda: self.menu.enable(), delay=time * 2)
-        invoke(lambda: self.screen.enable(), delay=time * 2)
-        ambient_1 = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True)
-        invoke(lambda: ambient_1.fade_in(GameConfiguration.volume, time), delay=time * 2)
-        invoke(lambda: fade_screen.fade_out(0, time), delay=time * 2)
-        invoke(lambda: self.menu_toggle(), delay=time * 2)
+        fade_screen.fade_in(1, GameConfiguration.fade_time)
+        self.music.enable()
+        self.music.fade_in(GameConfiguration.volume, GameConfiguration.fade_time)
+        invoke(lambda: self.play_button.disable(), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: self.title.disable(), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: self.guest_button.enable(), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: self.login_button.enable(), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: self.menu.enable(), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: self.screen.enable(), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time * 2)
+        invoke(lambda: self.menu_toggle(), delay=GameConfiguration.fade_time * 2)
 
     def update(self):
         global already_updated
@@ -104,14 +125,3 @@ class MainMenu(Screen):
                 destroy(self.screen)
                 self.screen = LoginUI()
                 already_updated = True
-
-        if Game.state == GameStates.started:
-            Game.state = GameStates.inGame
-            destroy(self.screen)
-            destroy(self.menu)
-            destroy(self.title)
-            destroy(self.version)
-            destroy(self.play_button)
-            destroy(self.login_button)
-            destroy(self.guest_button)
-            self.disable()
