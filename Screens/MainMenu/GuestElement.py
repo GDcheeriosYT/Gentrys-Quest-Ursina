@@ -3,7 +3,7 @@ from .GuestConfirmBox import GuestConfirmBox
 
 
 class GuestElement(Button):
-    def __init__(self, username: str, gp: int, *args, **kwargs):
+    def __init__(self, username: str, gp: int, menu, *args, **kwargs):
         super().__init__(
             model=Quad(0.07),
             origin=(0, 0),
@@ -13,8 +13,9 @@ class GuestElement(Button):
             **kwargs
         )
 
+        self._menu = menu
         self._username_element = Text(username, origin=(-0.5, 0), position=(-0.45, 0), scale=(2, 12), color=color.white, parent=self)
         self._gp_element = Text(f"{gp} GP", origin=(0.5, 0), position=(0.45, 0), scale=(2, 12), color=color.white, parent=self)
 
     def on_click(self):
-        GuestConfirmBox(self._username_element.text)
+        GuestConfirmBox(self._username_element.text, self._menu)

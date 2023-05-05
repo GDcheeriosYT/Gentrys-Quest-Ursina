@@ -80,7 +80,8 @@ class GuestUI(Entity):
             self._guest_entity_list.append(Text("No guest users found...", scale=(2.5, 2.5), origin=(0, 0), position=(0, 0.25), parent=self))
 
         for user in self._user_list:
+            guest_element = GuestElement(user.username, user.gp, self, position=(0, y), parent=self)
             self._guest_entity_list.append(
-                GuestElement(user.username, user.gp, position=(0, y), parent=self)
+                guest_element
             )
             y -= 0.12
