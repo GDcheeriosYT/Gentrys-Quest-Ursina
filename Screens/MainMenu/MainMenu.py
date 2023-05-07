@@ -34,7 +34,7 @@ class MainMenu(Screen):
 
     def __init__(self):
         super().__init__()
-        self.music = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True)
+        self.music = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True, autoplay=False)
         self.version = VersionText(GameConfiguration.version)
         self.title = TitleText("Gentry's Quest")
         self.play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
@@ -67,8 +67,13 @@ class MainMenu(Screen):
     def allow_back(self) -> bool:
         return False
 
+    @property
+    def fades(self) -> bool:
+        return False
+
     def on_show(self) -> None:
         self.title.fade_in(1, 1)
+        self.play_button.fade_in(1, 1)
 
     def on_hide(self) -> None:
         self.title.fade_out(0, 0.5)
@@ -91,15 +96,14 @@ class MainMenu(Screen):
         self.login_button.disable()
         self.title.disable()
         self.play_button.disable()
-        self.screen.disable()
-        self.screen.disable()
-        self.screen.disable()
 
     def play(self) -> None:
         fade_screen = FadeScreen()
         fade_screen.fade_in(1, GameConfiguration.fade_time)
+        self.disable_audio(Game.intro_music, GameConfiguration.fade_time)
         self.music.enable()
-        self.music.fade_in(GameConfiguration.volume, GameConfiguration.fade_time)
+        invoke(lambda: self.music.play(), delay=GameConfiguration.fade_time)
+        self.music.fade_in(GameConfiguration.volume, GameConfiguration.fade_time * 2)
         invoke(lambda: self.play_button.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.title.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.guest_button.enable(), delay=GameConfiguration.fade_time * 2)
@@ -108,6 +112,7 @@ class MainMenu(Screen):
         invoke(lambda: self.screen.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.menu_toggle(), delay=GameConfiguration.fade_time * 2)
+        destroy(fade_screen, GameConfiguration.fade_time * 5)
 
     def update(self):
         global already_updated

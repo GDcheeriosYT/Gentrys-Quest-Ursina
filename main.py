@@ -53,10 +53,11 @@ server = ServerConnection(server_url if args.server is None else args.server)
 
 if GameConfiguration.play_intro:
     Game.state = GameStates.intro
+    num = 0
 else:
     Game.state = GameStates.mainMenu
+    num = 1
 
-app.setBackgroundColor(color.white)
-ScreenManager()
+ScreenManager(app).transitions = num
 
 app.run()

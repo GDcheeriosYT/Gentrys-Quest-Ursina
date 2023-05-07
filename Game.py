@@ -4,6 +4,7 @@ from GameStates import GameStates
 state = GameStates.intro
 state_affected = False
 user = None
+intro_music = None
 notifications = NotificationManager
 
 
