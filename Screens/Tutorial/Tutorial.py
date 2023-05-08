@@ -1,6 +1,8 @@
+from ursina import *
 from ..Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 import Game
+from .Map.TutorialMap import TutorialMap
 
 
 class Tutorial(Screen):
@@ -12,6 +14,9 @@ class Tutorial(Screen):
         self.player = Game.user.get_equipped_character()
         self.player.spawn()
         self.hud = HUD(self.player)
+        self.hud.update_stats_container()
+        self.hud.update_status_bars()
+        self.map = TutorialMap()
 
     @property
     def name(self) -> str:
@@ -20,3 +25,7 @@ class Tutorial(Screen):
     @property
     def fades(self) -> bool:
         return True
+
+    @property
+    def color(self) -> color:
+        return rgb(0, 0, 117)

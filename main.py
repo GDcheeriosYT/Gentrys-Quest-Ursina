@@ -38,6 +38,9 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-s", "--server")
 args = parser.parse_args()
 
+camera.orthographic = True
+camera.fov = 11
+
 # window initialization
 window.title = "Gentry's Quest"
 window.borderless = GameConfiguration.borderless
