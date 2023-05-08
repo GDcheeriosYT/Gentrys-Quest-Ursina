@@ -19,7 +19,7 @@ class EntityOverhead(Entity):
         except AttributeError:
             name = None
 
-        self.name = Text(name, parent=self, color=rgb(0, 0, 0, 255), scale=(5, 5), origin=(0, 0), position=(0, 0.2))
+        self.entity_name = Text(name, parent=self, color=rgb(0, 0, 0, 255), scale=(5, 5), origin=(0, 0), position=(0, 0.2))
         self.health_bar = HealthBar(max_value=entity.stats.health.get_value(), parent=self, position=(-0.25, 0.1), show_text=False)
 
     def update_data(self):

@@ -11,8 +11,6 @@ class Intro(Screen):
     def __init__(self):
         super().__init__()
         Game.intro_music = Audio("Audio/GentrysTheme.mp3", loop=True, time=4, volume=0, autoplay=False, parent=self)
-
-
         self.engine_icon = Entity(model="quad", scale=(0.25, 0.25), texture="Graphics/Textures/ursina_chan_alpha.png",
                              alpha=0, parent=self)
         self.engine_info_container = Entity(aplha=0, parent=self)

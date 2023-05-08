@@ -102,10 +102,8 @@ class GameUnit(GameEntityBase):
     def spawn(self) -> None:
         self.enable()
         self.on_spawn()
-        self.spawn_sequence()
-
-    def spawn_sequence(self) -> None:
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self._overhead.entity_name.text = self.name
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)

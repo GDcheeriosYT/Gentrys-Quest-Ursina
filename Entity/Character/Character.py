@@ -17,7 +17,6 @@ class Character(GameUnit):
         )
         self._is_equipped = False
         self.artifacts = []
-        self._overhead.disable()
 
     @property
     def star_rating(self) -> int:

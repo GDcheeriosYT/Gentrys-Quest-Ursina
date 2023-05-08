@@ -44,6 +44,22 @@ class UserData:
     def startup_amount(self):
         return self._startup_amount
 
+    @property
+    def equipped_character(self) -> Character:
+        return self._equipped_character
+
+    def add_character(self, character: Character):
+        self._characters.append(character)
+
+    def add_artifact(self, artifact: Artifact):
+        self._artifacts.append(artifact)
+
+    def add_weapon(self, weapon: Weapon):
+        self._weapons.append(weapon)
+
+    def equip_character(self, character: Character):
+        self._equipped_character = character
+
     def jsonify_data(self) -> dict:
         characters = [character.jsonify() for character in self._characters]
         artifacts = [artifact.jsonify() for artifact in self._artifacts]
