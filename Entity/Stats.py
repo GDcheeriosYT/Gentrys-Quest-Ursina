@@ -8,7 +8,8 @@ class Stats:
         self._defense = Stat("Defense", 12)
         self._crit_rate = Stat("CritRate", 5)
         self._crit_damage = Stat("CritDamage", 50)
-        self._speed = Stat("Speed", 3)
+        self._speed = Stat("Speed", 2)
+        self._attack_speed = Stat("AttackSpeed", 1)
 
     @property
     def health(self) -> Stat:
@@ -34,6 +35,10 @@ class Stats:
     def speed(self) -> Stat:
         return self._speed
 
+    @property
+    def attack_speed(self) -> Stat:
+        return self._attack_speed
+
     @staticmethod
     def get_stat_strings() -> list:
         return [
@@ -43,6 +48,7 @@ class Stats:
             "CritRate",
             "CritDamage",
             "Speed",
+            "AttackSpeed"
         ]
 
     def get_stat_by_string(self, string: str):
@@ -58,6 +64,8 @@ class Stats:
             return self._crit_damage
         elif string == "Speed":
             return self._speed
+        elif string == "AttackSpeed":
+            return self._attack_speed
 
     def __repr__(self):
         return f'''
@@ -67,4 +75,5 @@ class Stats:
 {self.crit_rate}
 {self.crit_damage}
 {self.speed}
+{self.attack_speed}
         '''

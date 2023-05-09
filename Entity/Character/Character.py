@@ -50,7 +50,7 @@ class Character(GameUnit):
         self._stats.crit_damage.set_default_value(calculate(self.stats.crit_damage.points, 5))
 
         # speed stats
-        self._stats.speed.set_default_value(((self.difficulty - 1) * 0.2) + self.stats.speed.points + (self.star_rating * 0.1))
+        self._stats.speed.set_default_value(1 + ((self.difficulty - 1) * 0.2) + self.stats.speed.points + (self.star_rating * 0.1))
 
     def update(self):
         camera.position = (self.x, self.y, -20)
@@ -70,7 +70,7 @@ class Character(GameUnit):
             + self.right * (held_keys['d'] - held_keys['a'])
         ).normalized()  # get the direction we're trying to walk in.
         origin = self.world_position
-        hit_info = raycast(origin, self.direction, ignore=(self, Enemy), distance=.5)
+        hit_info = raycast(origin, self.direction, ignore=[self, Enemy], distance=.5)
         if not hit_info.hit:
             self.position += self.direction * self._stats.speed.get_value() * time.dt
             self.on_move()
@@ -81,3 +81,6 @@ class Character(GameUnit):
             test_enemy.position = self.position
             test_enemy.follow_entity(self)
             test_enemy.spawn()
+
+        if key == "f":
+            self.attack()

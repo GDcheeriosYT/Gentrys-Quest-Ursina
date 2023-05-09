@@ -3,6 +3,7 @@ from ..Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 import Game
 from .Map.TutorialMap import TutorialMap
+from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
 
 
 class Tutorial(Screen):
@@ -12,6 +13,7 @@ class Tutorial(Screen):
 
     def _show(self):
         self.player = Game.user.get_equipped_character()
+        self.player.swap_weapon(BraydensOsuPen())
         self.player.spawn()
         self.hud = HUD(self.player)
         self.hud.update_stats_container()

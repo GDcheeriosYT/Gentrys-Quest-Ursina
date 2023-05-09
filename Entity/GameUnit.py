@@ -8,6 +8,7 @@ from .AudioMapping import AudioMapping
 from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
+from .Weapon.Weapon import Weapon
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -42,6 +43,9 @@ class GameUnit(GameEntityBase):
         self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
         self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
 
+        # equips
+        self._weapon = None
+
     @property
     def difficulty(self) -> int:
         return self._difficulty
@@ -61,6 +65,10 @@ class GameUnit(GameEntityBase):
     def audio_mapping(self) -> AudioMapping:
         return self._audio_mapping
 
+    @property
+    def weapon(self) -> Weapon:
+        return self._weapon
+
     def set_idle_texture(self):
         self.texture = self._texture_mapping.get_idle_texture()
 
@@ -76,6 +84,17 @@ class GameUnit(GameEntityBase):
         destroy(damage_text, delay=1.5)
         if self.stats.health.current_value <= 0:
             self.die()
+
+    def swap_weapon(self, weapon: Weapon) -> Weapon:
+        old_weapon = self._weapon
+        self._weapon = weapon
+        return old_weapon
+
+    def attack(self):
+        crit_damage = (self._stats.attack.get_value() + (self._stats.crit_damage.get_value() * 0.01)) if random.randint(0, 100) < self._stats.crit_rate.get_value() else 0
+        damage = int(round(self._stats.attack.get_value() * crit_damage))
+        self.on_attack()
+        self.weapon.attack(damage, self._stats.attack_speed.get_value())
 
     def heal(self, amount):
         self.stats.health.current_value += amount
