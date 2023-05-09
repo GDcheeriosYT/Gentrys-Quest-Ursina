@@ -7,6 +7,7 @@ from ..EntityOverHead import EntityOverhead
 from Content.Enemies.TestEnemy import TestEnemy
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
+from Entity.Enemy.Enemy import Enemy
 
 
 class Character(GameUnit):
@@ -54,14 +55,6 @@ class Character(GameUnit):
     def update(self):
         camera.position = (self.x, self.y, -20)
         self.set_idle_texture()
-        if held_keys['a'] or held_keys['left arrow']:
-            self.move_left()
-        if held_keys['d'] or held_keys['right arrow']:
-            self.move_right()
-        if held_keys['w'] or held_keys['up arrow']:
-            self.move_up()
-        if held_keys['s'] or held_keys['down arrow']:
-            self.move_down()
         if held_keys["-"]:
             if self.experience.level > 1:
                 self.experience.level -= 1
@@ -72,9 +65,19 @@ class Character(GameUnit):
         if held_keys["/"]:
             self.damage(50)
 
+        self.direction = Vec3(
+            self.up * (held_keys['w'] - held_keys['s'])
+            + self.right * (held_keys['d'] - held_keys['a'])
+        ).normalized()  # get the direction we're trying to walk in.
+        origin = self.world_position
+        hit_info = raycast(origin, self.direction, ignore=(self, Enemy), distance=.5)
+        if not hit_info.hit:
+            self.position += self.direction * self._stats.speed.get_value() * time.dt
+            self.on_move()
+
     def input(self, key):
         if key == "p":
             test_enemy = TestEnemy()
             test_enemy.position = self.position
-            test_enemy.update_follow_script(self)
+            test_enemy.follow_entity(self)
             test_enemy.spawn()

@@ -31,6 +31,7 @@ class GasStation(Entity):
                         texture=random.choice(shelves),
                         scale=shelf_size,
                         position=(x, y, -1),
+                        collider='box',
                         parent=self
                     )
                 )
@@ -38,3 +39,17 @@ class GasStation(Entity):
             if i == 2:
                 y = -0.3
                 x = -0.23
+
+        wall = Entity(
+            model='quad',
+            color=color.gray,
+            collider='box',
+            parent=self
+        )
+        wall.disable()
+
+        duplicate(wall, position=(0, 0.5, -1), scale=(1, 0.1))
+        duplicate(wall, position=(0.3, -0.5, -1), scale=(0.35, 0.1))
+        duplicate(wall, position=(-0.3, -0.5, -1), scale=(0.35, 0.1))
+        duplicate(wall, position=(-0.5, 0, -1), scale=(0.05, 1.1))
+        duplicate(wall, position=(0.5, 0, -1), scale=(0.05, 1.1))

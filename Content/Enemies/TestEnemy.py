@@ -10,7 +10,3 @@ class TestEnemy(Enemy):
     @property
     def name(self) -> str:
         return "Test Enemy"
-
-    def update(self):
-        if held_keys['o']:
-            self.damage(50)

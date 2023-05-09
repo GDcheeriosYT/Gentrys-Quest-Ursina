@@ -8,10 +8,12 @@ from utils.Event import Event
 
 
 class GameEntityBase(Entity):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__(
             model="quad",
-            texture="huh.png"
+            texture="huh.png",
+            *args,
+            **kwargs
         )
         self._experience = Experience()
         self.on_level_up = Event("OnLevelUp", 0)
