@@ -14,13 +14,14 @@ class Enemy(GameUnit):
             texture_mapping,
             audio_mapping
         )
-        self.on_death += lambda: self.scripts.clear()
-        self.on_death += lambda: destroy(self)
 
-    def update_follow_script(self, player):
-        rany = random.uniform(-0.5, 0.5)
-        ranx = random.uniform(-0.5, 0.5)
-        self.add_script(SmoothFollow(target=player, offset=(ranx, rany, 0), speed=self._stats.speed.get_value()))
+        self._follow_entity = None
+
+        self.on_death += lambda: destroy(self)
+        self.on_level_up += lambda: self._overhead.change_name(self.name + f"\nlevel {self.experience.level}")
+
+    def follow_entity(self, entity: Entity):
+        self._follow_entity = entity
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -47,9 +48,21 @@ class Enemy(GameUnit):
         # speed stats
         self._stats.speed.set_default_value(((self.difficulty - 1) * 0.2) + self.stats.speed.points)
 
-    def input(self, key):
-        if key == "l":
+    def update(self):
+        self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
+        origin = self.world_position
+        hit_info = raycast(origin, self.direction, ignore=(self, Enemy), distance=.5)
+        if not hit_info.hit:
+            self.position += self.direction * self._stats.speed.get_value() * time.dt
+            self.on_move()
+
+        if held_keys['o']:
+            self.damage(50)
+
+        if held_keys["l"]:
             self.level_up()
-        elif key == "k":
+        elif held_keys["k"]:
             if self._experience.level > 1:
                 self._experience.level -= 1
+
+            self.on_level_up()
