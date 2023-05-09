@@ -8,7 +8,7 @@ class Stats:
         self._defense = Stat("Defense", 12)
         self._crit_rate = Stat("CritRate", 5)
         self._crit_damage = Stat("CritDamage", 50)
-        self._speed = Stat("Speed")
+        self._speed = Stat("Speed", 3)
 
     @property
     def health(self) -> Stat:
