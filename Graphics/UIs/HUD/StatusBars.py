@@ -38,8 +38,8 @@ class StatusBars(Container):
         )
 
     def update_data(self, player):
-        self._health_bar.max_value = player.stats.health.get_value()
-        self._health_bar.value = player.stats.health.current_value
+        self._health_bar.max_value = int(player.stats.health.get_value())
+        self._health_bar.value = int(player.stats.health.current_value)
         self._level.text = f"lvl. {player.experience.level}"
         self._experience_bar.update_data(player.experience.xp, player.experience.get_xp_required(player.star_rating))
 

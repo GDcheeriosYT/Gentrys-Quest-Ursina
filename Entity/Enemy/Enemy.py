@@ -6,6 +6,7 @@ from typing import Union
 from ..EntityOverHead import EntityOverhead
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
+from Entity.Loot import Loot
 
 
 class Enemy(GameUnit):
@@ -48,16 +49,41 @@ class Enemy(GameUnit):
         # speed stats
         self._stats.speed.set_default_value(((self.difficulty - 1) * 0.2) + self.stats.speed.points)
 
+    def get_loot(self) -> Loot:
+        money = 0
+        money += self._stats.defense.points * 1.5
+        money += self._stats.attack.points * 2.5
+        money += self._stats.health.points * 2
+        money += self.experience.level * 2
+
+        xp = 0
+        xp += self._stats.defense.points * 0.5
+        xp += self._stats.attack.points * 1.5
+        xp += self._stats.health.points * 1
+        xp += (self.experience.level * 2) * 25
+
+        return Loot(
+            xp,
+            money
+        )
+
     def update(self):
         self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
         origin = self.world_position
-        hit_info = raycast(origin, self.direction, ignore=(self, Enemy), distance=.5)
+        hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
         if not hit_info.hit:
             self.position += self.direction * self._stats.speed.get_value() * time.dt
             self.on_move()
+        else:
+            try:
+                if not isinstance(hit_info.entity, Enemy):
+                    hit_info.entity.damage(self._stats.attack.get_value())
+
+            except AttributeError:
+                pass
 
         if held_keys['o']:
-            self.damage(50)
+            self.damage(self.experience.level * 50)
 
         if held_keys["l"]:
             self.level_up()

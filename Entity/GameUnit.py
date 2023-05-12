@@ -1,5 +1,6 @@
 import random
 
+import Game
 import GameConfiguration
 from .GameEntityBase import GameEntityBase
 from .Stats import Stats
@@ -9,6 +10,7 @@ from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
 from .Weapon.Weapon import Weapon
+from .Loot import Loot
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -18,12 +20,15 @@ class GameUnit(GameEntityBase):
     def __init__(self, texture_mapping: TextureMapping, audio_mapping: AudioMapping):
         super().__init__(
             scale=(1, 1),
+            collider='box'
         )
         self._stats = Stats()
         self._overhead = EntityOverhead(self)
         self._difficulty = 1
         self._texture_mapping = texture_mapping
         self._audio_mapping = audio_mapping
+        self.direction = Vec3(0, 0, 0).normalized()
+        self.dead = False
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -42,6 +47,7 @@ class GameUnit(GameEntityBase):
         self.on_damage += self._overhead.update_data
         self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
         self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        # self.on_move += self._texture_mapping.play_walk_animation(self)
 
         # equips
         self._weapon = None
@@ -76,25 +82,25 @@ class GameUnit(GameEntityBase):
         self.texture = self._texture_mapping.get_damage_texture()
 
     def damage(self, amount):
-        self.stats.health.current_value -= amount
+        self._stats.health.current_value -= amount if amount > 0 else 0
         self.on_damage()
-        damage_text = Text(str(amount), scale=(15, 15), origin=(0, 0), position=(0, 0.5, -1), color=rgb(255, 12, 12), parent=self)
-        damage_text.animate_position((damage_text.x + 0.1, damage_text.y + 0.5), 1)
-        damage_text.fade_out(0, 1)
-        destroy(damage_text, delay=1.5)
         if self.stats.health.current_value <= 0:
             self.die()
 
     def swap_weapon(self, weapon: Weapon) -> Weapon:
         old_weapon = self._weapon
+        if old_weapon:
+            self._weapon.de_equip()
+
         self._weapon = weapon
+        self._weapon.equip(self)
         return old_weapon
 
     def attack(self):
-        crit_damage = (self._stats.attack.get_value() + (self._stats.crit_damage.get_value() * 0.01)) if random.randint(0, 100) < self._stats.crit_rate.get_value() else 0
-        damage = int(round(self._stats.attack.get_value() * crit_damage))
-        self.on_attack()
-        self.weapon.attack(damage, self._stats.attack_speed.get_value())
+        if self._weapon:
+            if self._weapon.is_ready():
+                self.on_attack()
+                self.weapon.attack()
 
     def heal(self, amount):
         self.stats.health.current_value += amount
@@ -102,6 +108,7 @@ class GameUnit(GameEntityBase):
 
     def die(self):
         self.disable()
+        self.dead = True
         self.on_death()
 
     def move_left(self):
@@ -125,6 +132,10 @@ class GameUnit(GameEntityBase):
         self.on_spawn()
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
         self._overhead.entity_name.text = self.name
+        self.dead = False
+
+    def get_loot(self) -> Loot:
+        return Loot()
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)

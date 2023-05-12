@@ -7,7 +7,14 @@ class Weapon(GameEntityBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.on_attack = Event('onAttack', 0)
-        self.disable()
+        self.on_equip = Event('onEquip', 0)
+        self.on_de_equip = Event('onDeEquip', 0)
+        self._equipped_entity = None
+        self._instance = None
+        self._attacking = False
+        self.texture = None
+        self.model = None
+        self.enable()
 
     @property
     def name(self) -> str:
@@ -29,14 +36,31 @@ class Weapon(GameEntityBase):
     def weapon_texture(self) -> str:
         raise NotImplementedError
 
-    def attack(self, damage, speed):
-        self.on_attack()
-        damage += self.base_attack
-        self.attack_process(damage, speed)
+    @property
+    def range(self) -> int:
+        raise NotImplementedError
 
-    #def handle_collision(self, damage):
-    #    hit_info = raycast(self.position, self.left, ignore=[self], distance=1, debug=True)
-    #    if hit_info.hit:
-    #        enemy = hit_info.entity
-    #        if isinstance(enemy, Enemy):
-    #            enemy.damage(damage)
+    def equip(self, entity):
+        self._equipped_entity = entity
+        self.on_equip()
+
+    def de_equip(self):
+        self._equipped_entity = None
+        self.on_de_equip()
+
+    def is_ready(self) -> bool:
+        return not self._attacking
+
+    def attack(self):
+        self._attacking = True
+        self.on_attack()
+        return self.attack_process()
+
+    def destroy_instance(self):
+        destroy(self._instance)
+        self._instance = None
+        self._attacking = False
+
+    def attack_process(self):
+        pass
+

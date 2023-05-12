@@ -1,6 +1,7 @@
 from ursina import *
 from ursina.camera import Camera
 
+import Game
 from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
@@ -8,6 +9,7 @@ from Content.Enemies.TestEnemy import TestEnemy
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Enemy.Enemy import Enemy
+from Entity.Loot import Loot
 
 
 class Character(GameUnit):
@@ -44,43 +46,56 @@ class Character(GameUnit):
         self._stats.defense.set_default_value(self.experience.level * 5)
 
         # crit rate stats
-        self._stats.crit_rate.set_default_value(5 + self.stats.crit_rate.points)
+        self._stats.crit_rate.set_default_value(calculate(self.stats.crit_rate.points, 2))
 
         # crit damage stats
-        self._stats.crit_damage.set_default_value(calculate(self.stats.crit_damage.points, 5))
+        self._stats.crit_damage.set_default_value(calculate(self.stats.crit_damage.points, 10))
 
         # speed stats
-        self._stats.speed.set_default_value(1 + ((self.difficulty - 1) * 0.2) + self.stats.speed.points + (self.star_rating * 0.1))
+        self._stats.speed.set_default_value(1 + ((self.difficulty - 1) * 0.2) + calculate(self.stats.speed.points, 0.5) + (self.star_rating * 0.1))
+
+        # attack speed stats
+        self._stats.attack_speed.set_default_value(self.stats.speed.points * 0.5)
 
     def update(self):
         camera.position = (self.x, self.y, -20)
-        self.set_idle_texture()
         if held_keys["-"]:
             if self.experience.level > 1:
                 self.experience.level -= 1
+                self.experience.xp = 0
                 self.on_level_up()
                 self.update_stats()
         if held_keys["="]:
             self.level_up()
+            self.experience.xp = 0
         if held_keys["/"]:
             self.damage(50)
 
         self.direction = Vec3(
-            self.up * (held_keys['w'] - held_keys['s'])
-            + self.right * (held_keys['d'] - held_keys['a'])
+            self.up * (held_keys['up arrow'] - held_keys['down arrow'])
+            + self.right * (held_keys['right arrow'] - held_keys['left arrow'])
         ).normalized()  # get the direction we're trying to walk in.
+        if self.direction == 0:
+            self.set_idle_texture()
         origin = self.world_position
-        hit_info = raycast(origin, self.direction, ignore=[self, Enemy], distance=.5)
+        hit_info = raycast(origin, self.direction, ignore=[self, Enemy], distance=.1)
         if not hit_info.hit:
             self.position += self.direction * self._stats.speed.get_value() * time.dt
             self.on_move()
 
+        if held_keys["f"] and self._weapon:
+            if self._weapon.is_ready():
+                self.attack()
+
+    def manage_loot(self, loot: Loot):
+        self.add_xp(loot.xp)
+        Game.user.add_money(loot.money)
+
     def input(self, key):
         if key == "p":
             test_enemy = TestEnemy()
+            test_enemy.on_death += lambda: self.manage_loot(test_enemy.get_loot())
             test_enemy.position = self.position
+            test_enemy.y += 5
             test_enemy.follow_entity(self)
             test_enemy.spawn()
-
-        if key == "f":
-            self.attack()

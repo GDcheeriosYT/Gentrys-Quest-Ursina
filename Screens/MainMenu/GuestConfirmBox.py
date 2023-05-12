@@ -3,6 +3,7 @@ from ursina import *
 import Game
 from GameStates import GameStates
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
+from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
 from User.User import User
 
 
@@ -35,7 +36,10 @@ class GuestConfirmBox(Entity):
         user.replace_data(open(f"Data/{self._username}.json", "r").read())
         Game.user = user
         if user.user_data.startup_amount == 0:
-            starter_character = StarterCharacter(user.username)
+            if user.username == "GDcheerios":
+                starter_character = BraydenMesserschmidt()
+            else:
+                starter_character = StarterCharacter(user.username)
             user.equip_character(starter_character)
             user.add_character(StarterCharacter(user.username))
             Game.change_state(GameStates.tutorial)

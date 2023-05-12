@@ -57,6 +57,9 @@ class UserData:
     def add_weapon(self, weapon: Weapon):
         self._weapons.append(weapon)
 
+    def add_money(self, money: int):
+        self._money += money
+
     def equip_character(self, character: Character):
         self._equipped_character = character
 

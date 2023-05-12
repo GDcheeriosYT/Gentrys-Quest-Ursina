@@ -9,13 +9,7 @@ class Stat:
         self._additional_value = 0
         self.calculate_value()
         self.current_value = self._value
-
-    @property
-    def points(self) -> int:
-        """
-        The points of the Stat
-        """
-        return 0
+        self.points = 0
 
     def calculate_value(self):
         self._value = self._minimum_value + self._default_value + self._additional_value
@@ -44,8 +38,12 @@ class Stat:
         self._additional_value = value
         self.calculate_value()
 
+    def boost_stat(self, percentage):
+        self._additional_value += self.get_default_value() + (self.get_default_value() * (percentage * 0.01))
+        self.calculate_value()
+
     def __repr__(self):
         if self._additional_value > 0:
-            return f"{self._name}: {self._default_value} + {self._additional_value} ({self._value})"
+            return f"{self._name}: {self._minimum_value + self._default_value} + {self._additional_value} ({self._value})"
         else:
             return f"{self._name}: {self._value}"

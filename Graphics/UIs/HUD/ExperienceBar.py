@@ -11,5 +11,5 @@ class ExperienceBar(HealthBar):
         )
 
     def update_data(self, current_xp: int, required_xp: int):
-        self.value = current_xp
-        self.max_value = required_xp
+        self.value = int(current_xp)
+        self.max_value = int(required_xp)

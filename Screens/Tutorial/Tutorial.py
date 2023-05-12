@@ -5,7 +5,6 @@ import Game
 from .Map.TutorialMap import TutorialMap
 from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
 
-
 class Tutorial(Screen):
     def __init__(self):
         super().__init__()

@@ -39,6 +39,15 @@ class Stats:
     def attack_speed(self) -> Stat:
         return self._attack_speed
 
+    def boost_all_stats(self, percentage):
+        self._health.boost_stat(percentage)
+        self._attack.boost_stat(percentage)
+        self._defense.boost_stat(percentage)
+        self._crit_rate.boost_stat(percentage)
+        self._crit_damage.boost_stat(percentage)
+        self._speed.boost_stat(percentage)
+        self.attack_speed.boost_stat(percentage)
+
     @staticmethod
     def get_stat_strings() -> list:
         return [
