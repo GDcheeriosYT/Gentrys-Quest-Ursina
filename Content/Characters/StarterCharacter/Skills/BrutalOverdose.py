@@ -44,8 +44,8 @@ class BrutalOverdose(Skill):
     @property
     def description(self) -> str:
         return '''
-        Heals 10% Health
-        cooldown 15 seconds
+        Damage and stun enemies in radius
+        cooldown 90 seconds
         '''
 
     @property
