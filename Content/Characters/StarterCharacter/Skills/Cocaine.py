@@ -27,7 +27,7 @@ class Cocaine(Skill):
     @property
     def description(self) -> str:
         return '''
-        Heals 10% Health
+        increases speed by 2 and attack speed by 0.7 
         cooldown 15 seconds
         '''
 
