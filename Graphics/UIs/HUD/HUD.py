@@ -19,8 +19,6 @@ class HUD(Container):
         self.player.on_damage += self.update_status_bars
         self.player.on_update_stats += self.update_status_bars
 
-        self.player.on_update_stats += self.update_stats_container
-
     def update_status_bars(self):
         self._status_bars.update_data(self.player)
 
@@ -29,3 +27,6 @@ class HUD(Container):
 
     def end(self):
         destroy(self)
+
+    def update(self):
+        self.update_stats_container()

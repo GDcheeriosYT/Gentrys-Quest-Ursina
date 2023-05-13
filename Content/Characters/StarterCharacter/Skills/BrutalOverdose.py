@@ -1,6 +1,6 @@
 from Entity.Character.Skill.Skill import Skill
 from ursina import *
-from Entity.Enemy.Enemy import Enemy
+
 
 class BrutalOverdose(Skill):
     def __init__(self):

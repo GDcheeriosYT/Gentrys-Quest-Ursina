@@ -14,10 +14,8 @@ class Cocaine(Skill):
     def _on_activate(self):
         self.character.stats.speed.add_value(2)
         self.character.stats.attack_speed.add_value(0.7)
-        self.character.update_stats()
         invoke(lambda: self.character.stats.speed.remove_value(2), delay=7)
         invoke(lambda: self.character.stats.attack_speed.remove_value(0.7), delay=7)
-        invoke(lambda: self.character.update_stats(), delay=7.1)
         self.deactivate()
 
     @property

@@ -50,12 +50,15 @@ class Stat:
 
     def add_value(self, amount):
         self._additional_value += amount
+        self.calculate_value()
 
     def remove_value(self, amount):
         if self._additional_value - amount < 0:
             self._additional_value = 0
         else:
             self._additional_value -= amount
+
+        self.calculate_value()
 
     def __repr__(self):
         if self._additional_value > 0:
