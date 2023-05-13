@@ -66,7 +66,7 @@ class BraydensOsuPen(Weapon):
                         damage_text.animate_position((damage_text.x + 0.1, damage_text.y + 0.5), 1)
                         damage_text.fade_out(0, 1)
                         destroy(damage_text, delay=1.5)
-                        hit_entity.damage(damage)
+                        hit_entity.damage(amount)
                         self.hit_list.append(hit_info.entity)
                         print(f"{'critical ' if is_crit else ''}hit {hit_info.entity} for {self.damage}")
                 except AttributeError:

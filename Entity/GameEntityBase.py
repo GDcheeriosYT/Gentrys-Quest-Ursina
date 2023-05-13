@@ -1,7 +1,4 @@
 from ursina import *
-
-from Overlays.NoficationsManager import NotificationManager
-from Overlays.Notification import Notification
 from .Experience import Experience
 from .TextureMapping import TextureMapping
 from utils.Event import Event
@@ -35,17 +32,19 @@ class GameEntityBase(Entity):
         return self._experience
 
     def add_xp(self, amount):
-        self.experience.xp += amount
-        while self.experience.xp >= self.experience.get_xp_required(self.star_rating):
-            self.level_up()
-            self.experience.xp -= self.experience.get_xp_required(self.star_rating)
+        while amount > 0:
+            difference = self.experience.get_xp_required(self.star_rating) - self.experience.xp
+            if difference > amount:
+                self.experience.xp += amount
+                amount = 0
+            else:
+                self.level_up()
+                amount -= difference
 
         self.on_add_xp()
 
     def level_up(self):
         self.experience.level += 1
-        notification = Notification(f"{self.name} is now level {self.experience.level}", color.blue)
-        NotificationManager.add_nofication(notification)
         self.on_level_up()
 
     def update_stats(self):

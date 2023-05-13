@@ -29,6 +29,7 @@ class GameUnit(GameEntityBase):
         self._audio_mapping = audio_mapping
         self.direction = Vec3(0, 0, 0).normalized()
         self.dead = False
+        self.can_move = True
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -37,6 +38,7 @@ class GameUnit(GameEntityBase):
         self.on_death = Event("OnDeath", 0)
         self.on_move = Event("OnMove", 0)
         self.on_spawn = Event("OnSpawn", 0)
+        self.on_update_stats = Event("OnUpdateStats", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats

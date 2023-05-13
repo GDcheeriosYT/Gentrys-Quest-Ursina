@@ -60,7 +60,7 @@ class Enemy(GameUnit):
         xp += self._stats.defense.points * 0.5
         xp += self._stats.attack.points * 1.5
         xp += self._stats.health.points * 1
-        xp += (self.experience.level * 2) * 25
+        xp += self.experience.level * 25
 
         return Loot(
             xp,
@@ -72,15 +72,17 @@ class Enemy(GameUnit):
         origin = self.world_position
         hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
         if not hit_info.hit:
-            self.position += self.direction * self._stats.speed.get_value() * time.dt
-            self.on_move()
+            if self.can_move:
+                self.position += self.direction * self._stats.speed.get_value() * time.dt
+                self.on_move()
         else:
-            try:
-                if not isinstance(hit_info.entity, Enemy):
-                    hit_info.entity.damage(self._stats.attack.get_value())
+            if self.can_move:
+                try:
+                    if not isinstance(hit_info.entity, Enemy):
+                        hit_info.entity.damage(self._stats.attack.get_value())
 
-            except AttributeError:
-                pass
+                except AttributeError:
+                    pass
 
         if held_keys['o']:
             self.damage(self.experience.level * 50)

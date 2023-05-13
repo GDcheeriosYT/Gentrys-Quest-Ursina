@@ -9,7 +9,7 @@ class StatusBars(Container):
         super().__init__(
             origin=(0, -0.5),
             scale=(0.8, 0.2),
-            position=(0, -0.5)
+            position=(-0.3, -0.5)
         )
         self._health_bar = HealthBar(
             max_value=100,

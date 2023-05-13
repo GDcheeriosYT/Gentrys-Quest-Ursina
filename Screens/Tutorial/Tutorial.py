@@ -25,7 +25,7 @@ class Tutorial(Screen):
 
     @property
     def fades(self) -> bool:
-        return True
+        return False
 
     @property
     def color(self) -> color:

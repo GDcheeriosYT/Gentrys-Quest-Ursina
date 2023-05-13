@@ -34,6 +34,12 @@ class Stat:
         self._default_value = value
         self.calculate_value()
 
+    def get_percent_of_stat(self, percent, include_additional: bool = True):
+        if include_additional:
+            return self.get_value() * (percent * 0.01)
+        else:
+            return self.get_default_value() * (percent * 0.01)
+
     def set_additional_value(self, value):
         self._additional_value = value
         self.calculate_value()
@@ -41,6 +47,15 @@ class Stat:
     def boost_stat(self, percentage):
         self._additional_value += self.get_default_value() + (self.get_default_value() * (percentage * 0.01))
         self.calculate_value()
+
+    def add_value(self, amount):
+        self._additional_value += amount
+
+    def remove_value(self, amount):
+        if self._additional_value - amount < 0:
+            self._additional_value = 0
+        else:
+            self._additional_value -= amount
 
     def __repr__(self):
         if self._additional_value > 0:

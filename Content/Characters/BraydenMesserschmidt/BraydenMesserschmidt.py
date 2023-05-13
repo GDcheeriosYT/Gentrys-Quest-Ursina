@@ -1,6 +1,8 @@
 from Entity.Character.Character import Character
+from Entity.Character.Skill.Skill import Skill
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
+from .Skills.CircleThrow import CircleThrow
 
 
 class BraydenMesserschmidt(Character):
@@ -25,6 +27,18 @@ class BraydenMesserschmidt(Character):
     @property
     def star_rating(self) -> int:
         return 5
+
+    @property
+    def secondary(self) -> Skill:
+        return CircleThrow()
+
+    @property
+    def utility(self) -> Skill:
+        return CircleThrow()
+
+    @property
+    def ultimate(self) -> Skill:
+        return CircleThrow()
 
     def check_weapon(self):
         if self.weapon.name == "Braydens Osu Pen":

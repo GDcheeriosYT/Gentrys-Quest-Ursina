@@ -5,11 +5,14 @@ import Game
 from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
+from Overlays.Notification import Notification
+from Overlays.NoficationsManager import NotificationManager
 from Content.Enemies.TestEnemy import TestEnemy
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
+from .Skill.Skill import Skill
 
 
 class Character(GameUnit):
@@ -21,6 +24,12 @@ class Character(GameUnit):
         self._is_equipped = False
         self.artifacts = []
 
+        self.secondary = None
+        self.utility = None
+        self.ultimate = None
+
+        self.on_level_up += self._on_level_up
+
     @property
     def star_rating(self) -> int:
         raise NotImplementedError
@@ -28,6 +37,10 @@ class Character(GameUnit):
     @property
     def is_equipped(self) -> bool:
         return self._is_equipped
+
+    def _on_level_up(self):
+        notification = Notification(f"{self.name} is now level {self.experience.level}", color.blue)
+        NotificationManager.add_nofication(notification)
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -57,6 +70,9 @@ class Character(GameUnit):
         # attack speed stats
         self._stats.attack_speed.set_default_value(self.stats.speed.points * 0.5)
 
+        # event
+        self.on_update_stats()
+
     def update(self):
         camera.position = (self.x, self.y, -20)
         if held_keys["-"]:
@@ -80,12 +96,26 @@ class Character(GameUnit):
         origin = self.world_position
         hit_info = raycast(origin, self.direction, ignore=[self, Enemy], distance=.1)
         if not hit_info.hit:
-            self.position += self.direction * self._stats.speed.get_value() * time.dt
-            self.on_move()
+            if self.can_move:
+                self.position += self.direction * self._stats.speed.get_value() * time.dt
+                self.on_move()
 
-        if held_keys["f"] and self._weapon:
+        if held_keys["1"] and self._weapon:
             if self._weapon.is_ready():
                 self.attack()
+
+        if held_keys["2"] and self.secondary.is_ready:
+            self.secondary.activate()
+
+        if held_keys["3"] and self.utility.is_ready:
+            self.utility.activate()
+
+        if held_keys["4"] and self.ultimate.is_ready:
+            self.ultimate.activate()
+
+        self.secondary.update_time()
+        self.utility.update_time()
+        self.ultimate.update_time()
 
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)
