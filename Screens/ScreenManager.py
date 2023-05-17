@@ -4,6 +4,7 @@ import GameConfiguration
 from .MainMenu.MainMenu import MainMenu
 from .Intro.Intro import Intro
 from .Tutorial.Tutorial import Tutorial
+from .Settings.Settings import Settings
 from Graphics.FadeScreen import FadeScreen
 
 
@@ -20,6 +21,7 @@ class ScreenManager(Entity):
         self.assign_screen(Intro)
         self.assign_screen(MainMenu)
         self.assign_screen(Tutorial)
+        self.assign_screen(Settings)
 
         self.current_screen = None
 
