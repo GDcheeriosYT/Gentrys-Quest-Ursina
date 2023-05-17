@@ -42,17 +42,22 @@ class BraydensOsuPen(Weapon):
         self.hit_list = []
         self.time_started = time.time()
         self.speed = self.base_speed/self._equipped_entity.stats.attack_speed.get_value()
+        mouse_pos = mouse.position
+        self.angle = math.atan2(mouse_pos[1], mouse_pos[0]) * (180 / 3.14)
         invoke(self.destroy_instance, delay=(self.speed + 0.01))
 
     def update(self):
         if self._instance:
-            x = 0.7
-            y = 1
-            angle = -90
+            pivot_point = Vec3(0, 0, 0)
+            swing_distance = 1
             time_elapsed = (time.time() - self.time_started)
-            self._instance.rotation_z = (angle - (-angle - angle) * (time_elapsed / self.speed))
-            self._instance.y = y * (1 - abs(time_elapsed / self.speed - 0.5) * 2)
-            self._instance.x = (x + (-x - x) * (time_elapsed / self.speed))
+            angle = (self.angle - 90) + (180 * (time_elapsed / self.speed))
+            radian = math.radians(angle)
+            x_offset = math.cos(radian) * swing_distance
+            y_offset = math.sin(radian) * swing_distance
+            self._instance.rotation_z = -angle - 90
+            self._instance.position = pivot_point + Vec3(x_offset, y_offset, 0)
+            self._instance.y = y_offset
             hit_info = raycast(self._instance.world_position, self._instance.down, ignore=[self, self._equipped_entity], distance=self.range, debug=False)
             if hit_info.hit:
                 try:
