@@ -1,3 +1,4 @@
+import GameConfiguration
 from Entity.Character.Skill.Skill import Skill
 from ursina import *
 
@@ -6,6 +7,7 @@ class CircleThrow(Skill):
     def __init__(self):
         super().__init__()
         self.on_activate += self._on_activate
+        self.on_activate += lambda: Audio("Audio/Secondary.m4a", volume=GameConfiguration.volume)
 
     @property
     def name(self) -> str:
