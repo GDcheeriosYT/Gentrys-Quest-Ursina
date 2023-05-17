@@ -127,6 +127,7 @@ class Character(GameUnit):
             test_enemy = TestEnemy()
             test_enemy.on_death += lambda: self.manage_loot(test_enemy.get_loot())
             test_enemy.position = self.position
-            test_enemy.y += 5
+            test_enemy.y += random.randint(-7, 7)
+            test_enemy.x += random.randint(-7, 7)
             test_enemy.follow_entity(self)
             test_enemy.spawn()

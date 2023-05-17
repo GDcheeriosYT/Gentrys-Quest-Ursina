@@ -4,6 +4,7 @@ from Graphics.UIs.HUD.HUD import HUD
 import Game
 from .Map.TutorialMap import TutorialMap
 from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
+from Graphics.Containers.TextContainer import TextContainer
 
 
 class Tutorial(Screen):
@@ -16,27 +17,15 @@ class Tutorial(Screen):
         self.player = Game.user.get_equipped_character()
         self.player.swap_weapon(BraydensOsuPen())
         self.map = TutorialMap()
-        text_box = Text(
-            "It's 10pm",
-            position=(-0.5, -0.5),
-            origin=(-0.5, 0),
-            parent=text_container
-        )
-        destroy(text_box, 5)
+        text_container = TextContainer()
+        text_container.set_text("It's 10pm", 5)
         camera.position = (0, -10, -20)
         camera.animate_position((0, 0, -20), 4)
         invoke(self.player.spawn, delay=5)
         self.hud = HUD(self.player)
         self.hud.hide_elements()
-        text_box1 = Text(
-            f"{self.player.name} is at a convenience store buying ramen noodles",
-            position=(-0.5, 0.5),
-            origin=(-0.5, 0),
-            parent=text_container
-        )
-        text_box1.disable()
-        invoke(text_box1.enable, delay=5.3)
-        destroy(text_box1, 10)
+        invoke(self.hud.show_elements(), )
+        text_container.schedule_text(f"{self.player.name} is at a convenience store buying ramen noodles", 5, 10)
 
     @property
     def name(self) -> str:
