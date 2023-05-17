@@ -74,7 +74,8 @@ class Character(GameUnit):
         self.on_update_stats()
 
     def update(self):
-        camera.position = (self.x, self.y, -20)
+        if self.spawned:
+            camera.position = (self.x, self.y, -20)
         if held_keys["-"]:
             if self.experience.level > 1:
                 self.experience.level -= 1

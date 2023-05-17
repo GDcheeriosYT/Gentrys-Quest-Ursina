@@ -39,7 +39,7 @@ class ScreenManager(Entity):
     def change_screen(self, screen_index: int):
         self.current_screen = screen_index
         self.transition(fade=True) if self.screens[self.current_screen].fades else self.transition(fade=False)
-        self.screens[screen_index].show()
+        invoke(self.screens[screen_index].show, delay=GameConfiguration.fade_time if self.screens[self.current_screen].fades else 0)
         Game.state_affected = False
 
     def screen_disable_sequence(self):

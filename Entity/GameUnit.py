@@ -30,6 +30,7 @@ class GameUnit(GameEntityBase):
         self.direction = Vec3(0, 0, 0).normalized()
         self.dead = False
         self.can_move = True
+        self.spawned = False
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -111,6 +112,7 @@ class GameUnit(GameEntityBase):
     def die(self):
         self.disable()
         self.dead = True
+        self.spawned = False
         self.on_death()
 
     def move_left(self):
@@ -135,6 +137,7 @@ class GameUnit(GameEntityBase):
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
         self._overhead.entity_name.text = self.name
         self.dead = False
+        self.spawned = True
 
     def get_loot(self) -> Loot:
         return Loot()
