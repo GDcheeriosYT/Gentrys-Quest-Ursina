@@ -4,6 +4,7 @@ import Game
 from GameStates import GameStates
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
+from Content.Characters.PeteMarks.PeteMarks import PeteMarks
 from User.User import User
 
 
@@ -38,6 +39,8 @@ class GuestConfirmBox(Entity):
         if user.user_data.startup_amount == 0:
             if user.username == "GDcheerios":
                 starter_character = BraydenMesserschmidt()
+            elif user.username == "limechips":
+                starter_character = PeteMarks()
             else:
                 starter_character = StarterCharacter(user.username)
             user.equip_character(starter_character)

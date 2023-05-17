@@ -1,4 +1,4 @@
-volume = 0.2
+volume = 0.5
 version = "Super Dooper Beta"
 play_intro = False
 hide_fps = False

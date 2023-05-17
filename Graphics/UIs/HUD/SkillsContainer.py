@@ -13,6 +13,7 @@ class SkillsContainer(Container):
             scale=(0.7, 0.5)
         )
         self.primary_info = Text("ready", position=(-0.5, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.primary_key = Text("M1", position=(-0.5, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.primary_box = Entity(
             model='quad',
             position=(-0.5, 0),
@@ -20,6 +21,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.secondary_info = Text("ready", position=(-0.25, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.secondary_key = Text("M2", position=(-0.25, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.secondary_box = Entity(
             model='quad',
             position=(-0.25, 0),
@@ -27,6 +29,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.utility_info = Text("ready", position=(0, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.utility_key = Text("Shift", position=(0, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.utility_box = Entity(
             model='quad',
             position=(0, 0),
@@ -34,6 +37,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.ultimate_info = Text("ready", position=(0.25, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.ultimate_key = Text("C", position=(0.25, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.ultimate_box = Entity(
             model='quad',
             position=(0.25, 0),

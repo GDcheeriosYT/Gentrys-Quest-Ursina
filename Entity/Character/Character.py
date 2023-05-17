@@ -88,8 +88,8 @@ class Character(GameUnit):
             self.damage(50)
 
         self.direction = Vec3(
-            self.up * (held_keys['up arrow'] - held_keys['down arrow'])
-            + self.right * (held_keys['right arrow'] - held_keys['left arrow'])
+            self.up * (held_keys['w'] - held_keys['s'])
+            + self.right * (held_keys['d'] - held_keys['a'])
         ).normalized()  # get the direction we're trying to walk in.
         if self.direction == 0:
             self.set_idle_texture()
@@ -100,17 +100,17 @@ class Character(GameUnit):
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()
 
-        if held_keys["1"] and self._weapon:
+        if held_keys["left mouse"] and self._weapon:
             if self._weapon.is_ready():
                 self.attack()
 
-        if held_keys["2"] and self.secondary.is_ready:
+        if held_keys["right mouse"] and self.secondary.is_ready:
             self.secondary.activate()
 
-        if held_keys["3"] and self.utility.is_ready:
+        if held_keys["shift"] and self.utility.is_ready:
             self.utility.activate()
 
-        if held_keys["4"] and self.ultimate.is_ready:
+        if held_keys["c"] and self.ultimate.is_ready:
             self.ultimate.activate()
 
         self.secondary.update_time()
