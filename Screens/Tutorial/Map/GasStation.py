@@ -24,7 +24,7 @@ class GasStation(Entity):
         y = 0.25
 
         for i in range(6):
-            if i != 4:
+            if i != 3 and i != 4:
                 shelf_entities.append(
                     Entity(
                         model='quad',
@@ -47,6 +47,24 @@ class GasStation(Entity):
             parent=self
         )
         wall.disable()
+
+        register = Entity(
+            model='quad',
+            color=color.white,
+            collider='box',
+            position=(-0.3, -0.2, -1),
+            scale=(0.06, 0.5),
+            parent=self
+        )
+
+        tender = Entity(
+            model='quad',
+            texture='Textures/philip.png',
+            position=(-0.4, -0.2, -1),
+            scale=(0.15, 0.15),
+            collider='box',
+            parent=self
+        )
 
         duplicate(wall, position=(0, 0.5, -1), scale=(1, 0.1))
         duplicate(wall, position=(0.3, -0.5, -1), scale=(0.35, 0.1))

@@ -13,12 +13,14 @@ class UserData:
             self._characters = DataLoader.parse_characters(json_data["inventory"]["characters"])
             self._artifacts = DataLoader.parse_characters(json_data["inventory"]["artifacts"])
             self._weapons = DataLoader.parse_characters(json_data["inventory"]["weapons"])
+            self._items = []
             self._equipped_character = None
             self._money = json_data["inventory"]["money"]
             self._startup_amount = json_data["startup amount"]
         else:
             self._characters = []
             self._artifacts = []
+            self._items = []
             self._equipped_character = None
             self._weapons = []
             self._money = 0
@@ -35,6 +37,10 @@ class UserData:
     @property
     def weapons(self) -> List[Weapon]:
         return self._weapons
+
+    @property
+    def items(self):
+        return self._items
 
     @property
     def money(self):

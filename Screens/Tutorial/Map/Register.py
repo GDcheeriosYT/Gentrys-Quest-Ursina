@@ -2,21 +2,20 @@ from ursina import *
 import Game
 
 
-class Ramen(Entity):
-    def __init__(self, *args, **kwargs):
+class Register(Entity):
+    def __init__(self, gas_station):
         super().__init__(
             model='quad',
-            texture='Textures/ramen.png',
-            scale=(1, 1),
+            color=color.white,
             collider='box',
-            *args,
-            **kwargs
+            position=(-0.3, -0.2, -1),
+            scale=(0.06, 0.5),
+            parent=gas_station
         )
 
     def update(self):
         if self.intersects().hit:
-            print(True)
             entity = self.intersects().entity
-            print(entity)
             if entity == Game.user.get_equipped_character():
-                destroy(self)
+                if entity.user_data: # check for ramen
+                    pass
