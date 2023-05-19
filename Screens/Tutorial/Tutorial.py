@@ -4,6 +4,7 @@ from Graphics.UIs.HUD.HUD import HUD
 import Game
 from .Map.TutorialMap import TutorialMap
 from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
+from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
 from Graphics.Containers.TextContainer import TextContainer
 from .Map.Ramen import Ramen
 from ursina.curve import *
@@ -34,6 +35,9 @@ class Tutorial(Screen):
         text_container.schedule_text(f"He picks up some ramen.", 10, 5)
         invoke(lambda: Ramen(position=(6, 0)), delay=10)
         invoke(self.show_controls, delay=9)
+        npc = AngryPedestrian()
+        npc.follow_entity(self.player)
+        invoke(npc.spawn, delay=12)
 
     def show_controls(self):
         movement = Text(

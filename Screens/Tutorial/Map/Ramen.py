@@ -15,8 +15,7 @@ class Ramen(Entity):
 
     def update(self):
         if self.intersects().hit:
-            print(True)
             entity = self.intersects().entity
-            print(entity)
             if entity == Game.user.get_equipped_character():
+                Game.user.user_data.items.append("Ramen")
                 destroy(self)

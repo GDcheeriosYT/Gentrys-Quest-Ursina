@@ -1,5 +1,7 @@
 from ursina import *
 import Game
+import GameConfiguration
+from Graphics.Containers.TextContainer import TextContainer
 
 
 class Register(Entity):
@@ -13,9 +15,23 @@ class Register(Entity):
             parent=gas_station
         )
 
+        self.bought = False
+
+    def buy_sequence(self, entity):
+        text_container = TextContainer()
+        if entity == Game.user.get_equipped_character():
+            if "Ramen" in Game.user.user_data.items:
+                Game.user.user_data.items.remove("Ramen")
+                text_container.set_text("Thanks for coming by have a good night!", 3)
+                Audio("Audio/buy.mp3", volume=GameConfiguration.volume)
+                self.bought = True
+
+            else:
+                text_container.set_text("Do you need something sir?", 3)
+
+        destroy(text_container, 4)
+
     def update(self):
-        if self.intersects().hit:
+        if self.intersects().hit and not self.bought:
             entity = self.intersects().entity
-            if entity == Game.user.get_equipped_character():
-                if entity.user_data: # check for ramen
-                    pass
+            self.buy_sequence(entity)

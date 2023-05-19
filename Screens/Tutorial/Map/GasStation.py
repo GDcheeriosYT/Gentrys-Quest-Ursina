@@ -1,4 +1,5 @@
 from ursina import *
+from .Register import Register
 
 
 class GasStation(Entity):
@@ -48,14 +49,7 @@ class GasStation(Entity):
         )
         wall.disable()
 
-        register = Entity(
-            model='quad',
-            color=color.white,
-            collider='box',
-            position=(-0.3, -0.2, -1),
-            scale=(0.06, 0.5),
-            parent=self
-        )
+        register = Register(self)
 
         tender = Entity(
             model='quad',

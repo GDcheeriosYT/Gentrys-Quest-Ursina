@@ -99,11 +99,17 @@ class GameUnit(GameEntityBase):
         self._weapon.equip(self)
         return old_weapon
 
-    def attack(self):
+    def attack(self, direction=None):
         if self._weapon:
             if self._weapon.is_ready():
+                if not direction:
+                    mouse_pos = mouse.position
+                    direction = math.atan2(mouse_pos[1], mouse_pos[0]) * (180 / 3.14)
+                else:
+                    direction = math.atan2(direction[1], direction[0]) * (180 / 3.14)
+
                 self.on_attack()
-                self.weapon.attack()
+                self.weapon.attack(direction)
 
     def heal(self, amount):
         self.stats.health.current_value += amount

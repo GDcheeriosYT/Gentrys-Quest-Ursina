@@ -1,6 +1,5 @@
-from ursina import *
-
 from Entity.Enemy.Enemy import Enemy
+from ursina import *
 
 
 class TestEnemy(Enemy):

@@ -1,4 +1,5 @@
 from ursina import *
+from typing import Union
 
 
 class TextContainer(Entity):
@@ -15,11 +16,12 @@ class TextContainer(Entity):
         )
 
         self._text = Text("", position=(-0.5, 0.7), scale=(2, 4), parent=self)
+        self.disable()
 
-    def set_text(self, text, time):
+    def set_text(self, text: str, time: Union[int, float]):
         self.enable()
         self._text.text = text
         invoke(self.disable, delay=time)
 
-    def schedule_text(self, text, time, time_fade):
+    def schedule_text(self, text: str, time: Union[int, float], time_fade: Union[int, float]):
         invoke(lambda: self.set_text(text, time_fade), delay=time)

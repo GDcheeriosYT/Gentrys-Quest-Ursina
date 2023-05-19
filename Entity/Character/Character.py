@@ -12,7 +12,6 @@ from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
-from .Skill.Skill import Skill
 
 
 class Character(GameUnit):

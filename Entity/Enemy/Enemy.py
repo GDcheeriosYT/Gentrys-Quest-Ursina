@@ -71,18 +71,11 @@ class Enemy(GameUnit):
         self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
         origin = self.world_position
         hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
+        self.attack(self.direction)
         if not hit_info.hit:
             if self.can_move:
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()
-        else:
-            if self.can_move:
-                try:
-                    if not isinstance(hit_info.entity, Enemy):
-                        hit_info.entity.damage(self._stats.attack.get_value())
-
-                except AttributeError:
-                    pass
 
         if held_keys['o']:
             self.damage(self.experience.level * 50)

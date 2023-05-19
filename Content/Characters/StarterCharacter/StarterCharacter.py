@@ -8,8 +8,14 @@ from .Skills.BrutalOverdose import BrutalOverdose
 
 class StarterCharacter(Character):
     def __init__(self, name: str):
-        string_path = "Content/Characters/StarterCharacter/Textures/"
-        super().__init__(TextureMapping(idle_textures=[f"{string_path}body.png", f"{string_path}body1.png", f"{string_path}body2.png"]))
+        super().__init__(
+            TextureMapping(
+                idle_textures=["Textures/body2.png"]  # add body.png and body1.png when path issue is figured out
+            ),
+            AudioMapping(
+                spawn_sounds=[f"Audio/spawn.m4a"]
+            )
+        )
         self._name = name
         self.secondary = TheSecondBoofHit()
         self.utility = Cocaine()

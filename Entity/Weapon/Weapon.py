@@ -1,6 +1,7 @@
 from ..GameEntityBase import GameEntityBase
 from ursina import *
 from utils.Event import Event
+from typing import Union
 
 
 class Weapon(GameEntityBase):
@@ -51,16 +52,15 @@ class Weapon(GameEntityBase):
     def is_ready(self) -> bool:
         return not self._attacking
 
-    def attack(self):
+    def attack(self, direction):
         self._attacking = True
         self.on_attack()
-        return self.attack_process()
+        return self.attack_process(direction)
 
     def destroy_instance(self):
         destroy(self._instance)
         self._instance = None
         self._attacking = False
 
-    def attack_process(self):
+    def attack_process(self, direction):
         pass
-
