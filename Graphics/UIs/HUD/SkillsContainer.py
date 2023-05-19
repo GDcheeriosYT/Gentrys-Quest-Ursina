@@ -46,11 +46,23 @@ class SkillsContainer(Container):
         )
 
     def update(self):
-        self.primary_box.texture = self._player.weapon.texture
-        self.primary_info.text = "ready" if self._player.weapon.is_ready() else "not ready"
-        self.secondary_box.texture = self._player.secondary.icon
-        self.secondary_info.text = "ready" if self._player.secondary.is_ready else f"{int(self._player.secondary.percentage*100)}%"
-        self.utility_box.texture = self._player.utility.icon
-        self.utility_info.text = "ready" if self._player.utility.is_ready else f"{int(self._player.utility.percentage*100)}%"
-        self.ultimate_box.texture = self._player.ultimate.icon
-        self.ultimate_info.text = "ready" if self._player.ultimate.is_ready else f"{int(self._player.ultimate.percentage*100)}%"
+        try:
+            self.primary_box.texture = self._player.weapon.texture
+            self.primary_info.text = "ready" if self._player.weapon.is_ready() else "not ready"
+        except:
+            pass
+        try:
+            self.secondary_box.texture = self._player.secondary.icon
+            self.secondary_info.text = "ready" if self._player.secondary.is_ready else f"{int(self._player.secondary.percentage*100)}%"
+        except:
+            pass
+        try:
+            self.utility_box.texture = self._player.utility.icon
+            self.utility_info.text = "ready" if self._player.utility.is_ready else f"{int(self._player.utility.percentage*100)}%"
+        except:
+            pass
+        try:
+            self.ultimate_box.texture = self._player.ultimate.icon
+            self.ultimate_info.text = "ready" if self._player.ultimate.is_ready else f"{int(self._player.ultimate.percentage*100)}%"
+        except:
+            pass

@@ -113,9 +113,18 @@ class Character(GameUnit):
         if held_keys["c"] and self.ultimate.is_ready:
             self.ultimate.activate()
 
-        self.secondary.update_time()
-        self.utility.update_time()
-        self.ultimate.update_time()
+        try:
+            self.secondary.update_time()
+        except:
+            pass
+        try:
+            self.utility.update_time()
+        except:
+            pass
+        try:
+            self.ultimate.update_time()
+        except:
+            pass
 
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)

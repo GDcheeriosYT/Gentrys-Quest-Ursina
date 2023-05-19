@@ -4,6 +4,7 @@ import Game
 from GameStates import GameStates
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
+from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
 from Content.Characters.PeteMarks.PeteMarks import PeteMarks
 from User.User import User
 
@@ -41,6 +42,8 @@ class GuestConfirmBox(Entity):
                 starter_character = BraydenMesserschmidt()
             elif user.username == "limechips":
                 starter_character = PeteMarks()
+            elif user.username == "dragostos":
+                starter_character = PhilipMcClure()
             else:
                 starter_character = StarterCharacter(user.username)
             user.equip_character(starter_character)
