@@ -10,6 +10,11 @@ class AngryPedestrian(Enemy):
         super().__init__()
         self.swap_weapon(Knife())
 
+        # stats
+        self.stats.attack.points = 57
+        self.stats.health.points = 900
+        self.experience.level = 20
+
     @property
     def name(self) -> str:
         return "Angry Pedestrian"

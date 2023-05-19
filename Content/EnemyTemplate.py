@@ -20,6 +20,9 @@ class EnemyName(Enemy):
             )
         )
 
+        # stats
+
+
     @property
     def name(self) -> str:
         return "Enemy Name"

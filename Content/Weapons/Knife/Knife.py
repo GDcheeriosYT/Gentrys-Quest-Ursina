@@ -65,7 +65,7 @@ class Knife(Weapon):
 
             self._instance.position = Vec3(x_offset, y_offset, 0)
 
-            hit_info = raycast(self._instance.world_position, self._instance.up, ignore=[self, self._equipped_entity], distance=self.range, debug=True)
+            hit_info = raycast(self._instance.world_position, self._instance.up, ignore=[self, self._equipped_entity], distance=self.range, debug=False)
             if hit_info.hit:
                 try:
                     hit_entity = hit_info.entity

@@ -16,8 +16,6 @@ class Tutorial(Screen):
         self.on_show += self._show
         self.phase = 0
 
-
-
     def _show(self):
         self.player = Game.user.get_equipped_character()
         self.player.swap_weapon(BraydensOsuPen())
@@ -37,7 +35,7 @@ class Tutorial(Screen):
         invoke(self.show_controls, delay=9)
         npc = AngryPedestrian()
         npc.follow_entity(self.player)
-        invoke(npc.spawn, delay=12)
+        #invoke(npc.spawn, delay=12)
 
     def show_controls(self):
         movement = Text(

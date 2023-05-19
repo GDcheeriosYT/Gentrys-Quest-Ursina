@@ -37,9 +37,8 @@ class ParkingLot(Entity):
 
         sidewalk_siding = Entity(
             model='quad',
-            scale=(2, 0.1, 0),
+            scale=(1, 0.1, 0),
             color=color.white,
-            texture_scale=(16, 1),
             origin=(0, -0.5),
             position=(0, 0, -1),
             parent=self.sidewalk
