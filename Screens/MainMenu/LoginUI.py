@@ -15,13 +15,10 @@ class LoginUI(Entity):
             **kwargs
         )
 
-        self.username_box = InputField("Username", position=(0, 0.2), parent=self)
-        self.password_box = InputField("Password", position=(0, -0.1), hide_content=True, parent=self)
-        self.login_status = Text("", position=(0, 0.28), origin=(0, 0), scale=(3, 3.2), parent=self)
-        self.submit_button = Button("Submit", position=(0, -0.4), scale=(0.2, 0.15), parent=self)
-        self.submit_button.on_click = self.on_submit
+        self.text = Text("Login Not Available Yet...", position=(0, 0.28), origin=(0, 0), scale=(2.6, 3.2), parent=self)
 
-    def on_submit(self) -> None:
-        user = User()
-        username = self.username_box.text
-        password = self.password_box.text
+        #self.username_box = InputField("Username", position=(0, 0.2), parent=self)
+        #self.password_box = InputField("Password", position=(0, -0.1), hide_content=True, parent=self)
+        #self.login_status = Text("", position=(0, 0.28), origin=(0, 0), scale=(3, 3.2), parent=self)
+        #self.submit_button = Button("Submit", position=(0, -0.4), scale=(0.2, 0.15), parent=self)
+        #self.submit_button.on_click = self.on_submit

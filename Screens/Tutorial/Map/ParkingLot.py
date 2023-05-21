@@ -9,7 +9,7 @@ class ParkingLot(Entity):
             position=(0, -6, 1),
             texture_scale=(6, 6),
             origin=(0, 0.5),
-            scale=(15, 12),
+            scale=(20, 12),
             parent=self
         )
 
@@ -37,9 +37,33 @@ class ParkingLot(Entity):
 
         sidewalk_siding = Entity(
             model='quad',
-            scale=(1, 0.1, 0),
+            scale=(1, 0.1, 9),
             color=color.white,
-            origin=(0, -0.5),
+            origin=(0, 0),
             position=(0, 0, -1),
+            collider='box',
             parent=self.sidewalk
         )
+
+        Entity(
+            model='quad',
+            collider='box',
+            color=color.clear,
+            position=(-0.3, -0.5, -1),
+            scale=(0.1, 2),
+            parent=self,
+        )
+
+        street_lines = Entity(
+            model='quad',
+            scale=(0.007, 0.25),
+            color=color.white,
+            origin=(0, 0.5),
+            position=(0, 0, -1),
+            parent=self
+        )
+        street_lines.disable()
+
+        amount = 7
+        for i in range(amount):
+            duplicate(street_lines, position=(-0.5 + i * (1 / amount), 0, -1)).combine(self)

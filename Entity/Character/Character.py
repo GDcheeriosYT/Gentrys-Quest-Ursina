@@ -104,13 +104,13 @@ class Character(GameUnit):
             if self._weapon.is_ready():
                 self.attack()
 
-        if held_keys["right mouse"] and self.secondary.is_ready:
+        if held_keys["right mouse"] and self.secondary.is_ready and not self.secondary.disabled:
             self.secondary.activate()
 
-        if held_keys["shift"] and self.utility.is_ready:
+        if held_keys["shift"] and self.utility.is_ready and not self.ultimate.disabled:
             self.utility.activate()
 
-        if held_keys["c"] and self.ultimate.is_ready:
+        if held_keys["c"] and self.ultimate.is_ready and not self.ultimate.disabled:
             self.ultimate.activate()
 
         try:
@@ -129,6 +129,11 @@ class Character(GameUnit):
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)
         Game.user.add_money(loot.money)
+
+    def disable_skills(self):
+        self.secondary.disable()
+        self.utility.disable()
+        self.ultimate.disable()
 
     def input(self, key):
         if key == "p":

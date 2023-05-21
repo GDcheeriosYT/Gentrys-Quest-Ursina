@@ -18,8 +18,8 @@ class Tutorial(Screen):
 
     def _show(self):
         self.player = Game.user.get_equipped_character()
-        self.player.swap_weapon(BraydensOsuPen())
         self.player.can_move = False
+        self.player.disable_skills()
         self.map = TutorialMap()
         text_container = TextContainer()
         text_container.set_text("It's 10pm...", 5)
@@ -28,7 +28,7 @@ class Tutorial(Screen):
         invoke(self.player.spawn, delay=5)
         invoke(self.player.toggle_movement, delay=10)
         self.hud = HUD(self.player)
-        #self.hud.hide_elements()
+        self.hud.hide_elements()
         text_container.schedule_text(f"{self.player.name} is at a\nconvenience store buying ramen noodles.", 5, 5)
         text_container.schedule_text(f"He picks up some ramen.", 10, 5)
         invoke(lambda: Ramen(position=(6, 0)), delay=10)
@@ -58,7 +58,7 @@ class Tutorial(Screen):
 
     @property
     def color(self) -> color:
-        return rgb(0, 0, 117)
+        return rgb(17, 80, 17)
 
     def input(self, key):
         if key == "left mouse":
