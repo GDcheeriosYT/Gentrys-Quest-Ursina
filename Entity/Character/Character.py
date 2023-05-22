@@ -111,7 +111,7 @@ class Character(GameUnit):
         if held_keys["shift"] and self.utility.is_ready and not self.ultimate.disabled:
             self.utility.activate()
 
-        if held_keys["c"] and self.ultimate.is_ready and not self.ultimate.disabled:
+        if held_keys["r"] and self.ultimate.is_ready and not self.ultimate.disabled:
             self.ultimate.activate()
 
         try:

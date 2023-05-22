@@ -1,6 +1,7 @@
 import Game
 from Screens.Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
+from Graphics.UIs.Inventory.Inventory import Inventory
 from Content.Maps.TestMap import TestMap
 from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
 from ursina import *
@@ -12,6 +13,8 @@ class Gameplay(Screen):
 
         self.player = None
         self.hud = None
+        self.inventory = None
+        self.in_inventory = False
         self.map = None
         self.time_started = None
 
@@ -28,6 +31,8 @@ class Gameplay(Screen):
     def _on_show(self):
         self.player = Game.user.get_equipped_character()
         self.hud = HUD(self.player)
+        self.inventory = Inventory()
+        self.inventory.disable()
         self.player.spawn()
         self.player.swap_weapon(BraydensOsuPen())
         self.map = TestMap()
@@ -47,3 +52,14 @@ class Gameplay(Screen):
             self.map.spawn_sequence()
             self.spawned = True
             invoke(self.toggle_spawned, delay=1)
+
+    def input(self, key):
+        if key == "c":
+            if not self.in_inventory:
+                self.hud.hide_elements()
+                self.inventory.enable()
+                self.in_inventory = True
+            else:
+                self.hud.show_elements()
+                self.inventory.disable()
+                self.in_inventory = False

@@ -5,7 +5,7 @@ from Entity.Buff import Buff
 class TestArtifact(Artifact):
     def __init__(self):
         super().__init__(
-            image="Entity/Textures/huh.png"
+            texture="Entity/Textures/huh.png"
         )
 
     @property

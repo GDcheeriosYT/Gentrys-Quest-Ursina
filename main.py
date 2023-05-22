@@ -4,10 +4,18 @@ import Game
 from GameStates import GameStates
 
 
+# User
+from User.User import User
+
 # graphics
 
 # Entity
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
+from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
+from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
+from Content.Characters.PeteMarks.PeteMarks import PeteMarks
+from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
+from Content.ArtifactFamilies.TestFamily.TestArtifact import TestArtifact
 
 # screens
 from Screens.ScreenManager import ScreenManager
@@ -54,13 +62,31 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-if GameConfiguration.play_intro:
-    Game.state = GameStates.intro
-    num = 0
-else:
-    Game.state = GameStates.mainMenu
-    num = 1
+Game.user = User("Gay Dude", True)
 
-ScreenManager(app).transitions = num
+starter_character = StarterCharacter(Game.user.username)
+
+Game.user.equip_character(starter_character)
+
+Game.user.add_character(starter_character)
+Game.user.add_character(BraydenMesserschmidt())
+Game.user.add_character(PhilipMcClure())
+Game.user.add_character(PeteMarks())
+
+
+for i in range(15):
+    artifact = TestArtifact()
+    artifact.star_rating = 5
+    Game.user.add_artifact(artifact)
+
+Game.change_state(GameStates.gameplay)
+
+
+# if GameConfiguration.play_intro:
+#     Game.state = GameStates.intro
+# else:
+#     Game.state = GameStates.mainMenu
+
+ScreenManager(app)
 
 app.run()

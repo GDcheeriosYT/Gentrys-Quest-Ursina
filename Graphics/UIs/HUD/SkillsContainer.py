@@ -37,7 +37,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.ultimate_info = Text("ready", position=(0.25, text_height), scale=text_size, origin=(0, 0), parent=self)
-        self.ultimate_key = Text("C", position=(0.25, -text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.ultimate_key = Text("R", position=(0.25, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.ultimate_box = Entity(
             model='quad',
             position=(0.25, 0),

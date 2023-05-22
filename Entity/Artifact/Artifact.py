@@ -4,8 +4,8 @@ from ..Buff import Buff
 
 
 class Artifact:
-    def __init__(self, image: str):
-        self._image = Texture(image)
+    def __init__(self, texture: str):
+        self._texture = Texture(texture)
         self._main_attribute = Buff("Random")
         self._attributes = None
         self.star_rating = None
@@ -21,3 +21,7 @@ class Artifact:
     @property
     def attributes(self) -> list:
         return self._attributes
+
+    @property
+    def texture(self):
+        return self._texture

@@ -1,7 +1,10 @@
+from ursina import *
 from typing import List
 from Entity.Character.Character import Character
 from Entity.Artifact.Artifact import Artifact
 from Entity.Weapon.Weapon import Weapon
+from Overlays.NoficationsManager import NotificationManager
+from Overlays.Notification import Notification
 from IO.DataLoader import DataLoader
 import json
 
@@ -55,12 +58,15 @@ class UserData:
         return self._equipped_character
 
     def add_character(self, character: Character):
+        NotificationManager.add_nofication(Notification(f"obtained {character.name} character", color=color.blue))
         self._characters.append(character)
 
     def add_artifact(self, artifact: Artifact):
+        NotificationManager.add_nofication(Notification(f"obtained {artifact.name} artifact", color=color.blue))
         self._artifacts.append(artifact)
 
     def add_weapon(self, weapon: Weapon):
+        NotificationManager.add_nofication(Notification(f"obtained {weapon.name} weapon", color=color.blue))
         self._weapons.append(weapon)
 
     def add_money(self, money: int):

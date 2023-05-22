@@ -57,7 +57,7 @@ class Map:
                 enemy.y += random.randint(-7, 7)
                 enemy.x += random.randint(-7, 7)
                 enemy.spawn()
-                enemy.on_death += lambda: Game.user.user_data.artifacts.append(self.generate_artifact())
+                enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
                 enemy.on_death += lambda: Game.user.get_equipped_character().manage_loot(enemy.get_loot())
                 enemy.on_death += lambda: self.enemy_tracker.pop(0)
                 self.enemy_tracker.append(enemy)
