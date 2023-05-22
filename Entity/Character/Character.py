@@ -12,6 +12,7 @@ from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
+from Entity.Artifact.Artifact import Artifact
 
 
 class Character(GameUnit):

@@ -6,9 +6,9 @@ from ..Buff import Buff
 class Artifact:
     def __init__(self, image: str):
         self._image = Texture(image)
-        self._main_attribute = None
+        self._main_attribute = Buff("Random")
         self._attributes = None
-        self._star_rating = None
+        self.star_rating = None
 
     @property
     def name(self) -> str:
@@ -21,7 +21,3 @@ class Artifact:
     @property
     def attributes(self) -> list:
         return self._attributes
-
-    @property
-    def star_rating(self) -> int:
-        return self._star_rating

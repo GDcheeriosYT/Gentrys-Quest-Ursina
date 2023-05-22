@@ -27,17 +27,23 @@ class Gameplay(Screen):
 
     def _on_show(self):
         self.player = Game.user.get_equipped_character()
+        self.hud = HUD(self.player)
         self.player.spawn()
         self.player.swap_weapon(BraydensOsuPen())
-        self.hud = HUD(self.player)
         self.map = TestMap()
         self.time_started = time.time()
         self.map.load()
+        self.spawned = False
+
+    def toggle_spawned(self):
+        self.spawned = False
 
     def update(self):
         time_elapsed = time.time() - self.time_started
-        print(time_elapsed, self.map.current_difficulty)
-        print(int(time_elapsed) % self.map.current_difficulty)
-        print(int(time_elapsed) % 10)
-        if int(time_elapsed) % 10 == self.map.current_difficulty:
+        # print(time_elapsed, self.map.current_difficulty)
+        # print(int(time_elapsed) % self.map.current_difficulty)
+        # print(int(time_elapsed) % 10)
+        if int(time_elapsed) % 10 == self.map.current_difficulty and not self.spawned:
             self.map.spawn_sequence()
+            self.spawned = True
+            invoke(self.toggle_spawned, delay=1)

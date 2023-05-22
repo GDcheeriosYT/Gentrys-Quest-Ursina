@@ -140,8 +140,8 @@ class GameUnit(GameEntityBase):
     def spawn(self) -> None:
         self.enable()
         self.on_spawn()
+        self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
-        self._overhead.entity_name.text = self.name
         self.dead = False
         self.spawned = True
 

@@ -3,8 +3,10 @@ from Location.Map import Map
 
 
 grass = Entity(
-        scale=(40, 40),
-        color=color.green
+    model='quad',
+    position=(0, 0, 1),
+    scale=(40, 40),
+    color=color.green
 )
 grass.disable()
 
