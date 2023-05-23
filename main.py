@@ -62,9 +62,14 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-Game.user = User("Gay Dude", True)
+Game.user = User("Cool Guy", True)
 
 starter_character = StarterCharacter(Game.user.username)
+
+for i in range(45):
+    artifact = TestArtifact()
+    artifact.star_rating = random.randint(1, 5)
+    Game.user.add_artifact(artifact)
 
 Game.user.equip_character(starter_character)
 
@@ -73,11 +78,7 @@ Game.user.add_character(BraydenMesserschmidt())
 Game.user.add_character(PhilipMcClure())
 Game.user.add_character(PeteMarks())
 
-
-for i in range(15):
-    artifact = TestArtifact()
-    artifact.star_rating = 5
-    Game.user.add_artifact(artifact)
+Game.user.add_money(99999999)
 
 Game.change_state(GameStates.gameplay)
 

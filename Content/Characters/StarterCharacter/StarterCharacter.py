@@ -26,5 +26,9 @@ class StarterCharacter(Character):
         return self._name
 
     @property
+    def description(self) -> str:
+        return "The Guy!"
+
+    @property
     def star_rating(self) -> int:
         return 1

@@ -145,6 +145,11 @@ class GameUnit(GameEntityBase):
         self.dead = False
         self.spawned = True
 
+    def despawn(self):
+        self.disable()
+        self.dead = False
+        self.spawned = False
+
     def get_loot(self) -> Loot:
         return Loot()
 

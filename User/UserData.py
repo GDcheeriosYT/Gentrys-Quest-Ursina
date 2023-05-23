@@ -58,19 +58,22 @@ class UserData:
         return self._equipped_character
 
     def add_character(self, character: Character):
-        NotificationManager.add_nofication(Notification(f"obtained {character.name} character", color=color.blue))
+        NotificationManager.add_nofication(Notification(f"obtained {character.star_rating} star {character.name} character", color=color.blue))
         self._characters.append(character)
 
     def add_artifact(self, artifact: Artifact):
-        NotificationManager.add_nofication(Notification(f"obtained {artifact.name} artifact", color=color.blue))
+        NotificationManager.add_nofication(Notification(f"obtained {artifact.star_rating} star {artifact.name} artifact", color=color.blue))
         self._artifacts.append(artifact)
 
     def add_weapon(self, weapon: Weapon):
-        NotificationManager.add_nofication(Notification(f"obtained {weapon.name} weapon", color=color.blue))
+        NotificationManager.add_nofication(Notification(f"obtained {weapon.star_rating} star {weapon.name} weapon", color=color.blue))
         self._weapons.append(weapon)
 
     def add_money(self, money: int):
         self._money += money
+
+    def remove_money(self, money: int):
+        self._money -= money
 
     def equip_character(self, character: Character):
         self._equipped_character = character

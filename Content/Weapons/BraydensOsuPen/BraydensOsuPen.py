@@ -27,6 +27,10 @@ class BraydensOsuPen(Weapon):
         return "Pen"
 
     @property
+    def star_rating(self) -> int:
+        return 5
+
+    @property
     def weapon_texture(self) -> str:
         return "Textures/Weapon.png"
 

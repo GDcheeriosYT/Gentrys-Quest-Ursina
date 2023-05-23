@@ -34,9 +34,14 @@ class BraydenMesserschmidt(Character):
         return "Brayden Messerschmidt"
 
     @property
+    def description(self) -> str:
+        return "An osu player who formed a contract with ppy(Dean Herbert) to not talk to females."
+
+    @property
     def star_rating(self) -> int:
         return 5
 
     def check_weapon(self):
-        if self.weapon.name == "Braydens Osu Pen":
-            self.stats.boost_all_stats(10)
+        if self.weapon:
+            if self.weapon.name == "Braydens Osu Pen":
+                self.stats.boost_all_stats(10)

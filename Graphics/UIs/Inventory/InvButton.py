@@ -6,7 +6,7 @@ class InvButton(Button):
         super().__init__(
             text,
             scale=(0.15, 0.25),
-            color=color.gray,
+            color=color.black,
             *args,
             **kwargs
         )

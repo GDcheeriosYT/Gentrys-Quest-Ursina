@@ -30,6 +30,10 @@ class WeaponName(Weapon):
     def weapon_texture(self) -> str:
         return "Textures/texturename.fileformat"
 
+    @property
+    def star_rating(self) -> int:
+        return 1
+
     def attack_process(self, direction):
         self._instance = Entity(
             model='quad',

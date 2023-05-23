@@ -38,6 +38,10 @@ class Weapon(GameEntityBase):
         raise NotImplementedError
 
     @property
+    def star_rating(self) -> int:
+        raise NotImplementedError
+
+    @property
     def range(self) -> int:
         raise NotImplementedError
 

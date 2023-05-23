@@ -21,8 +21,17 @@ class Character(GameUnit):
             texture_mapping=texture_mapping,
             audio_mapping=audio_mapping
         )
+
+        self.texture = self.texture_mapping.get_idle_texture()
+
         self._is_equipped = False
-        self.artifacts = []
+        self.artifacts = [
+            None,
+            None,
+            None,
+            None,
+            None
+        ]
 
         self.secondary = None
         self.utility = None
@@ -33,6 +42,10 @@ class Character(GameUnit):
     @property
     def star_rating(self) -> int:
         raise NotImplementedError
+
+    @property
+    def description(self) -> str:
+        return ""
 
     @property
     def is_equipped(self) -> bool:
@@ -126,6 +139,17 @@ class Character(GameUnit):
             self.ultimate.update_time()
         except:
             pass
+
+    def swap_artifact(self, artifact, index: int):
+        if 1 <= index <= 5:
+            if self.artifacts[index - 1]:
+                swapped_artifact = self.artifacts[index - 1]
+                self.artifacts[index - 1] = artifact
+                self.update_stats()
+                return swapped_artifact
+            else:
+                self.artifacts[index - 1] = artifact
+                self.update_stats()
 
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)

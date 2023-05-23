@@ -6,7 +6,7 @@ class Notification(Text):
         super().__init__(
             text,
             position=(1.5, 0.5, -5),
-            origin=(1, 0.5),
+            origin=(0.8, 0.5),
             parent=camera.ui,
         )
 

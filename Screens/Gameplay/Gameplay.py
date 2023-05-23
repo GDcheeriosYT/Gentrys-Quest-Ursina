@@ -11,6 +11,8 @@ class Gameplay(Screen):
     def __init__(self):
         super().__init__()
 
+        self.score = 0
+
         self.player = None
         self.hud = None
         self.inventory = None
@@ -34,7 +36,9 @@ class Gameplay(Screen):
         self.inventory = Inventory()
         self.inventory.disable()
         self.player.spawn()
-        self.player.swap_weapon(BraydensOsuPen())
+        weapon = BraydensOsuPen()
+        Game.user.user_data.add_weapon(weapon)
+        self.player.swap_weapon(weapon)
         self.map = TestMap()
         self.time_started = time.time()
         self.map.load()
@@ -52,6 +56,14 @@ class Gameplay(Screen):
             self.map.spawn_sequence()
             self.spawned = True
             invoke(self.toggle_spawned, delay=1)
+
+        if self.player != Game.user.get_equipped_character():
+            self.player.despawn()
+            destroy(self.hud)
+            self.player = Game.user.get_equipped_character()
+            self.player.spawn()
+            self.hud = HUD(self.player)
+            self.hud.hide_elements()
 
     def input(self, key):
         if key == "c":
