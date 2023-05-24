@@ -83,6 +83,9 @@ class Character(GameUnit):
         # attack speed stats
         self._stats.attack_speed.set_default_value(self.stats.speed.points * 0.5)
 
+        # artifacts
+        # do something
+
         # event
         self.on_update_stats()
 

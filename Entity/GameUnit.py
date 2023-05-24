@@ -86,6 +86,7 @@ class GameUnit(GameEntityBase):
 
     def damage(self, amount):
         self._stats.health.current_value -= amount if amount > 0 else 0
+        # self.set_damage_texture()
         self.on_damage()
         if self.stats.health.current_value <= 0:
             self.die()

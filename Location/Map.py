@@ -47,6 +47,7 @@ class Map:
             entity.disable()
 
     def spawn_sequence(self):
+        self.calculate_difficulty(Game.user.get_equipped_character())
         spawn_amount = random.randint(1, self.current_difficulty * 2)
         if len(self.enemy_tracker) + spawn_amount <= self.enemy_limit:
             for i in range(spawn_amount):

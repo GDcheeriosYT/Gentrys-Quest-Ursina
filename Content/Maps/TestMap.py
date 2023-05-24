@@ -1,5 +1,7 @@
 from ursina import *
 from Location.Map import Map
+from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
+from Content.Enemies.AngryChineseMan.AngryChineseMan import AngryChineseMan
 
 
 grass = Entity(
@@ -16,5 +18,9 @@ class TestMap(Map):
         super().__init__(
             entities=[
                 grass
+            ],
+            enemies=[
+                AngryPedestrian,
+                AngryChineseMan
             ]
         )

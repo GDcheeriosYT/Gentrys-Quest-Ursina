@@ -67,6 +67,8 @@ class Knife(Weapon):
 
             hit_info = raycast(self._instance.world_position, self._instance.up, ignore=[self, self._equipped_entity], distance=self.range, debug=False)
             if hit_info.hit:
+                if isinstance(hit_info.entity, type(self._equipped_entity)) and hit_info.entity not in self.hit_list:
+                    self.hit_list.append(hit_info.entity)
                 try:
                     hit_entity = hit_info.entity
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()

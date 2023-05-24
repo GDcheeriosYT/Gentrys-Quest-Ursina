@@ -15,6 +15,7 @@ class Enemy(GameUnit):
             texture_mapping,
             audio_mapping
         )
+        self.set_idle_texture()
 
         self._follow_entity = None
 

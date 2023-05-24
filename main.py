@@ -32,6 +32,7 @@ import argparse
 
 # initialization
 app = Ursina()
+# application.asset_folder = os.path.dirname(__file__)
 app.setBackgroundColor(0, 0, 0)
 if os.path.isdir('Data'):
     pass
@@ -66,19 +67,9 @@ Game.user = User("Cool Guy", True)
 
 starter_character = StarterCharacter(Game.user.username)
 
-for i in range(45):
-    artifact = TestArtifact()
-    artifact.star_rating = random.randint(1, 5)
-    Game.user.add_artifact(artifact)
-
 Game.user.equip_character(starter_character)
 
 Game.user.add_character(starter_character)
-Game.user.add_character(BraydenMesserschmidt())
-Game.user.add_character(PhilipMcClure())
-Game.user.add_character(PeteMarks())
-
-Game.user.add_money(99999999)
 
 Game.change_state(GameStates.gameplay)
 

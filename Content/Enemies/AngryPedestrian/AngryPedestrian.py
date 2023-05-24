@@ -7,13 +7,16 @@ from ursina import *
 
 class AngryPedestrian(Enemy):
     def __init__(self):
-        super().__init__()
+        super().__init__(
+            texture_mapping=TextureMapping(
+                idle_textures=["Textures/Angrybody.jpeg"]
+            )
+        )
         self.swap_weapon(Knife())
 
         # stats
-        self.stats.attack.points = 57
-        self.stats.health.points = 900
-        self.experience.level = 20
+        self.stats.attack.points = 7
+        self.stats.health.points = 9
 
     @property
     def name(self) -> str:
