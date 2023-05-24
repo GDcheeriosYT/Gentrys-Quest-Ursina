@@ -37,7 +37,6 @@ class Gameplay(Screen):
         self.inventory.disable()
         self.player.spawn()
         weapon = BraydensOsuPen()
-        Game.user.user_data.add_weapon(weapon)
         self.player.swap_weapon(weapon)
         self.map = TestMap()
         self.time_started = time.time()
@@ -53,7 +52,7 @@ class Gameplay(Screen):
         # print(int(time_elapsed) % self.map.current_difficulty)
         # print(int(time_elapsed) % 10)
         if int(time_elapsed) % 10 == self.map.current_difficulty and not self.spawned:
-            self.map.spawn_sequence()
+            # self.map.spawn_sequence()
             self.spawned = True
             invoke(self.toggle_spawned, delay=1)
 

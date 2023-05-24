@@ -98,7 +98,8 @@ class GameUnit(GameEntityBase):
 
         self._weapon = weapon
         self._weapon.equip(self)
-        return old_weapon
+        if old_weapon:
+            return old_weapon
 
     def attack(self, direction=None):
         if self._weapon:
