@@ -116,10 +116,6 @@ class EntityChooseWindow(Entity):
         index_start = (page * 12)
         index_end = ((page + 1) * 12)
         current_index = index_start
-        print(self.page)
-        print(index_start)
-        print(index_end)
-        print(current_index)
         while current_index < index_end:
             try:
                 entity_list.append(list[current_index])
@@ -128,3 +124,6 @@ class EntityChooseWindow(Entity):
             current_index += 1
 
         return entity_list
+
+    def submit(self):
+        return self.selection

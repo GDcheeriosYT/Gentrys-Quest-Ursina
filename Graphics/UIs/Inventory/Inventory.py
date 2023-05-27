@@ -5,12 +5,15 @@ from .InvButton import InvButton
 from .EntityIcon import EntityIcon
 from .CharacterOverview import CharacterOverview
 from Entity.Character.Character import Character
+from .InventoryStates import InventoryStates
 from Entity.Weapon.Weapon import Weapon
 from Entity.Enemy.Enemy import Enemy
 from utils.Event import Event
 
 
 class Inventory(Entity):
+    state = InventoryStates.listing
+
     def __init__(self):
         super().__init__(
             model=Quad(radius=0.06),
@@ -85,6 +88,7 @@ class Inventory(Entity):
             destroy(entity)
 
     def show_entity_listing(self, entity_type, clear_page: bool = False):
+        Inventory.state = InventoryStates.listing
         self.clear_listing()
         if clear_page:
             self.page = 0
@@ -153,10 +157,6 @@ class Inventory(Entity):
         index_start = (page * 12)
         index_end = ((page + 1) * 12)
         current_index = index_start
-        print(self.page)
-        print(index_start)
-        print(index_end)
-        print(current_index)
         while current_index < index_end:
             try:
                 entity_list.append(list[current_index])
@@ -167,6 +167,7 @@ class Inventory(Entity):
         return entity_list
 
     def show_entity(self, entity):
+        self.state = InventoryStates.entity_overview
         self.page = 0
         self.clear_listing()
         if isinstance(entity, Character):
@@ -174,3 +175,13 @@ class Inventory(Entity):
 
     def update(self):
         self.money.text = f"${format(int(Game.user.user_data.money), ',')}"
+        if Inventory.state == InventoryStates.listing:
+            pass
+
+        if Inventory.state == InventoryStates.entity_overview:
+            if self.current_focused_entity:
+                self.current_focused_entity.enable()
+
+        if Inventory.state == InventoryStates.selection:
+            self.clear_listing()
+            self.current_focused_entity.disable()

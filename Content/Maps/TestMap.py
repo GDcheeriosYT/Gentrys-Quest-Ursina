@@ -20,7 +20,7 @@ class TestMap(Map):
                 grass
             ],
             enemies=[
-                AngryPedestrian,
-                AngryChineseMan
+                AngryPedestrian
+                # AngryChineseMan
             ]
         )

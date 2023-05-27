@@ -60,6 +60,15 @@ class Stats:
             "AttackSpeed"
         ]
 
+    def reset_additional_stats(self):
+        self._health.set_additional_value(0)
+        self._attack.set_additional_value(0)
+        self._defense.set_additional_value(0)
+        self._crit_rate.set_additional_value(0)
+        self._crit_damage.set_additional_value(0)
+        self._speed.set_additional_value(0)
+        self._attack_speed.set_additional_value(0)
+
     def get_stat_by_string(self, string: str):
         if string == "Health":
             return self._health

@@ -22,8 +22,13 @@ class Enemy(GameUnit):
         self.on_death += lambda: destroy(self)
         self.on_level_up += lambda: self._overhead.change_name(self.name + f"\nlevel {self.experience.level}")
 
+    @property
+    def attack_delay(self) -> Union[int, float]:
+        return 1
+
     def follow_entity(self, entity: Entity):
         self._follow_entity = entity
+        invoke(self.attack_process, delay=self.attack_delay)
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -68,11 +73,14 @@ class Enemy(GameUnit):
             money
         )
 
+    def attack_process(self):
+        self.attack(self.direction)
+        invoke(self.attack_process, delay=self.attack_delay)
+
     def update(self):
         self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
         origin = self.world_position
         hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
-        self.attack(self.direction)
         if not hit_info.hit:
             if self.can_move:
                 self.position += self.direction * self._stats.speed.get_value() * time.dt

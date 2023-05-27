@@ -84,7 +84,15 @@ class Character(GameUnit):
         self._stats.attack_speed.set_default_value(self.stats.speed.points * 0.5)
 
         # artifacts
-        # do something
+        self.stats.reset_additional_stats()
+        for artifact in self.artifacts:
+            if artifact:
+                # main attribute
+                value = artifact.main_attribute.value
+                if artifact.main_attribute.is_percent:
+                    self.stats.get_stat_by_string(artifact.main_attribute.stat).boost_stat(value)
+                else:
+                    self.stats.get_stat_by_string(artifact.main_attribute.stat).add_value(value)
 
         # event
         self.on_update_stats()

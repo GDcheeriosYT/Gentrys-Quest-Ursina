@@ -67,7 +67,13 @@ Game.user = User("Cool Guy", True)
 
 starter_character = StarterCharacter(Game.user.username)
 
+artifact = TestArtifact()
+artifact.star_rating = 5
+starter_character.artifacts[0] = artifact
+
 Game.user.equip_character(starter_character)
+
+Game.user.add_character(PhilipMcClure())
 
 Game.user.add_character(starter_character)
 

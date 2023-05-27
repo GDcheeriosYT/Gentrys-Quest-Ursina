@@ -1,5 +1,6 @@
 from ursina import *
 from utils.StringMethods import *
+from Graphics.TextStyles.StarRatingText import StarRatingText
 
 
 class EntityIcon(Button):
@@ -18,11 +19,10 @@ class EntityIcon(Button):
             parent=self
         )
 
-        self.stars = Text(
-            repeat_string("*", entity.star_rating),
+        self.stars = StarRatingText(
+            entity.star_rating,
             origin=(0, 0),
             position=(0, 0.45, -1),
-            color=color.gold,
             scale=(8, 9),
             parent=self
         )
