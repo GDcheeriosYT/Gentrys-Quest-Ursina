@@ -4,9 +4,12 @@ import Game
 from .InvButton import InvButton
 from .EntityIcon import EntityIcon
 from .CharacterOverview import CharacterOverview
+from .WeaponOverview import WeaponOverview
+from .ArtifactOverview import ArtifactOverview
 from Entity.Character.Character import Character
-from .InventoryStates import InventoryStates
 from Entity.Weapon.Weapon import Weapon
+from Entity.Artifact.Artifact import Artifact
+from .InventoryStates import InventoryStates
 from Entity.Enemy.Enemy import Enemy
 from utils.Event import Event
 
@@ -172,6 +175,10 @@ class Inventory(Entity):
         self.clear_listing()
         if isinstance(entity, Character):
             self.current_focused_entity = CharacterOverview(entity, parent=self)
+        if isinstance(entity, Weapon):
+            self.current_focused_entity = WeaponOverview(entity, parent=self)
+        if isinstance(entity, Artifact):
+            self.current_focused_entity = ArtifactOverview(entity, parent=self)
 
     def update(self):
         self.money.text = f"${format(int(Game.user.user_data.money), ',')}"

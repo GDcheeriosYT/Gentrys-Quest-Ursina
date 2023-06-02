@@ -65,15 +65,16 @@ server = ServerConnection(server_url if args.server is None else args.server)
 
 Game.user = User("Cool Guy", True)
 
-starter_character = StarterCharacter(Game.user.username)
+starter_character = BraydenMesserschmidt()
 
 artifact = TestArtifact()
+artifact2 = TestArtifact()
 artifact.star_rating = 5
+artifact2.star_rating = 5
+Game.user.add_artifact(artifact2)
 starter_character.artifacts[0] = artifact
 
 Game.user.equip_character(starter_character)
-
-Game.user.add_character(PhilipMcClure())
 
 Game.user.add_character(starter_character)
 

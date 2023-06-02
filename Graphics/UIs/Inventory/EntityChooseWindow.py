@@ -75,7 +75,10 @@ class EntityChooseWindow(Entity):
                 parent=self
             )
             entity_icon.color = color.green if entity in self.selections else color.clear
-            entity_icon.on_click = lambda entity=entity: self.select(entity)
+            if self.single_selection:
+                entity_icon.on_click = lambda entity=entity: self.choose(entity)
+            else:
+                entity_icon.on_click = lambda entity=entity: self.select(entity)
             self.current_page_listings.append(entity_icon)
             tracker += 1
             if tracker % 3 == 0:
@@ -96,12 +99,12 @@ class EntityChooseWindow(Entity):
             self.page_up_button.disable()
 
     def select(self, entity):
-        if self.single_selection:
-            self.selections.append(
-                Game.user.get_artifacts().index(entity) if self.is_artifact else Game.user.get_weapons().index(entity)
-            )
-        else:
-            self.selection = Game.user.get_artifacts().index(entity) if self.is_artifact else Game.user.get_weapons().index(entity)
+        self.selections.append(
+            Game.user.get_artifacts().index(entity) if self.is_artifact else Game.user.get_weapons().index(entity)
+        )
+
+    def choose(self, entity):
+        self.selection = Game.user.get_artifacts().index(entity) if self.is_artifact else Game.user.get_weapons().index(entity)
 
     def page_up(self):
         self.page += 1

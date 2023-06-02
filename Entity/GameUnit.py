@@ -40,6 +40,7 @@ class GameUnit(GameEntityBase):
         self.on_move = Event("OnMove", 0)
         self.on_spawn = Event("OnSpawn", 0)
         self.on_update_stats = Event("OnUpdateStats", 0)
+        self.on_swap_weapon = Event("OnSwapWeapon", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
@@ -100,6 +101,8 @@ class GameUnit(GameEntityBase):
         self._weapon.equip(self)
         if old_weapon:
             return old_weapon
+
+        self.on_swap_weapon()
 
     def attack(self, direction=None):
         if self._weapon:

@@ -27,7 +27,7 @@ class BraydenMesserschmidt(Character):
         self.ultimate = CircleThrow()
 
         # spawn event
-        self.on_spawn += self.check_weapon
+        self.on_swap_weapon += self.check_weapon
 
     @property
     def name(self) -> str:

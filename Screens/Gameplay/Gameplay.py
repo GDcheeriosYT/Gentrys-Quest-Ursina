@@ -67,10 +67,16 @@ class Gameplay(Screen):
     def input(self, key):
         if key == "c":
             if not self.in_inventory:
+                self.map.can_spawn = False
                 self.hud.hide_elements()
+                self.player.despawn()
+                self.map.manage_entities(False, False)
                 self.inventory.enable()
                 self.in_inventory = True
             else:
+                self.map.can_spawn = True
                 self.hud.show_elements()
+                self.player.spawn()
+                self.map.manage_entities(False, True)
                 self.inventory.disable()
                 self.in_inventory = False
