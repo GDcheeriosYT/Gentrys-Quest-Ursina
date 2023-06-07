@@ -89,8 +89,6 @@ class Map:
             star_rating = 5
 
         artifact = random.choice(self.artifact_families).get_random_artifact()()
-        artifact.star_rating = star_rating
-        print(artifact)
         return artifact
 
     def calculate_difficulty(self, player):

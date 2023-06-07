@@ -28,6 +28,7 @@ class BraydenMesserschmidt(Character):
 
         # spawn event
         self.on_swap_weapon += self.check_weapon
+        self.on_update_stats += self.check_weapon
 
     @property
     def name(self) -> str:

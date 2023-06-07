@@ -58,6 +58,7 @@ window.title = "Gentry's Quest"
 window.borderless = GameConfiguration.borderless
 window.fullscreen = GameConfiguration.fullscreen
 window.exit_button.visible = False
+window.aspect_ratio = 1
 window.exit_button.disable()
 window.fps_counter.color = rgb(0, 0, 0)
 if GameConfiguration.hide_fps: window.fps_counter.disable()
@@ -70,13 +71,8 @@ Game.user = User("Cool Guy", True)
 
 Game.user.add_money(100000)
 Game.user.add_weapon(BraydensOsuPen())
-Game.user.add_weapon(Knife())
 
 starter_character = BraydenMesserschmidt()
-
-for i in range(15):
-    artifact = TestArtifact()
-    Game.user.add_artifact(artifact)
 
 # starter_character.artifacts[0] = artifact
 

@@ -37,7 +37,7 @@ class Knife(Weapon):
     def attack_process(self, direction):
         self._instance = Entity(
             model='quad',
-            texture=self.weapon_texture,
+            texture=self.texture,
             scale=(1, 1),
             origin=(0, -0.5),
             rotation=(0, 0, -direction + 90),

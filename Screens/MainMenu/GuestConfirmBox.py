@@ -35,20 +35,8 @@ class GuestConfirmBox(Entity):
         user.replace_data(open(f"Data/{self._username}.json", "r").read())
         Game.user = user
         Game.user.equip_character(StarterCharacter(user.username))
-        Game.change_state(GameStates.gameplay)
-
-        # if user.user_data.startup_amount == 0:
-        #     if user.username == "GDcheerios":
-        #         starter_character = BraydenMesserschmidt()
-        #     elif user.username == "limechips":
-        #         starter_character = PeteMarks()
-        #     elif user.username == "dragostos":
-        #         starter_character = PhilipMcClure()
-        #     else:
-        #         starter_character = StarterCharacter(user.username)
-        #     user.equip_character(starter_character)
-        #     user.add_character(StarterCharacter(user.username))
-        #     Game.change_state(GameStates.tutorial)
+        user.add_character(StarterCharacter(user.username))
+        Game.change_state(GameStates.tutorial)
         self._menu.enable()
         destroy(self)
 

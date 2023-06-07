@@ -33,12 +33,12 @@ class Tutorial(Screen):
         text_container.schedule_text(f"He picks up some ramen.", 10, 5)
         invoke(lambda: Ramen(position=(6, 0)), delay=10)
         invoke(self.show_controls, delay=9)
-        npc = AngryPedestrian()
-        npc.stats.attack.points = 57
-        npc.stats.health.points = 900
-        npc.experience.level = 20
-        npc.follow_entity(self.player)
-        invoke(npc.spawn, delay=12)
+        # npc = AngryPedestrian()
+        # npc.stats.attack.points = 57
+        # npc.stats.health.points = 900
+        # npc.experience.level = 20
+        # npc.follow_entity(self.player)
+        # invoke(npc.spawn, delay=12)
 
     def show_controls(self):
         movement = Text(
