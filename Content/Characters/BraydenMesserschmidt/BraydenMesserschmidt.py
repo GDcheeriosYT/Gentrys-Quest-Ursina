@@ -3,6 +3,9 @@ from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from .Skills.CircleThrow import CircleThrow
 from .Skills.Dash import Dash
+from ursina import *
+import Game
+from Overlays.Notification import Notification
 
 
 class BraydenMesserschmidt(Character):
@@ -28,7 +31,7 @@ class BraydenMesserschmidt(Character):
 
         # spawn event
         self.on_swap_weapon += self.check_weapon
-        self.on_update_stats += self.check_weapon
+        self.on_level_up += self.check_weapon
 
     @property
     def name(self) -> str:
@@ -44,5 +47,9 @@ class BraydenMesserschmidt(Character):
 
     def check_weapon(self):
         if self.weapon:
+            print(self.weapon.name)
             if self.weapon.name == "Braydens Osu Pen":
+                Game.notification_manager.add_nofication(Notification("Brayden Messerschmidt Weapon Bonus", color=color.gold))
                 self.stats.boost_all_stats(10)
+            else:
+                self.stats.reset_additional_stats()

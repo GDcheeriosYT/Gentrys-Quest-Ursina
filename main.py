@@ -71,6 +71,7 @@ Game.user = User("Cool Guy", True)
 
 Game.user.add_money(100000)
 Game.user.add_weapon(BraydensOsuPen())
+Game.user.add_weapon(Knife())
 
 starter_character = BraydenMesserschmidt()
 

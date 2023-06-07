@@ -45,6 +45,10 @@ class Weapon(GameEntityBase):
     def range(self) -> int:
         raise NotImplementedError
 
+    @property
+    def equipped_entity(self):
+        return self._equipped_entity
+
     def equip(self, entity):
         self._equipped_entity = entity
         self.on_equip()

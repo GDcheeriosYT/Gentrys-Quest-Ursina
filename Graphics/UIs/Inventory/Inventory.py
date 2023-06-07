@@ -23,6 +23,7 @@ class Inventory(Entity):
     """
 
     state = InventoryStates.listing
+    state_affected = False
 
     def __init__(self):
         super().__init__(
@@ -34,6 +35,7 @@ class Inventory(Entity):
         )
 
         self.player = Game.user.user_data  # grab the user and set as variable
+        self.selected_entity = None # tracker for character
 
         self.money = Text(
             "$",
@@ -112,6 +114,7 @@ class Inventory(Entity):
 
     def set_state(self, state: InventoryStates):  # noqa
         Inventory.state = state
+        Inventory.state_affected = False
 
 
 
@@ -135,6 +138,13 @@ class Inventory(Entity):
         :param clear_page: Whether the page should be cleared or not.
         """
 
+        def swap_weapon(entity: Character, weapon: Weapon):
+            old_weapon = entity.swap_weapon(weapon)
+            self.player.weapons.remove(weapon)
+            if old_weapon:
+                self.player.add_weapon(old_weapon)
+
+
         self.clear_listing()
         if clear_page:
             self.page = 0
@@ -145,26 +155,26 @@ class Inventory(Entity):
 
         tracker = 0  # column tracker
         y = 0.4
-        catagory = None
+        category = None
         if entity_type == "characters":
             self._characters_button.color = color.gray
             self._weapons_button.color = color.black
             self._artifacts_button.color = color.black
-            catagory = self.player.characters
+            category = self.player.characters
         elif entity_type == "artifacts":
             self._characters_button.color = color.black
             self._weapons_button.color = color.black
             self._artifacts_button.color = color.gray
-            catagory = self.player.artifacts
+            category = self.player.artifacts
         elif entity_type == "weapons":
             self._characters_button.color = color.black
             self._weapons_button.color = color.gray
             self._artifacts_button.color = color.black
-            catagory = self.player.weapons
+            category = self.player.weapons
 
         # determine the entity category to display
 
-        for entity in self.get_entities(catagory, self.page):
+        for entity in self.get_entities(category, self.page):
             entity_icon = EntityIcon(
                 entity,
                 position=(-0.3 + (tracker * 0.3), y),
@@ -173,6 +183,14 @@ class Inventory(Entity):
             )
             if Inventory.state == InventoryStates.listing:
                 entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
+
+            elif Inventory.state == InventoryStates.selection:
+                if entity_type == "weapons":
+                    click_event = Event("clickEvent", 0)
+                    click_event += lambda entity=entity: swap_weapon(self.selected_entity, entity)
+                    click_event += lambda: self.show_entity(self.selected_entity)
+                    entity_icon.on_click = click_event
+
             self.current_page_listings.append(entity_icon)
             tracker += 1
             if tracker % 3 == 0:
@@ -187,8 +205,8 @@ class Inventory(Entity):
         else:
             self.page_down_button.disable()
 
-        print((self.page + 1) * 12, len(catagory), self.page * 12 < len(catagory))
-        if (self.page + 1) * 12 < len(catagory):
+        print((self.page + 1) * 12, len(category), self.page * 12 < len(category))
+        if (self.page + 1) * 12 < len(category):
             self.page_up_button.enable()
             self.page_up_button.on_click = lambda: self.page_up(entity_type)
         else:
@@ -241,11 +259,9 @@ class Inventory(Entity):
 
 
 
-    def swap_weapon(self, entity: Character):
-        self.show_entity_listing("weapons")
-        weapon = result_from_somewhere
-        entity.swap_weapon(weapon)
 
+    def change_entity_focus(self, entity):  # noqa
+        self.selected_entity = entity
 
 
 
@@ -256,7 +272,11 @@ class Inventory(Entity):
         :param entity: Entity to show
         """
 
-        Inventory.state = InventoryStates.entity_overview
+        self.selected_entity = entity
+        if self.current_focused_entity:
+            destroy(self.current_focused_entity)
+
+        self.set_state(InventoryStates.entity_overview)
         self.page = 0
         self.clear_listing()
         self.current_focused_entity = Container(parent=self)
@@ -337,6 +357,13 @@ class Inventory(Entity):
                 position=(-0.4, 0.3),
                 parent=self.current_focused_entity
             )
+            if entity.weapon:
+                entity_weapon.on_click = lambda: self.show_entity(entity.weapon)
+            else:
+                _weapon_on_click = Event("weaponOnClick", 0)
+                _weapon_on_click += lambda: self.set_state(InventoryStates.selection)
+                _weapon_on_click += lambda: self.show_entity_listing("weapons")
+                entity_weapon.on_click = _weapon_on_click
 
             weapon_text = Text(
                 "Weapon",
@@ -364,6 +391,19 @@ class Inventory(Entity):
                 scale=(4, 4),
                 parent=entity_picture
             )
+
+            if entity.equipped_entity:
+                self.swap_button = Button(
+                    "swap",
+                    scale=(0.1, 0.05),
+                    position=(0, -0.45),
+                    parent=self.current_focused_entity
+                )
+                swap_event = Event("swapEvent", 0)
+                swap_event += lambda: self.change_entity_focus(entity.equipped_entity)
+                swap_event += lambda: self.set_state(InventoryStates.selection)
+                swap_event += lambda: self.show_entity_listing("weapons")
+                self.swap_button.on_click = swap_event
 
             money_upgrade_ui = MoneyUpgradeUI(
                 entity,
@@ -411,13 +451,15 @@ class Inventory(Entity):
         Every frame update the money display and display based on inventory state.
         """
         self.money.text = f"${format(int(Game.user.user_data.money), ',')}"
-        if Inventory.state == InventoryStates.listing:
-            pass
+        if not Inventory.state_affected:
+            if Inventory.state == InventoryStates.listing:
+                pass
 
-        if Inventory.state == InventoryStates.entity_overview:
-            if self.current_focused_entity:
-                self.current_focused_entity.enable()
+            if Inventory.state == InventoryStates.entity_overview:
+                if self.current_focused_entity:
+                    self.current_focused_entity.enable()
 
-        if Inventory.state == InventoryStates.selection:
-            self.clear_listing()
-            self.current_focused_entity.disable()
+            if Inventory.state == InventoryStates.selection:
+                self.current_focused_entity.disable()
+
+        Inventory.state_affected = True
