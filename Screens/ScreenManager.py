@@ -6,6 +6,7 @@ from .Intro.Intro import Intro
 from .Tutorial.Tutorial import Tutorial
 from .Settings.Settings import Settings
 from Graphics.FadeScreen import FadeScreen
+from Graphics.Overlays.DebugOverlay import DebugOverlay
 
 
 class ScreenManager(Entity):
@@ -15,6 +16,8 @@ class ScreenManager(Entity):
         self.transitions = 0
 
         self._app = app
+
+        self.debug_overlay = DebugOverlay()
 
         self.screens = []
 
