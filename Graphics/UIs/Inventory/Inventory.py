@@ -314,7 +314,7 @@ class Inventory(Entity):
 
             entity_weapon = EntityIcon(
                 entity.weapon,
-                origin=(-0.5, 0),
+                origin=(0, 0),
                 position=(-0.4, 0.3),
                 parent=self.current_focused_entity
             )
