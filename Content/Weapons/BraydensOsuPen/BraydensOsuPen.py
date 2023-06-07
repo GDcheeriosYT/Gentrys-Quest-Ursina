@@ -31,7 +31,7 @@ class BraydensOsuPen(Weapon):
         return 5
 
     @property
-    def weapon_texture(self) -> str:
+    def texture(self) -> str:
         return "Textures/Weapon.png"
 
     def attack_process(self, direction):

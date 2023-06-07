@@ -34,7 +34,7 @@ class Weapon(GameEntityBase):
         raise NotImplementedError
 
     @property
-    def weapon_texture(self) -> str:
+    def texture(self) -> str:
         raise NotImplementedError
 
     @property

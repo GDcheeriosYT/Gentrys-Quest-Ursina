@@ -12,6 +12,8 @@ from User.User import User
 # Entity
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
 from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
+from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
+from Content.Weapons.Knife.Knife import Knife
 from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
 from Content.Characters.PeteMarks.PeteMarks import PeteMarks
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
@@ -65,14 +67,18 @@ server = ServerConnection(server_url if args.server is None else args.server)
 
 Game.user = User("Cool Guy", True)
 
+Game.user.add_money(100000)
+Game.user.add_weapon(BraydensOsuPen())
+Game.user.add_weapon(Knife())
+
 starter_character = BraydenMesserschmidt()
 
-artifact = TestArtifact()
-artifact2 = TestArtifact()
-artifact.star_rating = 5
-artifact2.star_rating = 5
-Game.user.add_artifact(artifact2)
-starter_character.artifacts[0] = artifact
+for i in range(15):
+    artifact = TestArtifact()
+    artifact.star_rating = random.randint(1, 5)
+    Game.user.add_artifact(artifact)
+
+# starter_character.artifacts[0] = artifact
 
 Game.user.equip_character(starter_character)
 

@@ -35,3 +35,9 @@ class Buff:
     @property
     def level(self) -> int:
         return self._level
+
+    def level_up(self):
+        self._level += 1
+
+    def __repr__(self):
+        return f"{self._stat} {self._value}{'%' if self._is_percent else ''}\n"

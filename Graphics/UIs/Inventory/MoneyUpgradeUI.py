@@ -7,7 +7,7 @@ from Overlays.Notification import Notification
 
 
 class MoneyUpgradeUI(Entity):
-    def __init__(self, character, update_method, *args, **kwargs):
+    def __init__(self, entity, update_method, *args, **kwargs):
         super().__init__(
             *args,
             **kwargs
@@ -29,17 +29,17 @@ class MoneyUpgradeUI(Entity):
             parent=self
         )
 
-        self.submit_button.on_click = lambda: self._on_click(character, update_method)
+        self.submit_button.on_click = lambda: self._on_click(entity, update_method)
 
-    def _on_click(self, character, update_method):
+    def _on_click(self, entity, update_method):
         try:
             amount = int(self.money_input.text)
             if amount > Game.user.user_data.money:
                 NotificationManager.add_nofication(Notification("Can't afford", color=color.red))
             else:
                 Game.user.user_data.remove_money(amount)
-                character.add_xp(amount * 10)
-                update_method(character)
+                entity.add_xp(amount * 10)
+                update_method()
 
         except ValueError:
             NotificationManager.add_nofication(Notification("This isn't a number", color=color.red))

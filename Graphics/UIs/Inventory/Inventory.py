@@ -1,17 +1,19 @@
 from ursina import *
 
 import Game
+from .BlankWeapon import BlankWeapon
+from .ExperienceOverview import ExperienceOverview
 from .InvButton import InvButton
 from .EntityIcon import EntityIcon
-from .CharacterOverview import CharacterOverview
-from .WeaponOverview import WeaponOverview
-from .ArtifactOverview import ArtifactOverview
+from Graphics.Container import Container
+from Graphics.TextStyles.StarRatingText import StarRatingText
 from Entity.Character.Character import Character
 from Entity.Weapon.Weapon import Weapon
 from Entity.Artifact.Artifact import Artifact
 from .InventoryStates import InventoryStates
 from Entity.Enemy.Enemy import Enemy
 from utils.Event import Event
+from .MoneyUpgradeUI import MoneyUpgradeUI
 
 
 class Inventory(Entity):
@@ -173,12 +175,133 @@ class Inventory(Entity):
         self.state = InventoryStates.entity_overview
         self.page = 0
         self.clear_listing()
+        self.current_focused_entity = Container(parent=self)
+        entity_picture = Entity(
+            model=Quad(0.1),
+            texture=entity.texture,
+            position=(0.3, 0.3),
+            scale=(0.3, 0.3),
+            parent=self.current_focused_entity
+        )
+
+        entity_rating = StarRatingText(
+            entity.star_rating,
+            origin=(0.5, 0),
+            position=(0.5, -0.6),
+            scale=(6, 6),
+            parent=entity_picture
+        )
+
+        entity_name = Text(
+            entity.name,
+            origin=(0.5, 0),
+            position=(0.5, -0.7),
+            scale=(6, 6),
+            parent=entity_picture
+        )
+
+        entity_experience = ExperienceOverview(entity, parent=entity_picture)
+
         if isinstance(entity, Character):
-            self.current_focused_entity = CharacterOverview(entity, parent=self)
+            entity_description = Text(
+                entity.description,
+                origin=(0.5, 0.5),
+                position=(0.5, -0.9),
+                scale=(4, 4),
+                parent=entity_picture
+            )
+            entity_description.wordwrap = 30
+
+            entity_stats = Text(
+                entity.stats,
+                position=(-0.6, 0),
+                origin=(0.5, 0),
+                scale=(4, 4),
+                parent=entity_picture
+            )
+
+            entity_equip_button = Button(
+                "Equip",
+                position=(0, -0.4),
+                scale=(0.2, 0.1),
+                parent=entity_picture
+            )
+            equip_on_click = Event('onClick', 0)
+            equip_on_click += lambda: Game.user.equip_character(entity)
+            equip_on_click += lambda: update_data(entity)
+            equip_on_click += entity_equip_button.disable
+            entity_equip_button.disable()
+            entity_equip_button.on_click = equip_on_click
+
+            if Game.user.get_equipped_character() != entity:
+                entity_equip_button.enable()
+
+            def update_data():
+                entity_stats.text = entity.stats
+                entity_experience.text = f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''} {int(entity.experience.xp)}/{entity.experience.get_xp_required(entity.star_rating)}xp"
+
+            money_upgrade_ui = MoneyUpgradeUI(
+                entity,
+                update_data,
+                position=(0, -2),
+                parent=entity_picture
+            )
+
+            if entity.weapon:
+                entity_weapon = EntityIcon(
+                    entity.weapon,
+                    origin=(-0.5, 0),
+                    position=(-0.4, 0.3),
+                    parent=self.current_focused_entity
+                )
+            else:
+                entity_weapon = BlankWeapon(
+                    origin=(0, 0),
+                    position=(-0.4, 0.3),
+                    parent=self.current_focused_entity
+                )
+
+            weapon_text = Text(
+                "Weapon",
+                position=(0, 0.7),
+                origin=(0, 0),
+                scale=(8, 8),
+                parent=entity_weapon
+            )
+
         if isinstance(entity, Weapon):
-            self.current_focused_entity = WeaponOverview(entity, parent=self)
+            def update_data():
+                entity_experience.text = f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''} {int(entity.experience.xp)}/{entity.experience.get_xp_required(entity.star_rating)}xp"
+
+            stats_text = f"base attack: {entity.base_attack} damage\n" \
+                         f"attack speed: {entity.base_speed} seconds\n" \
+                         f"range: {entity.range}\n"
+
+            entity_stats = Text(
+                stats_text,
+                position=(-0.6, 0),
+                origin=(0.5, 0),
+                scale=(4, 4),
+                parent=entity_picture
+            )
+
+            money_upgrade_ui = MoneyUpgradeUI(
+                entity,
+                update_data,
+                position=(0, -2),
+                parent=entity_picture
+            )
+
         if isinstance(entity, Artifact):
-            self.current_focused_entity = ArtifactOverview(entity, parent=self)
+            stats_text = f"main attribute: {entity.main_attribute}\n"
+
+            entity_stats = Text(
+                stats_text,
+                position=(-0.6, 0),
+                origin=(0.5, 0),
+                scale=(4, 4),
+                parent=entity_picture
+            )
 
     def update(self):
         self.money.text = f"${format(int(Game.user.user_data.money), ',')}"

@@ -11,6 +11,10 @@ class Knife(Weapon):
         return "Knife"
 
     @property
+    def star_rating(self) -> int:
+        return 1
+
+    @property
     def base_attack(self) -> int:
         return 10
 
@@ -27,7 +31,7 @@ class Knife(Weapon):
         return "Knife"
 
     @property
-    def weapon_texture(self) -> str:
+    def texture(self) -> str:
         return "Textures/knife.png"
 
     def attack_process(self, direction):
