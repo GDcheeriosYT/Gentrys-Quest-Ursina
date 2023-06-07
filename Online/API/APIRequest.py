@@ -1,7 +1,7 @@
 from ursina import *
 import traceback
 
-from Overlays.NoficationsManager import NotificationManager
+from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 
 

@@ -3,7 +3,7 @@ import os
 import json
 
 from User.User import User
-from Overlays.NoficationsManager import NotificationManager
+from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 from .GuestElement import GuestElement
 

@@ -11,18 +11,11 @@ class NotificationManager:
     @staticmethod
     def add_nofication(notification: Notification):
         NotificationManager.notifications.append(notification)
-        y = 0.55 - len(NotificationManager.notifications) * 0.12
-        notification.animate_position(
-            (1, y, -5),
-            duration=2,
-            curve=in_expo
-        )
+        y = 0.5 - len(NotificationManager.notifications) * 0.04
 
-        invoke(lambda: notification.animate_position(
-            (1.5, y, -5),
-            duration=2,
-            curve=out_expo
-        ), delay=5)
-#
+        notification.fade_in(1, 0.2)
+        notification.y = y
+
+        invoke(lambda: notification.fade_out(0, 1), delay=5)
         destroy(notification, 7)
         invoke(lambda: NotificationManager.notifications.pop(0), delay=7)

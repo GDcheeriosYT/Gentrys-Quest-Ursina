@@ -6,7 +6,7 @@ from ..GameUnit import GameUnit
 from typing import Union
 from ..EntityOverHead import EntityOverhead
 from Overlays.Notification import Notification
-from Overlays.NoficationsManager import NotificationManager
+from Overlays.NotificationsManager import NotificationManager
 from Content.Enemies.TestEnemy import TestEnemy
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping

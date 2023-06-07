@@ -5,12 +5,12 @@ class Notification(Text):
     def __init__(self, text: str, color: Color = rgb(17, 17, 17)):
         super().__init__(
             text,
-            position=(1.5, 0.5, -5),
-            origin=(0.8, 0.5),
+            position=(0.5, 0.5, -5),
+            origin=(0.6, 0.5),
+            color=color,
             parent=camera.ui,
         )
-
-        self.create_background(padding=self.size*2, radius=self.size, color=color)
+        self.fade_out(0, 0)
 
     def disappear(self) -> None:
         self.fade_out(0, 1)

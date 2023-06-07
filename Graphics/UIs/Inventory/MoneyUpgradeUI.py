@@ -2,7 +2,7 @@ from ursina import *
 from ursina.prefabs.input_field import InputField
 
 import Game
-from Overlays.NoficationsManager import NotificationManager
+from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 
 

@@ -11,6 +11,7 @@ fullscreen = True
 server = "https://gdcheerios.com"
 debug = False
 extra_ui_info = True
+discord_presence = False
 random_pitch_range = (0.7, 1.3)
 local_dev_branch = False
 fade_time = 0.6

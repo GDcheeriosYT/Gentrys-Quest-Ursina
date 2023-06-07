@@ -3,7 +3,7 @@ from typing import List
 from Entity.Character.Character import Character
 from Entity.Artifact.Artifact import Artifact
 from Entity.Weapon.Weapon import Weapon
-from Overlays.NoficationsManager import NotificationManager
+from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 from IO.DataLoader import DataLoader
 import json
