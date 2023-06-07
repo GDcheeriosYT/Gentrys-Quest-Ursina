@@ -54,6 +54,7 @@ class MainMenu(Screen):
         self.title.disable()
         self.play_button.disable()
         self.settings_button.disable()
+        self.settings_button.on_click = lambda: Game.change_state(GameStates.settings)
         self.version.disable()
         self.music.disable()
         self.play_button.on_click = self.play
@@ -64,10 +65,6 @@ class MainMenu(Screen):
     @property
     def name(self) -> str:
         return "Main Menu"
-
-    @property
-    def allow_back(self) -> bool:
-        return False
 
     @property
     def fades(self) -> bool:

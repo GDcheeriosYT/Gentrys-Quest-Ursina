@@ -8,6 +8,7 @@ hide_fps = False
 borderless = False
 fullscreen = True
 server = "https://gdcheerios.com"
+debug = False
 extra_ui_info = True
 random_pitch_range = (0.7, 1.3)
 local_dev_branch = False

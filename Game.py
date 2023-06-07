@@ -5,7 +5,7 @@ state = GameStates.intro
 state_affected = False
 user = None
 intro_music = None
-notifications = NotificationManager
+notification_manager = NotificationManager
 
 
 def change_state(new_state: GameStates):
