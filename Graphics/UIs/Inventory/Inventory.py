@@ -46,7 +46,6 @@ class Inventory(Entity):
 
         self.page = 0  # page counter
 
-        self.selected_entity = None  # tracker for single entity selection
         self.selected_entities = []  # tracker for entity selections
 
         self.page_text = Text(
@@ -81,25 +80,38 @@ class Inventory(Entity):
             position=(-0.35, 0.65),
             parent=self
         )
-        self._characters_button.on_click = lambda: self.show_entity_listing("characters", True)
+        cevent = Event("cEvent", 0)
+        cevent += lambda: self.set_state(InventoryStates.listing)
+        cevent += lambda: self.show_entity_listing("characters", True)
+        self._characters_button.on_click = cevent
 
         self._artifacts_button = InvButton(
             "Artifacts",
             position=(0, 0.65),
             parent=self
         )
-        self._artifacts_button.on_click = lambda: self.show_entity_listing("artifacts", True)
+        aevent = Event("aEvent", 0)
+        aevent += lambda: self.set_state(InventoryStates.listing)
+        aevent += lambda: self.show_entity_listing("artifacts", True)
+        self._artifacts_button.on_click = aevent
 
         self._weapons_button = InvButton(
             "Weapons",
             position=(0.35, 0.65),
             parent=self
         )
+        wevent = Event("wEvent", 0)
         self._weapons_button.on_click = lambda: self.show_entity_listing("weapons", True)
 
         # buttons for managing display of each entity types
 
         self.show_entity_listing("characters")  # show the default entity type
+
+
+
+
+    def set_state(self, state: InventoryStates):  # noqa
+        Inventory.state = state
 
 
 
@@ -121,7 +133,6 @@ class Inventory(Entity):
         Lists entities in the inventory.
         :param entity_type: The type of entity needed to be listed.
         :param clear_page: Whether the page should be cleared or not.
-        :param single_selection: Whether you can select multiple entities.
         """
 
         self.clear_listing()
@@ -153,7 +164,6 @@ class Inventory(Entity):
 
         # determine the entity category to display
 
-
         for entity in self.get_entities(catagory, self.page):
             entity_icon = EntityIcon(
                 entity,
@@ -161,7 +171,8 @@ class Inventory(Entity):
                 color=color.clear,
                 parent=self
             )
-            entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
+            if Inventory.state == InventoryStates.listing:
+                entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
             self.current_page_listings.append(entity_icon)
             tracker += 1
             if tracker % 3 == 0:
@@ -226,6 +237,14 @@ class Inventory(Entity):
             current_index += 1
 
         return entity_list
+
+
+
+
+    def swap_weapon(self, entity: Character):
+        self.show_entity_listing("weapons")
+        weapon = result_from_somewhere
+        entity.swap_weapon(weapon)
 
 
 
