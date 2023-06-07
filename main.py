@@ -4,10 +4,20 @@ import Game
 from GameStates import GameStates
 
 
+# User
+from User.User import User
+
 # graphics
 
 # Entity
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
+from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
+from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
+from Content.Weapons.Knife.Knife import Knife
+from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
+from Content.Characters.PeteMarks.PeteMarks import PeteMarks
+from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
+from Content.ArtifactFamilies.TestFamily.TestArtifact import TestArtifact
 
 # screens
 from Screens.ScreenManager import ScreenManager
@@ -24,6 +34,7 @@ import argparse
 
 # initialization
 app = Ursina()
+# application.asset_folder = os.path.dirname(__file__)
 app.setBackgroundColor(0, 0, 0)
 if os.path.isdir('Data'):
     pass
@@ -55,13 +66,32 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-if GameConfiguration.play_intro:
-    Game.state = GameStates.intro
-    num = 0
-else:
-    Game.state = GameStates.mainMenu
-    num = 1
+Game.user = User("Cool Guy", True)
 
-ScreenManager(app).transitions = num
+Game.user.add_money(100000)
+Game.user.add_weapon(BraydensOsuPen())
+Game.user.add_weapon(Knife())
+
+starter_character = BraydenMesserschmidt()
+
+for i in range(15):
+    artifact = TestArtifact()
+    Game.user.add_artifact(artifact)
+
+# starter_character.artifacts[0] = artifact
+
+Game.user.equip_character(starter_character)
+
+Game.user.add_character(starter_character)
+
+Game.change_state(GameStates.gameplay)
+
+
+# if GameConfiguration.play_intro:
+#     Game.state = GameStates.intro
+# else:
+#     Game.state = GameStates.mainMenu
+
+ScreenManager(app)
 
 app.run()

@@ -12,7 +12,7 @@ from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
-from .Skill.Skill import Skill
+from Entity.Artifact.Artifact import Artifact
 
 
 class Character(GameUnit):
@@ -21,8 +21,17 @@ class Character(GameUnit):
             texture_mapping=texture_mapping,
             audio_mapping=audio_mapping
         )
+
+        self.texture = self.texture_mapping.get_idle_texture()
+
         self._is_equipped = False
-        self.artifacts = []
+        self.artifacts = [
+            None,
+            None,
+            None,
+            None,
+            None
+        ]
 
         self.secondary = None
         self.utility = None
@@ -33,6 +42,10 @@ class Character(GameUnit):
     @property
     def star_rating(self) -> int:
         raise NotImplementedError
+
+    @property
+    def description(self) -> str:
+        return ""
 
     @property
     def is_equipped(self) -> bool:
@@ -70,11 +83,23 @@ class Character(GameUnit):
         # attack speed stats
         self._stats.attack_speed.set_default_value(self.stats.speed.points * 0.5)
 
+        # artifacts
+        self.stats.reset_additional_stats()
+        for artifact in self.artifacts:
+            if artifact:
+                # main attribute
+                value = artifact.main_attribute.value
+                if artifact.main_attribute.is_percent:
+                    self.stats.get_stat_by_string(artifact.main_attribute.stat).boost_stat(value)
+                else:
+                    self.stats.get_stat_by_string(artifact.main_attribute.stat).add_value(value)
+
         # event
         self.on_update_stats()
 
     def update(self):
-        camera.position = (self.x, self.y, -20)
+        if self.spawned:
+            camera.position = (self.x, self.y, -20)
         if held_keys["-"]:
             if self.experience.level > 1:
                 self.experience.level -= 1
@@ -88,8 +113,8 @@ class Character(GameUnit):
             self.damage(50)
 
         self.direction = Vec3(
-            self.up * (held_keys['up arrow'] - held_keys['down arrow'])
-            + self.right * (held_keys['right arrow'] - held_keys['left arrow'])
+            self.up * (held_keys['w'] - held_keys['s'])
+            + self.right * (held_keys['d'] - held_keys['a'])
         ).normalized()  # get the direction we're trying to walk in.
         if self.direction == 0:
             self.set_idle_texture()
@@ -100,32 +125,58 @@ class Character(GameUnit):
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()
 
-        if held_keys["1"] and self._weapon:
+        if held_keys["left mouse"] and self._weapon:
             if self._weapon.is_ready():
                 self.attack()
 
-        if held_keys["2"] and self.secondary.is_ready:
+        if held_keys["right mouse"] and self.secondary.is_ready and not self.secondary.disabled:
             self.secondary.activate()
 
-        if held_keys["3"] and self.utility.is_ready:
+        if held_keys["shift"] and self.utility.is_ready and not self.ultimate.disabled:
             self.utility.activate()
 
-        if held_keys["4"] and self.ultimate.is_ready:
+        if held_keys["r"] and self.ultimate.is_ready and not self.ultimate.disabled:
             self.ultimate.activate()
 
-        self.secondary.update_time()
-        self.utility.update_time()
-        self.ultimate.update_time()
+        try:
+            self.secondary.update_time()
+        except:
+            pass
+        try:
+            self.utility.update_time()
+        except:
+            pass
+        try:
+            self.ultimate.update_time()
+        except:
+            pass
+
+    def swap_artifact(self, artifact, index: int):
+        if 1 <= index <= 5:
+            if self.artifacts[index - 1]:
+                swapped_artifact = self.artifacts[index - 1]
+                self.artifacts[index - 1] = artifact
+                self.update_stats()
+                return swapped_artifact
+            else:
+                self.artifacts[index - 1] = artifact
+                self.update_stats()
 
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)
         Game.user.add_money(loot.money)
+
+    def disable_skills(self):
+        self.secondary.disable()
+        self.utility.disable()
+        self.ultimate.disable()
 
     def input(self, key):
         if key == "p":
             test_enemy = TestEnemy()
             test_enemy.on_death += lambda: self.manage_loot(test_enemy.get_loot())
             test_enemy.position = self.position
-            test_enemy.y += 5
+            test_enemy.y += random.randint(-7, 7)
+            test_enemy.x += random.randint(-7, 7)
             test_enemy.follow_entity(self)
             test_enemy.spawn()

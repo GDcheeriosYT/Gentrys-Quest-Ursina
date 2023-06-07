@@ -13,6 +13,7 @@ class Skill:
         self.activated = False
         self.is_ready = True
         self.percentage = 1
+        self.disabled = False
 
     @property
     def name(self) -> str:
@@ -43,6 +44,12 @@ class Skill:
         self.is_ready = False
         self._time_started = time.time()
         self.on_deactivate()
+
+    def disable(self):
+        self.disabled = True
+
+    def enable(self):
+        self.disabled = False
 
     def update_time(self):
         time_elapsed = time.time() - self._time_started

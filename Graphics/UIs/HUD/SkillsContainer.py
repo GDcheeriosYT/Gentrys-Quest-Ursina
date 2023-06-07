@@ -13,6 +13,7 @@ class SkillsContainer(Container):
             scale=(0.7, 0.5)
         )
         self.primary_info = Text("ready", position=(-0.5, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.primary_key = Text("M1", position=(-0.5, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.primary_box = Entity(
             model='quad',
             position=(-0.5, 0),
@@ -20,6 +21,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.secondary_info = Text("ready", position=(-0.25, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.secondary_key = Text("M2", position=(-0.25, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.secondary_box = Entity(
             model='quad',
             position=(-0.25, 0),
@@ -27,6 +29,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.utility_info = Text("ready", position=(0, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.utility_key = Text("Shift", position=(0, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.utility_box = Entity(
             model='quad',
             position=(0, 0),
@@ -34,6 +37,7 @@ class SkillsContainer(Container):
             parent=self
         )
         self.ultimate_info = Text("ready", position=(0.25, text_height), scale=text_size, origin=(0, 0), parent=self)
+        self.ultimate_key = Text("R", position=(0.25, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.ultimate_box = Entity(
             model='quad',
             position=(0.25, 0),
@@ -42,11 +46,23 @@ class SkillsContainer(Container):
         )
 
     def update(self):
-        self.primary_box.texture = self._player.weapon.texture
-        self.primary_info.text = "ready" if self._player.weapon.is_ready() else "not ready"
-        self.secondary_box.texture = self._player.secondary.icon
-        self.secondary_info.text = "ready" if self._player.secondary.is_ready else f"{int(self._player.secondary.percentage*100)}%"
-        self.utility_box.texture = self._player.utility.icon
-        self.utility_info.text = "ready" if self._player.utility.is_ready else f"{int(self._player.utility.percentage*100)}%"
-        self.ultimate_box.texture = self._player.ultimate.icon
-        self.ultimate_info.text = "ready" if self._player.ultimate.is_ready else f"{int(self._player.ultimate.percentage*100)}%"
+        try:
+            self.primary_box.texture = self._player.weapon.texture
+            self.primary_info.text = "ready" if self._player.weapon.is_ready() else "not ready"
+        except:
+            pass
+        try:
+            self.secondary_box.texture = self._player.secondary.icon
+            self.secondary_info.text = "ready" if self._player.secondary.is_ready else f"{int(self._player.secondary.percentage*100)}%"
+        except:
+            pass
+        try:
+            self.utility_box.texture = self._player.utility.icon
+            self.utility_info.text = "ready" if self._player.utility.is_ready else f"{int(self._player.utility.percentage*100)}%"
+        except:
+            pass
+        try:
+            self.ultimate_box.texture = self._player.ultimate.icon
+            self.ultimate_info.text = "ready" if self._player.ultimate.is_ready else f"{int(self._player.ultimate.percentage*100)}%"
+        except:
+            pass

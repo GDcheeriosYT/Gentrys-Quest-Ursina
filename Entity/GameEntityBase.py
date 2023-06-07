@@ -45,6 +45,7 @@ class GameEntityBase(Entity):
 
     def level_up(self):
         self.experience.level += 1
+        self.experience.xp = 0
         self.on_level_up()
 
     def update_stats(self):

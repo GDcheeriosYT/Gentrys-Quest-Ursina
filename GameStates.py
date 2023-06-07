@@ -6,3 +6,4 @@ class GameStates(Enum):
     mainMenu = 1
     tutorial = 2
     settings = 3
+    gameplay = 4

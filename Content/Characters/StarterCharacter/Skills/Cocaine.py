@@ -14,8 +14,8 @@ class Cocaine(Skill):
     def _on_activate(self):
         self.character.stats.speed.add_value(2)
         self.character.stats.attack_speed.add_value(0.7)
-        invoke(lambda: self.character.stats.speed.remove_value(2), delay=7)
-        invoke(lambda: self.character.stats.attack_speed.remove_value(0.7), delay=7)
+        invoke(lambda: self.character.stats.speed.remove_value(2), delay=4)
+        invoke(lambda: self.character.stats.attack_speed.remove_value(0.7), delay=4)
         self.deactivate()
 
     @property
@@ -24,11 +24,11 @@ class Cocaine(Skill):
 
     @property
     def description(self) -> str:
-        return '''
-        increases speed by 2 and attack speed by 0.7 
-        cooldown 15 seconds
+        return f'''
+        increases speed by 2 and attack speed by 0.7 for 4 seconds
+        cooldown {self.cooldown} seconds
         '''
 
     @property
     def cooldown(self) -> int:
-        return 30
+        return 15

@@ -15,14 +15,21 @@ class Enemy(GameUnit):
             texture_mapping,
             audio_mapping
         )
+        self.set_idle_texture()
 
         self._follow_entity = None
 
         self.on_death += lambda: destroy(self)
+        self.on_death += lambda: destroy(self.weapon)
         self.on_level_up += lambda: self._overhead.change_name(self.name + f"\nlevel {self.experience.level}")
+
+    @property
+    def attack_delay(self) -> Union[int, float]:
+        return 1
 
     def follow_entity(self, entity: Entity):
         self._follow_entity = entity
+        invoke(self.attack_process, delay=self.attack_delay)
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -67,6 +74,10 @@ class Enemy(GameUnit):
             money
         )
 
+    def attack_process(self):
+        self.attack(self.direction)
+        invoke(self.attack_process, delay=self.attack_delay)
+
     def update(self):
         self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
         origin = self.world_position
@@ -75,14 +86,6 @@ class Enemy(GameUnit):
             if self.can_move:
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()
-        else:
-            if self.can_move:
-                try:
-                    if not isinstance(hit_info.entity, Enemy):
-                        hit_info.entity.damage(self._stats.attack.get_value())
-
-                except AttributeError:
-                    pass
 
         if held_keys['o']:
             self.damage(self.experience.level * 50)

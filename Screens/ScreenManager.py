@@ -5,6 +5,7 @@ from .MainMenu.MainMenu import MainMenu
 from .Intro.Intro import Intro
 from .Tutorial.Tutorial import Tutorial
 from .Settings.Settings import Settings
+from .Gameplay.Gameplay import Gameplay
 from Graphics.FadeScreen import FadeScreen
 from Graphics.Overlays.DebugOverlay import DebugOverlay
 
@@ -25,6 +26,7 @@ class ScreenManager(Entity):
         self.assign_screen(MainMenu)
         self.assign_screen(Tutorial)
         self.assign_screen(Settings)
+        self.assign_screen(Gameplay)
 
         self.current_screen = None
 
@@ -44,7 +46,7 @@ class ScreenManager(Entity):
     def change_screen(self, screen_index: int):
         self.current_screen = screen_index
         self.transition(fade=True) if self.screens[self.current_screen].fades else self.transition(fade=False)
-        self.screens[screen_index].show()
+        invoke(self.screens[screen_index].show, delay=GameConfiguration.fade_time if self.screens[self.current_screen].fades else 0)
         Game.state_affected = False
 
     def screen_disable_sequence(self):

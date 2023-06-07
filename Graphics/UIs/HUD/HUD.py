@@ -25,6 +25,16 @@ class HUD(Container):
     def update_stats_container(self):
         self._stats_container.update_data(self.player)
 
+    def hide_elements(self):
+        self._status_bars.disable()
+        self._stats_container.disable()
+        self._skills_container.disable()
+
+    def show_elements(self):
+        self._status_bars.enable()
+        self._stats_container.enable()
+        self._skills_container.enable()
+
     def end(self):
         destroy(self)
 

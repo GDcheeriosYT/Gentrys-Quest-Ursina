@@ -11,4 +11,4 @@ class Experience:
             return self.xp
 
     def __repr__(self):
-        return f"{self.level}{f'/{self.limit}' if self.limit else ''} {self.xp}xp"
+        return f"level {self.level}{f'/{self.limit}' if self.limit else ''} {self.xp}xp"

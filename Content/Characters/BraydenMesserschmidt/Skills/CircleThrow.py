@@ -1,3 +1,4 @@
+import GameConfiguration
 from Entity.Character.Skill.Skill import Skill
 from ursina import *
 
@@ -6,7 +7,7 @@ class CircleThrow(Skill):
     def __init__(self):
         super().__init__()
         self.on_activate += self._on_activate
-        self.on_deactivate += self._on_deactivate
+        self.on_activate += lambda: Audio("Audio/Secondary.m4a", volume=GameConfiguration.volume)
 
     @property
     def name(self) -> str:
@@ -27,12 +28,12 @@ class CircleThrow(Skill):
         return "Textures/Circle.png"
 
     def _on_activate(self):
-        self.deactivate()
         self._circle = Entity(
             model='quad',
             texture='Textures/Circle.png',
         )
-        invoke(self.deactivate, 2)
+        self.deactivate()
+        invoke(self._on_deactivate, delay=2)
 
     def _on_deactivate(self):
         destroy(self._circle)

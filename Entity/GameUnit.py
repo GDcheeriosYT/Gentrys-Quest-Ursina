@@ -30,6 +30,7 @@ class GameUnit(GameEntityBase):
         self.direction = Vec3(0, 0, 0).normalized()
         self.dead = False
         self.can_move = True
+        self.spawned = False
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -39,6 +40,7 @@ class GameUnit(GameEntityBase):
         self.on_move = Event("OnMove", 0)
         self.on_spawn = Event("OnSpawn", 0)
         self.on_update_stats = Event("OnUpdateStats", 0)
+        self.on_swap_weapon = Event("OnSwapWeapon", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
@@ -85,6 +87,7 @@ class GameUnit(GameEntityBase):
 
     def damage(self, amount):
         self._stats.health.current_value -= amount if amount > 0 else 0
+        # self.set_damage_texture()
         self.on_damage()
         if self.stats.health.current_value <= 0:
             self.die()
@@ -96,13 +99,22 @@ class GameUnit(GameEntityBase):
 
         self._weapon = weapon
         self._weapon.equip(self)
-        return old_weapon
+        if old_weapon:
+            return old_weapon
 
-    def attack(self):
+        self.on_swap_weapon()
+
+    def attack(self, direction=None):
         if self._weapon:
             if self._weapon.is_ready():
+                if not direction:
+                    mouse_pos = mouse.position
+                    direction = math.atan2(mouse_pos[1], mouse_pos[0]) * (180 / 3.14)
+                else:
+                    direction = math.atan2(direction[1], direction[0]) * (180 / 3.14)
+
                 self.on_attack()
-                self.weapon.attack()
+                self.weapon.attack(direction)
 
     def heal(self, amount):
         self.stats.health.current_value += amount
@@ -111,6 +123,7 @@ class GameUnit(GameEntityBase):
     def die(self):
         self.disable()
         self.dead = True
+        self.spawned = False
         self.on_death()
 
     def move_left(self):
@@ -132,12 +145,21 @@ class GameUnit(GameEntityBase):
     def spawn(self) -> None:
         self.enable()
         self.on_spawn()
+        self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
-        self._overhead.entity_name.text = self.name
         self.dead = False
+        self.spawned = True
+
+    def despawn(self):
+        self.disable()
+        self.dead = False
+        self.spawned = False
 
     def get_loot(self) -> Loot:
         return Loot()
+
+    def toggle_movement(self):
+        self.can_move = not self.can_move
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)

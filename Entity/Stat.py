@@ -15,17 +15,18 @@ class Stat:
         self._value = self._minimum_value + self._default_value + self._additional_value
         self.current_value = self._value
 
-    def get_name(self):
+    @property
+    def name(self) -> str:
         return self._name
 
     def get_value(self):
-        return self._value
+        return round(self._value, 2)
 
     def get_default_value(self):
-        return self._default_value
+        return round(self._default_value, 2)
 
     def get_additional_value(self):
-        return self._additional_value
+        return round(self._additional_value, 2)
 
     def set_name(self, name):
         self._name = name
@@ -62,6 +63,6 @@ class Stat:
 
     def __repr__(self):
         if self._additional_value > 0:
-            return f"{self._name}: {self._minimum_value + self._default_value} + {self._additional_value} ({self._value})"
+            return f"{self._name}: {round(self._minimum_value + self._default_value, 2)} + {round(self._additional_value, 2)} ({self._value})"
         else:
-            return f"{self._name}: {self._value}"
+            return f"{self._name}: {round(self._value, 2)}"

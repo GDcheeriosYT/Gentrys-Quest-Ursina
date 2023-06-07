@@ -13,14 +13,14 @@ class TheSecondBoofHit(Skill):
 
     @property
     def description(self) -> str:
-        return '''
+        return f'''
         Heals 10% Health
-        cooldown 15 seconds
+        cooldown {self.cooldown} seconds
         '''
 
     @property
     def cooldown(self) -> int:
-        return 15
+        return 7
 
     @property
     def icon(self) -> str:

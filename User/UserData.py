@@ -1,7 +1,10 @@
+from ursina import *
 from typing import List
 from Entity.Character.Character import Character
 from Entity.Artifact.Artifact import Artifact
 from Entity.Weapon.Weapon import Weapon
+from Overlays.NoficationsManager import NotificationManager
+from Overlays.Notification import Notification
 from IO.DataLoader import DataLoader
 import json
 
@@ -13,12 +16,14 @@ class UserData:
             self._characters = DataLoader.parse_characters(json_data["inventory"]["characters"])
             self._artifacts = DataLoader.parse_characters(json_data["inventory"]["artifacts"])
             self._weapons = DataLoader.parse_characters(json_data["inventory"]["weapons"])
+            self._items = []
             self._equipped_character = None
             self._money = json_data["inventory"]["money"]
             self._startup_amount = json_data["startup amount"]
         else:
             self._characters = []
             self._artifacts = []
+            self._items = []
             self._equipped_character = None
             self._weapons = []
             self._money = 0
@@ -37,6 +42,10 @@ class UserData:
         return self._weapons
 
     @property
+    def items(self):
+        return self._items
+
+    @property
     def money(self):
         return self._money
 
@@ -49,16 +58,22 @@ class UserData:
         return self._equipped_character
 
     def add_character(self, character: Character):
+        NotificationManager.add_nofication(Notification(f"obtained {character.star_rating} star {character.name} character", color=color.blue))
         self._characters.append(character)
 
     def add_artifact(self, artifact: Artifact):
+        NotificationManager.add_nofication(Notification(f"obtained {artifact.star_rating} star {artifact.name} artifact", color=color.blue))
         self._artifacts.append(artifact)
 
     def add_weapon(self, weapon: Weapon):
+        NotificationManager.add_nofication(Notification(f"obtained {weapon.star_rating} star {weapon.name} weapon", color=color.blue))
         self._weapons.append(weapon)
 
     def add_money(self, money: int):
         self._money += money
+
+    def remove_money(self, money: int):
+        self._money -= money
 
     def equip_character(self, character: Character):
         self._equipped_character = character
