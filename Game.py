@@ -1,11 +1,14 @@
+import GameConfiguration
 from Overlays.NoficationsManager import NotificationManager
 from GameStates import GameStates
 
 state = GameStates.intro
 state_affected = False
+version = "Super Dooper Beta"
 user = None
 intro_music = None
-notifications = NotificationManager
+window = None
+notification_manager = NotificationManager
 
 
 def change_state(new_state: GameStates):

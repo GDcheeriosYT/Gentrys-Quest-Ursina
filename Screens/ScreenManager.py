@@ -4,8 +4,10 @@ import GameConfiguration
 from .MainMenu.MainMenu import MainMenu
 from .Intro.Intro import Intro
 from .Tutorial.Tutorial import Tutorial
+from .Settings.Settings import Settings
 from .Gameplay.Gameplay import Gameplay
 from Graphics.FadeScreen import FadeScreen
+from Graphics.Overlays.DebugOverlay import DebugOverlay
 
 
 class ScreenManager(Entity):
@@ -16,11 +18,14 @@ class ScreenManager(Entity):
 
         self._app = app
 
+        self.debug_overlay = DebugOverlay()
+
         self.screens = []
 
         self.assign_screen(Intro)
         self.assign_screen(MainMenu)
         self.assign_screen(Tutorial)
+        self.assign_screen(Settings)
         self.assign_screen(Gameplay)
 
         self.current_screen = None
