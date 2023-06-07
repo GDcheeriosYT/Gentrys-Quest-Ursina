@@ -26,7 +26,7 @@ class Artifact:
 
         self.on_add_xp = Event('onAddXp', 0)
         self.on_level_up = Event('onLevelUp', 0)
-        self.on_level_up +=
+        self.on_level_up += self.new_attribute_check
 
     @property
     def name(self) -> str:
@@ -78,9 +78,14 @@ class Artifact:
             buff = buff
         else:
             buff = Buff()
+            buff.handle_value(self.star_rating)
 
+        exists = False
         for attribute in self.attributes:
             if attribute.stat == buff.stat:
                 attribute.level_up()
                 attribute.handle_value(self.star_rating)
+                exists = True
 
+        if not exists:
+            self._attributes.append(buff)

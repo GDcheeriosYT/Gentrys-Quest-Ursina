@@ -293,7 +293,11 @@ class Inventory(Entity):
             )
 
         if isinstance(entity, Artifact):
-            stats_text = f"main attribute: {entity.main_attribute}\n"
+            attribute_texts = ""
+            for attribute in entity.attributes:
+                attribute_texts += f"{attribute}\n"
+            stats_text = f"main attribute: {entity.main_attribute}\n" \
+                         f"{attribute_texts}"
 
             entity_stats = Text(
                 stats_text,

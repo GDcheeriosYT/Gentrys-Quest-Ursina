@@ -75,7 +75,6 @@ starter_character = BraydenMesserschmidt()
 
 for i in range(15):
     artifact = TestArtifact()
-    artifact.star_rating = random.randint(1, 5)
     Game.user.add_artifact(artifact)
 
 # starter_character.artifacts[0] = artifact
