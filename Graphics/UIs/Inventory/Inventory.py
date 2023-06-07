@@ -1,7 +1,6 @@
 from ursina import *
 
 import Game
-from .BlankWeapon import BlankWeapon
 from .ExperienceOverview import ExperienceOverview
 from .InvButton import InvButton
 from .EntityIcon import EntityIcon
@@ -17,6 +16,12 @@ from .MoneyUpgradeUI import MoneyUpgradeUI
 
 
 class Inventory(Entity):
+    """
+    An inventory class to handle all the methods for the user's inventory.
+
+    :var state: The state of the inventory.
+    """
+
     state = InventoryStates.listing
 
     def __init__(self):
@@ -27,7 +32,8 @@ class Inventory(Entity):
             position=(0, -0.1),
             parent=camera.ui
         )
-        self.player = Game.user.user_data
+
+        self.player = Game.user.user_data  # grab the user and set as variable
 
         self.money = Text(
             "$",
@@ -36,15 +42,18 @@ class Inventory(Entity):
             scale=(1.2, 1.2),
             color=color.black,
             parent=self,
-        )
+        )  # Text Entity for displaying money
 
-        self.page = 0
+        self.page = 0  # page counter
+
+        self.selected_entity = None  # tracker for single entity selection
+        self.selected_entities = []  # tracker for entity selections
 
         self.page_text = Text(
             str(self.page),
             position=(0, -0.4),
             parent=self
-        )
+        )  # Text Entity to display the current page
 
         self.page_down_button = Button(
             "back",
@@ -61,9 +70,11 @@ class Inventory(Entity):
         )
         self.page_up_button.disable()
 
-        self.current_page_listings = []
+        # Buttons to navigate up and down the pages
 
-        self.current_focused_entity = None
+        self.current_page_listings = []  # keep track of the listings in the current page
+
+        self.current_focused_entity = None  # keep track of the current entity
 
         self._characters_button = InvButton(
             "Characters",
@@ -86,14 +97,33 @@ class Inventory(Entity):
         )
         self._weapons_button.on_click = lambda: self.show_entity_listing("weapons", True)
 
-        self.show_entity_listing("characters")
+        # buttons for managing display of each entity types
 
-    def clear_listing(self):
+        self.show_entity_listing("characters")  # show the default entity type
+
+
+
+
+    def clear_listing(self):  # noqa
+        """
+        Clears the listings.
+        """
+
         for entity in self.current_page_listings:
             destroy(entity)
 
-    def show_entity_listing(self, entity_type, clear_page: bool = False):
-        Inventory.state = InventoryStates.listing
+
+
+
+
+    def show_entity_listing(self, entity_type, clear_page: bool = False):  # noqa
+        """
+        Lists entities in the inventory.
+        :param entity_type: The type of entity needed to be listed.
+        :param clear_page: Whether the page should be cleared or not.
+        :param single_selection: Whether you can select multiple entities.
+        """
+
         self.clear_listing()
         if clear_page:
             self.page = 0
@@ -102,7 +132,7 @@ class Inventory(Entity):
         if self.current_focused_entity:
             destroy(self.current_focused_entity)
 
-        tracker = 0
+        tracker = 0  # column tracker
         y = 0.4
         catagory = None
         if entity_type == "characters":
@@ -121,10 +151,14 @@ class Inventory(Entity):
             self._artifacts_button.color = color.black
             catagory = self.player.weapons
 
+        # determine the entity category to display
+
+
         for entity in self.get_entities(catagory, self.page):
             entity_icon = EntityIcon(
                 entity,
                 position=(-0.3 + (tracker * 0.3), y),
+                color=color.clear,
                 parent=self
             )
             entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
@@ -133,6 +167,8 @@ class Inventory(Entity):
             if tracker % 3 == 0:
                 y -= 0.2
                 tracker = 0
+
+        # display entities in a grid fashion
 
         if self.page > 0:
             self.page_down_button.enable()
@@ -147,17 +183,37 @@ class Inventory(Entity):
         else:
             self.page_up_button.disable()
 
-    def page_up(self, type):
+        # determine if the user can navigate up or down
+
+
+
+
+
+    def page_up(self, type):  # noqa
+        """
+        Goes up a page.
+        :param type: The type of entity listing.
+        """
+
         self.page += 1
         self.page_text.text = str(self.page)
         self.show_entity_listing(type)
 
     def page_down(self, type):
+        """
+        Goes down a page.
+        :param type: The type of entity listing.
+        """
+
         self.page -= 1
         self.page_text.text = str(self.page)
         self.show_entity_listing(type)
 
-    def get_entities(self, list: list, page):
+
+
+
+
+    def get_entities(self, list: list, page):  # noqa
         entity_list = []
         index_start = (page * 12)
         index_end = ((page + 1) * 12)
@@ -171,8 +227,17 @@ class Inventory(Entity):
 
         return entity_list
 
-    def show_entity(self, entity):
-        self.state = InventoryStates.entity_overview
+
+
+
+
+    def show_entity(self, entity):  # noqa
+        """
+        Displays the given entity on the inventory overlay.
+        :param entity: Entity to show
+        """
+
+        Inventory.state = InventoryStates.entity_overview
         self.page = 0
         self.clear_listing()
         self.current_focused_entity = Container(parent=self)
@@ -247,19 +312,12 @@ class Inventory(Entity):
                 parent=entity_picture
             )
 
-            if entity.weapon:
-                entity_weapon = EntityIcon(
-                    entity.weapon,
-                    origin=(-0.5, 0),
-                    position=(-0.4, 0.3),
-                    parent=self.current_focused_entity
-                )
-            else:
-                entity_weapon = BlankWeapon(
-                    origin=(0, 0),
-                    position=(-0.4, 0.3),
-                    parent=self.current_focused_entity
-                )
+            entity_weapon = EntityIcon(
+                entity.weapon,
+                origin=(-0.5, 0),
+                position=(-0.4, 0.3),
+                parent=self.current_focused_entity
+            )
 
             weapon_text = Text(
                 "Weapon",
@@ -268,6 +326,9 @@ class Inventory(Entity):
                 scale=(8, 8),
                 parent=entity_weapon
             )
+
+        def weapon_manage_click():
+            self.choose_item("weapon")
 
         if isinstance(entity, Weapon):
             def update_data():
@@ -307,7 +368,29 @@ class Inventory(Entity):
                 parent=entity_picture
             )
 
-    def update(self):
+
+
+
+    def choose_item(self, category: str):  # noqa
+        """
+        Choose an item from inventory to be returned.
+
+        :param category: The category of item to choose.
+        :return: Chosen Entity
+        """
+
+        Inventory.state = InventoryStates.selection
+        self.show_entity_listing(category)
+
+
+
+
+
+
+    def update(self):  # noqa
+        """
+        Every frame update the money display and display based on inventory state.
+        """
         self.money.text = f"${format(int(Game.user.user_data.money), ',')}"
         if Inventory.state == InventoryStates.listing:
             pass
