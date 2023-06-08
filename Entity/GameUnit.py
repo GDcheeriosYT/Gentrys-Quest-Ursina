@@ -51,6 +51,7 @@ class GameUnit(GameEntityBase):
         self.on_damage += self._overhead.update_data
         self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
         self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.on_swap_weapon += self.update_stats
         # self.on_move += self._texture_mapping.play_walk_animation(self)
 
         # equips

@@ -29,13 +29,14 @@ class Inventory(Entity):
         super().__init__(
             model=Quad(radius=0.06),
             scale=(1.2, 0.75),
-            color=rgb(117, 117, 117, 200),
+            color=rgb(117, 117, 117, 255),
             position=(0, -0.1),
             parent=camera.ui
         )
 
         self.player = Game.user.user_data  # grab the user and set as variable
         self.selected_entity = None # tracker for character
+        self.selected_index = None # tracker for artifact index
 
         self.money = Text(
             "$",
@@ -144,6 +145,12 @@ class Inventory(Entity):
             if old_weapon:
                 self.player.add_weapon(old_weapon)
 
+        def swap_artifact(entity: Character, artifact: Artifact, index: int):
+            old_artifact = entity.artifacts[index]
+            self.player.artifacts.remove(artifact)
+            entity.set_artifact(artifact, index)
+            if old_artifact:
+                self.player.add_artifact(old_artifact)
 
         self.clear_listing()
         if clear_page:
@@ -178,7 +185,6 @@ class Inventory(Entity):
             entity_icon = EntityIcon(
                 entity,
                 position=(-0.3 + (tracker * 0.3), y),
-                color=color.clear,
                 parent=self
             )
             if Inventory.state == InventoryStates.listing:
@@ -188,6 +194,12 @@ class Inventory(Entity):
                 if entity_type == "weapons":
                     click_event = Event("clickEvent", 0)
                     click_event += lambda entity=entity: swap_weapon(self.selected_entity, entity)
+                    click_event += lambda: self.show_entity(self.selected_entity)
+                    entity_icon.on_click = click_event
+
+                if entity_type == "artifacts":
+                    click_event = Event("clickEvent", 0)
+                    click_event += lambda entity=entity: swap_artifact(self.selected_entity, entity, self.selected_index)
                     click_event += lambda: self.show_entity(self.selected_entity)
                     entity_icon.on_click = click_event
 
@@ -320,7 +332,7 @@ class Inventory(Entity):
                 entity.stats,
                 position=(-0.6, 0),
                 origin=(0.5, 0),
-                scale=(4, 4),
+                scale=(2.5, 2.5),
                 parent=entity_picture
             )
 
@@ -373,16 +385,83 @@ class Inventory(Entity):
                 parent=entity_weapon
             )
 
-        def weapon_manage_click():
-            self.choose_item("weapon")
+            artifact_icon_scale = (0.12, 0.12)
+            artifact_icon_y = 0.15
+            artifact_icon_change = -0.14
+
+            def create_on_click(icon: Button, artifact_index: int):
+                if not entity.artifacts[artifact_index]:
+                    def on_click_handler():
+                        self.selected_index = artifact_index
+                        self.set_state(InventoryStates.selection)
+                        self.show_entity_listing("artifacts")
+
+                else:
+                    def on_click_handler():
+                        self.selected_index = artifact_index
+                        self.show_entity(entity.artifacts[artifact_index])
+
+                icon.on_click = on_click_handler
+
+            artifact_1_icon = EntityIcon(
+                entity.artifacts[0],
+                origin=(0, 0),
+                scale=artifact_icon_scale,
+                position=(-0.4, artifact_icon_y),
+                parent=self.current_focused_entity
+            )
+            create_on_click(icon=artifact_1_icon, artifact_index=0)
+            artifact_icon_y += artifact_icon_change
+            artifact_2_icon = EntityIcon(
+                entity.artifacts[1],
+                origin=(0, 0),
+                scale=artifact_icon_scale,
+                position=(-0.4, artifact_icon_y),
+                parent=self.current_focused_entity
+            )
+            create_on_click(icon=artifact_2_icon, artifact_index=1)
+            artifact_icon_y += artifact_icon_change
+            artifact_3_icon = EntityIcon(
+                entity.artifacts[2],
+                origin=(0, 0),
+                scale=artifact_icon_scale,
+                position=(-0.4, artifact_icon_y),
+                parent=self.current_focused_entity
+            )
+            create_on_click(icon=artifact_3_icon, artifact_index=2)
+            artifact_icon_y += artifact_icon_change
+            artifact_4_icon = EntityIcon(
+                entity.artifacts[3],
+                origin=(0, 0),
+                scale=artifact_icon_scale,
+                position=(-0.4, artifact_icon_y),
+                parent=self.current_focused_entity
+            )
+            create_on_click(icon=artifact_4_icon, artifact_index=3)
+            artifact_icon_y += artifact_icon_change
+            artifact_5_icon = EntityIcon(
+                entity.artifacts[4],
+                origin=(0, 0),
+                scale=artifact_icon_scale,
+                position=(-0.4, artifact_icon_y),
+                parent=self.current_focused_entity
+            )
+            create_on_click(icon=artifact_5_icon, artifact_index=4)
 
         if isinstance(entity, Weapon):
-            def update_data():
-                entity_experience.text = f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''} {int(entity.experience.xp)}/{entity.experience.get_xp_required(entity.star_rating)}xp"
-
-            stats_text = f"base attack: {entity.base_attack} damage\n" \
+            stats_text = f"damage: {entity.damage}\n" \
+                         f"buff: {entity.buff}\n" \
                          f"attack speed: {entity.base_speed} seconds\n" \
                          f"range: {entity.range}\n"
+
+            def update_data():
+                entity_experience.text = f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''} {int(entity.experience.xp)}/{entity.experience.get_xp_required(entity.star_rating)}xp"
+                entity_stats.text = f"damage: {entity.damage}\n" \
+                                    f"buff: {entity.buff}\n" \
+                                    f"attack speed: {entity.base_speed} seconds\n" \
+                                    f"range: {entity.range}\n"
+
+
 
             entity_stats = Text(
                 stats_text,
@@ -418,6 +497,19 @@ class Inventory(Entity):
                 attribute_texts += f"{attribute}\n"
             stats_text = f"main attribute: {entity.main_attribute}\n" \
                          f"{attribute_texts}"
+
+            if entity.equipped_entity:
+                self.swap_button = Button(
+                    "swap",
+                    scale=(0.1, 0.05),
+                    position=(0, -0.45),
+                    parent=self.current_focused_entity
+                )
+                swap_event = Event("swapEvent", 0)
+                swap_event += lambda: self.change_entity_focus(entity.equipped_entity)
+                swap_event += lambda: self.set_state(InventoryStates.selection)
+                swap_event += lambda: self.show_entity_listing("artifacts")
+                self.swap_button.on_click = swap_event
 
             entity_stats = Text(
                 stats_text,
@@ -458,6 +550,8 @@ class Inventory(Entity):
             if Inventory.state == InventoryStates.entity_overview:
                 if self.current_focused_entity:
                     self.current_focused_entity.enable()
+                self.page_up_button.disable()
+                self.page_down_button.disable()
 
             if Inventory.state == InventoryStates.selection:
                 self.current_focused_entity.disable()

@@ -1,10 +1,13 @@
 from Entity.Weapon.Weapon import Weapon
+from Entity.Buff import Buff
 from ursina import *
 
 
 class BraydensOsuPen(Weapon):
     def __init__(self):
-        super().__init__()
+        super().__init__(
+            buff=Buff('CritDamage', True)
+        )
 
     @property
     def name(self) -> str:
@@ -67,7 +70,7 @@ class BraydensOsuPen(Weapon):
                     hit_entity = hit_info.entity
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
-                    damage = self.base_attack + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
+                    damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
                     if hit_entity not in self.hit_list:
                         amount = damage - hit_entity.stats.defense.get_value()
                         damage_text = Text(str(amount if amount > 0 else "miss"), scale=(20, 20), position=(0, 0.5, -1), origin=(0, 0), color=color.red if is_crit else color.white, parent=hit_info.entity)

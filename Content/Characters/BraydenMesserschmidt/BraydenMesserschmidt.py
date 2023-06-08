@@ -30,8 +30,7 @@ class BraydenMesserschmidt(Character):
         self.ultimate = CircleThrow()
 
         # spawn event
-        self.on_swap_weapon += self.check_weapon
-        self.on_level_up += self.check_weapon
+        self.on_update_stats += self.check_weapon
 
     @property
     def name(self) -> str:
@@ -51,5 +50,3 @@ class BraydenMesserschmidt(Character):
             if self.weapon.name == "Braydens Osu Pen":
                 Game.notification_manager.add_nofication(Notification("Brayden Messerschmidt Weapon Bonus", color=color.gold))
                 self.stats.boost_all_stats(10)
-            else:
-                self.stats.reset_additional_stats()

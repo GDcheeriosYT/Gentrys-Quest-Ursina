@@ -3,7 +3,7 @@ from ursina.camera import Camera
 
 import Game
 from ..GameUnit import GameUnit
-from typing import Union
+from typing import Union, List
 from ..EntityOverHead import EntityOverhead
 from Overlays.Notification import Notification
 from Overlays.NotificationsManager import NotificationManager
@@ -13,6 +13,7 @@ from Entity.AudioMapping import AudioMapping
 from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
 from Entity.Artifact.Artifact import Artifact
+from Entity.Buff import Buff
 
 
 class Character(GameUnit):
@@ -55,6 +56,11 @@ class Character(GameUnit):
         notification = Notification(f"{self.name} is now level {self.experience.level}", color.blue)
         NotificationManager.add_nofication(notification)
 
+    def set_artifact(self, artifact: Artifact, index: int):
+        artifact.equipped_entity = self
+        self.artifacts[index] = artifact
+        self.update_stats()
+
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
             return variable * multiplier
@@ -85,14 +91,27 @@ class Character(GameUnit):
 
         # artifacts
         self.stats.reset_additional_stats()
+
+        def manage_attribute(attribute: Buff):
+            value = attribute.value
+            if attribute.is_percent:
+                self.stats.get_stat_by_string(attribute.stat).boost_stat(value)
+            else:
+                self.stats.get_stat_by_string(attribute.stat).add_value(value)
+
         for artifact in self.artifacts:
             if artifact:
+
                 # main attribute
-                value = artifact.main_attribute.value
-                if artifact.main_attribute.is_percent:
-                    self.stats.get_stat_by_string(artifact.main_attribute.stat).boost_stat(value)
-                else:
-                    self.stats.get_stat_by_string(artifact.main_attribute.stat).add_value(value)
+                manage_attribute(artifact.main_attribute)
+
+                # attributes
+                for attribute in artifact.attributes:
+                    manage_attribute(attribute)
+
+        # weapon buff
+        if self.weapon:
+            manage_attribute(self.weapon.buff)
 
         # event
         self.on_update_stats()

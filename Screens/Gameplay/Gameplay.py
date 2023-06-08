@@ -48,10 +48,10 @@ class Gameplay(Screen):
 
     def update(self):
         time_elapsed = time.time() - self.time_started
-        # print(time_elapsed, self.map.current_difficulty)
-        # print(int(time_elapsed) % self.map.current_difficulty)
-        # print(int(time_elapsed) % 10)
-        if int(time_elapsed) % 10 == self.map.current_difficulty and not self.spawned:
+        difficulty_factor = 1.0 / self.map.current_difficulty
+        next_spawn_time = self.map.spawn_delay
+        spawn_interval = self.map.spawn_delay * difficulty_factor
+        if time_elapsed >= next_spawn_time and self.map.can_spawn:
             self.map.spawn_sequence()
             self.spawned = True
             invoke(self.toggle_spawned, delay=1)

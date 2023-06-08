@@ -1,10 +1,13 @@
 from Entity.Weapon.Weapon import Weapon
+from Entity.Buff import Buff
 from ursina import *
 
 
 class WeaponName(Weapon):
     def __init__(self):
-        super().__init__()
+        super().__init__(
+            buff=Buff()  # set the weapon buff
+        )
 
     @property
     def name(self) -> str:

@@ -2,6 +2,7 @@ from ursina import *
 from Location.Map import Map
 from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
 from Content.Enemies.AngryChineseMan.AngryChineseMan import AngryChineseMan
+from Content.ArtifactFamilies.BraydenMesserschmidt.BraydenMesserschmidtFamily import BraydenMesserschmidtFamily
 
 
 grass = Entity(
@@ -20,7 +21,10 @@ class TestMap(Map):
                 grass
             ],
             enemies=[
-                AngryPedestrian
-                # AngryChineseMan
+                AngryPedestrian,
+                AngryChineseMan
+            ],
+            artifact_families=[
+                BraydenMesserschmidtFamily()
             ]
         )

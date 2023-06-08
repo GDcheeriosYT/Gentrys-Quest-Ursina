@@ -74,6 +74,7 @@ Game.user.add_weapon(BraydensOsuPen())
 Game.user.add_weapon(Knife())
 
 starter_character = BraydenMesserschmidt()
+starter_character.experience.level = 100
 
 # starter_character.artifacts[0] = artifact
 

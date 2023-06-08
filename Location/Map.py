@@ -1,4 +1,5 @@
 from ursina import *
+from typing import Union
 import random
 import Game
 import GameConfiguration
@@ -15,7 +16,8 @@ class Map:
             difficulty_scales: bool = True,
             enemy_limit: int = 5,
             artifact_families: list = None,
-            music: list = None
+            music: list = None,
+            spawn_delay: Union[int, float] = 7
     ):
         if enemies:
             self.enemies = enemies
@@ -36,6 +38,8 @@ class Map:
             self.music = music
         else:
             self.music = ["Audio/questfightvidgame.mp3", "Audio/1drill.mp3", "Audio/90ssound.mp3", "Audio/ooky.mp3", "Audio/gentrys_quest_jungle_1.mp3"]
+
+        self.spawn_delay = spawn_delay
 
         self.difficulty = difficulty
         self.difficulty_scales = difficulty_scales
@@ -61,7 +65,8 @@ class Map:
 
     def spawn_sequence(self):
         self.calculate_difficulty(Game.user.get_equipped_character())
-        spawn_amount = random.randint(1, self.current_difficulty * 2)
+        self.enemy_limit = self.current_difficulty * 4
+        spawn_amount = random.randint(self.current_difficulty, self.current_difficulty * 2)
         if len(self.enemy_tracker) + spawn_amount <= self.enemy_limit and self.can_spawn:
             for i in range(spawn_amount):
                 enemy = random.choice(self.enemies)()
@@ -71,7 +76,9 @@ class Map:
                 enemy.y += random.randint(-7, 7)
                 enemy.x += random.randint(-7, 7)
                 enemy.spawn()
-                enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
+                if random.randint(1, 10) > 8:
+                    enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
+
                 enemy.on_death += lambda: Game.user.get_equipped_character().manage_loot(enemy.get_loot())
                 enemy.on_death += lambda: self.enemy_tracker.pop(0)
                 self.enemy_tracker.append(enemy)
@@ -88,7 +95,7 @@ class Map:
         elif random_num <= 300:
             star_rating = 5
 
-        artifact = random.choice(self.artifact_families).get_random_artifact()()
+        artifact = random.choice(self.artifact_families).get_random_artifact()(star_rating)
         return artifact
 
     def calculate_difficulty(self, player):
