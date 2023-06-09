@@ -54,7 +54,6 @@ camera.fov = 11
 
 # window initialization
 Game.window = window
-Game
 window.title = "Gentry's Quest"
 window.borderless = GameConfiguration.borderless
 window.fullscreen = GameConfiguration.fullscreen
