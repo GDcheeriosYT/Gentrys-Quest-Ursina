@@ -61,6 +61,14 @@ class Character(GameUnit):
         self.artifacts[index] = artifact
         self.update_stats()
 
+    def remove_weapon(self):
+        self._weapon.de_equip()
+        self._weapon = None
+
+    def remove_artifact(self, index: int):
+        self.artifacts[index].equipped_entity = None
+        self.artifacts[index] = None
+
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
             return variable * multiplier

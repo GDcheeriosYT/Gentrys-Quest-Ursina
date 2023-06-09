@@ -5,6 +5,7 @@ from Online.Presence.Presence import GamePresence
 
 
 state = GameStates.intro
+# presence = GamePresence()
 presence = None
 state_affected = False
 version = "Super Dooper Beta"

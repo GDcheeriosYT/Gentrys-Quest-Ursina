@@ -19,6 +19,7 @@ class ScreenManager(Entity):
         self._app = app
 
         self.debug_overlay = DebugOverlay()
+        self.debug_overlay.disable()
 
         self.screens = []
 
@@ -63,3 +64,10 @@ class ScreenManager(Entity):
         if not Game.state_affected:
             self.change_screen(Game.state.value)
             Game.state_affected = True
+
+    def input(self, key):
+        if key == "b":
+            if self.debug_overlay.enabled:
+                self.debug_overlay.disable()
+            else:
+                self.debug_overlay.enable()

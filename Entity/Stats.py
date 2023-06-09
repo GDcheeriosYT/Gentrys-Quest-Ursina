@@ -90,8 +90,8 @@ class Stats:
 {self.health}
 {self.attack}
 {self.defense}
-{self.crit_rate}
-{self.crit_damage}
+{self.crit_rate}%
+{self.crit_damage}%
 {self.speed}
 {self.attack_speed}
         '''

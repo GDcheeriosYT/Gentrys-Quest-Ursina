@@ -1,5 +1,6 @@
 from Entity.Weapon.Weapon import Weapon
 from Entity.Buff import Buff
+from Graphics.TextStyles.DamageText import DamageText
 from ursina import *
 
 
@@ -73,13 +74,9 @@ class BraydensOsuPen(Weapon):
                     damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
                     if hit_entity not in self.hit_list:
                         amount = damage - hit_entity.stats.defense.get_value()
-                        damage_text = Text(str(amount if amount > 0 else "miss"), scale=(20, 20), position=(0, 0.5, -1), origin=(0, 0), color=color.red if is_crit else color.white, parent=hit_info.entity)
-                        damage_text.animate_position((damage_text.x + 0.1, damage_text.y + 0.5), 1)
-                        damage_text.fade_out(0, 1)
-                        destroy(damage_text, delay=1.5)
+                        DamageText(amount, is_crit, parent=hit_info.entity)
                         hit_entity.damage(amount)
                         self.hit_list.append(hit_info.entity)
-                        print(f"{'critical ' if is_crit else ''}hit {hit_info.entity} for {self.damage}")
                 except AttributeError:
                     pass
 

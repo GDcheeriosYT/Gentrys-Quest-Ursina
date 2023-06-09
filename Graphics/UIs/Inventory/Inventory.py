@@ -184,7 +184,7 @@ class Inventory(Entity):
         for entity in self.get_entities(category, self.page):
             entity_icon = EntityIcon(
                 entity,
-                position=(-0.3 + (tracker * 0.3), y),
+                position=(-0.3 + (tracker * 0.3), y, -1),
                 parent=self
             )
             if Inventory.state == InventoryStates.listing:
@@ -202,6 +202,34 @@ class Inventory(Entity):
                     click_event += lambda entity=entity: swap_artifact(self.selected_entity, entity, self.selected_index)
                     click_event += lambda: self.show_entity(self.selected_entity)
                     entity_icon.on_click = click_event
+
+            elif Inventory.state == InventoryStates.multiSelection:
+                self.done_button = Button(
+                    "done",
+                    scale=(0.15, 0.1),
+                    position=(0.4, -0.4),
+                    parent=self
+                )
+                if entity_type == "artifacts":
+                    def assign_click(icon: Button):
+                        def color_icon():
+                            if entity in self.selected_entities:
+                                icon.color = rgb(0, 255, 0, 150)
+                            else:
+                                icon.color = color.clear
+
+                        def click_handler():
+                            if entity not in self.selected_entities:
+                                self.selected_entities.append(entity)
+                                icon.color = rgb(0, 200, 0, 150)
+                            else:
+                                icon.color = color.clear
+                                self.selected_entities.remove(entity)
+
+                        color_icon()
+                        icon.on_click = click_handler
+
+                    assign_click(entity_icon)
 
             self.current_page_listings.append(entity_icon)
             tracker += 1
@@ -295,7 +323,7 @@ class Inventory(Entity):
         entity_picture = Entity(
             model=Quad(0.1),
             texture=entity.texture,
-            position=(0.3, 0.3),
+            position=(0.3, 0.3, -1),
             scale=(0.3, 0.3),
             parent=self.current_focused_entity
         )
@@ -303,7 +331,7 @@ class Inventory(Entity):
         entity_rating = StarRatingText(
             entity.star_rating,
             origin=(0.5, 0),
-            position=(0.5, -0.6),
+            position=(0.5, -0.6, -1),
             scale=(6, 6),
             parent=entity_picture
         )
@@ -311,7 +339,7 @@ class Inventory(Entity):
         entity_name = Text(
             entity.name,
             origin=(0.5, 0),
-            position=(0.5, -0.7),
+            position=(0.5, -0.7, -1),
             scale=(6, 6),
             parent=entity_picture
         )
@@ -322,7 +350,7 @@ class Inventory(Entity):
             entity_description = Text(
                 entity.description,
                 origin=(0.5, 0.5),
-                position=(0.5, -0.9),
+                position=(0.5, -0.9, -1),
                 scale=(4, 4),
                 parent=entity_picture
             )
@@ -330,7 +358,7 @@ class Inventory(Entity):
 
             entity_stats = Text(
                 entity.stats,
-                position=(-0.6, 0),
+                position=(-0.6, 0, -1),
                 origin=(0.5, 0),
                 scale=(2.5, 2.5),
                 parent=entity_picture
@@ -338,7 +366,7 @@ class Inventory(Entity):
 
             entity_equip_button = Button(
                 "Equip",
-                position=(0, -0.4),
+                position=(0, -0.4, -1),
                 scale=(0.2, 0.1),
                 parent=entity_picture
             )
@@ -359,14 +387,14 @@ class Inventory(Entity):
             money_upgrade_ui = MoneyUpgradeUI(
                 entity,
                 update_data,
-                position=(0, -2),
+                position=(0, -2, -1),
                 parent=entity_picture
             )
 
             entity_weapon = EntityIcon(
                 entity.weapon,
                 origin=(0, 0),
-                position=(-0.4, 0.3),
+                position=(-0.4, 0.3, -1),
                 parent=self.current_focused_entity
             )
             if entity.weapon:
@@ -379,7 +407,7 @@ class Inventory(Entity):
 
             weapon_text = Text(
                 "Weapon",
-                position=(0, 0.7),
+                position=(0, 0.7, -1),
                 origin=(0, 0),
                 scale=(8, 8),
                 parent=entity_weapon
@@ -407,7 +435,7 @@ class Inventory(Entity):
                 entity.artifacts[0],
                 origin=(0, 0),
                 scale=artifact_icon_scale,
-                position=(-0.4, artifact_icon_y),
+                position=(-0.4, artifact_icon_y, -1),
                 parent=self.current_focused_entity
             )
             create_on_click(icon=artifact_1_icon, artifact_index=0)
@@ -416,7 +444,7 @@ class Inventory(Entity):
                 entity.artifacts[1],
                 origin=(0, 0),
                 scale=artifact_icon_scale,
-                position=(-0.4, artifact_icon_y),
+                position=(-0.4, artifact_icon_y, -1),
                 parent=self.current_focused_entity
             )
             create_on_click(icon=artifact_2_icon, artifact_index=1)
@@ -425,7 +453,7 @@ class Inventory(Entity):
                 entity.artifacts[2],
                 origin=(0, 0),
                 scale=artifact_icon_scale,
-                position=(-0.4, artifact_icon_y),
+                position=(-0.4, artifact_icon_y, -1),
                 parent=self.current_focused_entity
             )
             create_on_click(icon=artifact_3_icon, artifact_index=2)
@@ -434,7 +462,7 @@ class Inventory(Entity):
                 entity.artifacts[3],
                 origin=(0, 0),
                 scale=artifact_icon_scale,
-                position=(-0.4, artifact_icon_y),
+                position=(-0.4, artifact_icon_y, -1),
                 parent=self.current_focused_entity
             )
             create_on_click(icon=artifact_4_icon, artifact_index=3)
@@ -443,7 +471,7 @@ class Inventory(Entity):
                 entity.artifacts[4],
                 origin=(0, 0),
                 scale=artifact_icon_scale,
-                position=(-0.4, artifact_icon_y),
+                position=(-0.4, artifact_icon_y, -1),
                 parent=self.current_focused_entity
             )
             create_on_click(icon=artifact_5_icon, artifact_index=4)
@@ -461,28 +489,39 @@ class Inventory(Entity):
                                     f"attack speed: {entity.base_speed} seconds\n" \
                                     f"range: {entity.range}\n"
 
-
-
             entity_stats = Text(
                 stats_text,
-                position=(-0.6, 0),
+                position=(-0.6, 0, -1),
                 origin=(0.5, 0),
                 scale=(4, 4),
                 parent=entity_picture
             )
 
             if entity.equipped_entity:
-                self.swap_button = Button(
+                swap_button = Button(
                     "swap",
                     scale=(0.1, 0.05),
-                    position=(0, -0.45),
+                    position=(0, -0.45, -1),
                     parent=self.current_focused_entity
                 )
                 swap_event = Event("swapEvent", 0)
                 swap_event += lambda: self.change_entity_focus(entity.equipped_entity)
                 swap_event += lambda: self.set_state(InventoryStates.selection)
                 swap_event += lambda: self.show_entity_listing("weapons")
-                self.swap_button.on_click = swap_event
+                swap_button.on_click = swap_event
+
+                remove_button = Button(
+                    "remove",
+                    scale=(0.1, 0.05),
+                    position=(-0.2, -0.45, -1),
+                    parent=self.current_focused_entity
+                )
+                remove_event = Event("removeEvent", 0)
+                referenced_entity = entity.equipped_entity
+                remove_event += entity.equipped_entity.remove_weapon
+                remove_event += lambda: self.show_entity(referenced_entity)
+                remove_event += lambda: self.player.add_weapon(entity)
+                remove_button.on_click = remove_event
 
             money_upgrade_ui = MoneyUpgradeUI(
                 entity,
@@ -499,25 +538,55 @@ class Inventory(Entity):
                          f"{attribute_texts}"
 
             if entity.equipped_entity:
-                self.swap_button = Button(
+                swap_button = Button(
                     "swap",
                     scale=(0.1, 0.05),
-                    position=(0, -0.45),
+                    position=(0, -0.45, -1),
                     parent=self.current_focused_entity
                 )
                 swap_event = Event("swapEvent", 0)
                 swap_event += lambda: self.change_entity_focus(entity.equipped_entity)
                 swap_event += lambda: self.set_state(InventoryStates.selection)
                 swap_event += lambda: self.show_entity_listing("artifacts")
-                self.swap_button.on_click = swap_event
+                swap_button.on_click = swap_event
+
+                remove_button = Button(
+                    "remove",
+                    scale=(0.1, 0.05),
+                    position=(-0.2, -0.45, -1),
+                    parent=self.current_focused_entity
+                )
+                remove_event = Event("removeEvent", 0)
+                referenced_entity = entity.equipped_entity
+                remove_event += lambda: entity.equipped_entity.remove_artifact(self.selected_index)
+                remove_event += lambda: self.show_entity(referenced_entity)
+                remove_event += lambda: self.player.add_artifact(entity)
+                remove_button.on_click = remove_event
 
             entity_stats = Text(
                 stats_text,
-                position=(-0.6, 0),
+                position=(-0.6, 0, -1),
                 origin=(0.5, 0),
                 scale=(4, 4),
                 parent=entity_picture
             )
+
+            upgrade_button = Button(
+                "upgrade",
+                scale=(1, 0.5),
+                position=(0, -2, -1),
+                parent=entity_picture
+            )
+
+            def upgrade_artifact_button_click():
+                if not entity.equipped_entity:
+                    self.player.artifacts.remove(entity)
+                self.set_state(InventoryStates.multiSelection)
+                self.show_entity_listing("artifacts")
+
+            upgrade_button.on_click = upgrade_artifact_button_click
+
+
 
 
 
@@ -552,6 +621,9 @@ class Inventory(Entity):
                     self.current_focused_entity.enable()
                 self.page_up_button.disable()
                 self.page_down_button.disable()
+
+            if Inventory.state == InventoryStates.selection:
+                self.current_focused_entity.disable()
 
             if Inventory.state == InventoryStates.selection:
                 self.current_focused_entity.disable()

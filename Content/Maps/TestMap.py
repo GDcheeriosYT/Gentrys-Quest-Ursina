@@ -3,6 +3,7 @@ from Location.Map import Map
 from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
 from Content.Enemies.AngryChineseMan.AngryChineseMan import AngryChineseMan
 from Content.ArtifactFamilies.BraydenMesserschmidt.BraydenMesserschmidtFamily import BraydenMesserschmidtFamily
+from Content.ArtifactFamilies.Jvee.Jvee import Jvee
 
 
 grass = Entity(
@@ -25,6 +26,7 @@ class TestMap(Map):
                 AngryChineseMan
             ],
             artifact_families=[
-                BraydenMesserschmidtFamily()
+                BraydenMesserschmidtFamily(),
+                Jvee()
             ]
         )

@@ -21,6 +21,8 @@ class EntityIcon(Button):
             **kwargs
         )
 
+        self.highlight_color = rgb(100, 200, 100, 150)
+
         if entity:
             self._icon = Entity(
                 model=Quad(0.1),

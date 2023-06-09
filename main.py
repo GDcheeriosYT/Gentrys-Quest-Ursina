@@ -54,6 +54,7 @@ camera.fov = 11
 
 # window initialization
 Game.window = window
+Game
 window.title = "Gentry's Quest"
 window.borderless = GameConfiguration.borderless
 window.fullscreen = GameConfiguration.fullscreen
@@ -73,8 +74,10 @@ Game.user.add_money(100000)
 Game.user.add_weapon(BraydensOsuPen())
 Game.user.add_weapon(Knife())
 
-starter_character = BraydenMesserschmidt()
-starter_character.experience.level = 100
+starter_character = StarterCharacter("Big Dude")
+
+# for i in range(30):
+#     Game.user.add_artifact(TestArtifact())
 
 # starter_character.artifacts[0] = artifact
 

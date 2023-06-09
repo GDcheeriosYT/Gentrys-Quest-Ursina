@@ -1,8 +1,10 @@
 from ursina import *
-
 import GameConfiguration
 from Graphics.Container import Container
 import Game
+import platform
+import psutil
+from utils.IntMethods import *
 
 
 class DebugOverlay(Container):
@@ -23,13 +25,23 @@ class DebugOverlay(Container):
             parent=self
         )
         self.always_on_top = True
+        self.pid = os.getpid()
+        self.process = psutil.Process(self.pid)
 
     def update(self):
-        self.content.text = f"version: {Game.version}\n" \
+        memory_info = self.process.memory_info()
+        memory_usage = psutil.virtual_memory()
+        self.content.text = f"--game details--\n" \
+                            f"version: {Game.version}\n" \
                             f"{Game.state}\n" \
                             f"{Game.state_affected}\n" \
                             f"notifications: {len(Game.notification_manager.notifications)}\n" \
                             f"volume: {round(GameConfiguration.volume, 2)}\n" \
                             f"fullscreen: {GameConfiguration.fullscreen}\n" \
                             f"extra ui: {GameConfiguration.extra_ui_info}\n" \
-                            f"pitch range: {GameConfiguration.random_pitch_range}"
+                            f"pitch range: {GameConfiguration.random_pitch_range}\n" \
+                            f"--performance--\n" \
+                            f"fps: {Game.window.fps_counter.text}\n" \
+                            f"memory: {format_memory_size(memory_usage.used)}/{format_memory_size(memory_usage.total)}\n" \
+                            f"memory available: {format_memory_size(memory_usage.available)}\n" \
+                            f"program using: {format_memory_size(memory_info.rss)}"
