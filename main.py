@@ -53,8 +53,8 @@ camera.fov = 11
 
 # window initialization
 window.title = "Gentry's Quest"
-window.borderless = GameConfiguration.borderless
 window.fullscreen = GameConfiguration.fullscreen
+window.borderless = False
 window.exit_button.visible = False
 window.aspect_ratio = 1
 window.exit_button.disable()
