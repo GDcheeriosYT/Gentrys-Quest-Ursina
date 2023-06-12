@@ -75,6 +75,14 @@ class Inventory(Entity):
 
         # Buttons to navigate up and down the pages
 
+        self.done_button = Button(
+            "done",
+            scale=(0.15, 0.1),
+            position=(0.4, -0.4, -1),
+            parent=self
+        )
+        self.done_button.disable()
+
         self.current_page_listings = []  # keep track of the listings in the current page
 
         self.current_focused_entity = None  # keep track of the current entity
@@ -182,6 +190,35 @@ class Inventory(Entity):
 
         # determine the entity category to display
 
+        if Inventory.state == InventoryStates.multiSelection:
+            self.done_button.enable()
+
+            def upgrade_item():
+                def determine_xp(item: Union[Weapon, Artifact]):
+                    if isinstance(item, Weapon):
+                        self.player.weapons.remove(item)
+                        return int(item.experience.level * (item.star_rating * 100))
+
+                    else:
+                        self.player.artifacts.remove(item)
+                        return int((item.star_rating * 10) + (item.star_rating * (item.experience.level * 25)))
+
+                for item in self.selected_entities:
+                    self.selected_entity.add_xp(determine_xp(item))
+
+                if isinstance(self.selected_entity, Artifact):
+                    if self.selected_entity not in self.player.artifacts and not self.selected_entity.equipped_entity:
+                        self.player.add_artifact(self.selected_entity)
+
+                else:
+                    if self.selected_entity not in self.player.weapons and not self.selected_entity.equipped_entity:
+                        self.player.add_weapon(self.selected_entity)
+
+                self.selected_entities.clear()
+                self.show_entity(self.selected_entity)
+
+            self.done_button.on_click = upgrade_item
+
         for entity in self.get_entities(category, self.page):
             entity_icon = EntityIcon(
                 entity,
@@ -205,40 +242,6 @@ class Inventory(Entity):
                     entity_icon.on_click = click_event
 
             elif Inventory.state == InventoryStates.multiSelection:
-                done_button = Button(
-                    "done",
-                    scale=(0.15, 0.1),
-                    position=(0.4, -0.4),
-                    parent=self
-                )
-
-                def upgrade_item():
-                    def determine_xp(item: Union[Weapon, Artifact]):
-                        if isinstance(item, Weapon):
-                            self.player.weapons.remove(item)
-                            return int(item.experience.level * (item.star_rating * 100))
-
-                        else:
-                            self.player.artifacts.remove(item)
-                            return int((item.star_rating * 10) + (item.star_rating * (item.experience.level * 25)))
-
-                    for item in self.selected_entities:
-                        self.selected_entity.add_xp(determine_xp(item))
-
-                    if isinstance(self.selected_entity, Artifact):
-                        if self.selected_entity not in self.player.artifacts and not self.selected_entity.equipped_entity:
-                                self.player.add_artifact(self.selected_entity)
-
-                    else:
-                        if self.selected_entity not in self.player.weapons and not self.selected_entity.equipped_entity:
-                                self.player.add_weapon(self.selected_entity)
-
-                    self.selected_entities.clear()
-                    self.show_entity(self.selected_entity)
-                    destroy(done_button)
-
-                done_button.on_click = upgrade_item
-
                 def color_icon(entity: Union[Artifact, Weapon], icon: Button):
                     if entity in self.selected_entities:
                         icon.color = rgb(0, 255, 0, 150)
@@ -665,9 +668,12 @@ class Inventory(Entity):
                     self.current_focused_entity.enable()
                 self.page_up_button.disable()
                 self.page_down_button.disable()
+                self.page = 0
+                self.done_button.disable()
 
             if Inventory.state == InventoryStates.selection:
                 self.current_focused_entity.disable()
+                self.done_button.disable()
 
             if Inventory.state == InventoryStates.multiSelection:
                 self.current_focused_entity.disable()
