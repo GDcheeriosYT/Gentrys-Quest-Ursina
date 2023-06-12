@@ -205,7 +205,7 @@ class Inventory(Entity):
                     entity_icon.on_click = click_event
 
             elif Inventory.state == InventoryStates.multiSelection:
-                self.done_button = Button(
+                done_button = Button(
                     "done",
                     scale=(0.15, 0.1),
                     position=(0.4, -0.4),
@@ -235,9 +235,9 @@ class Inventory(Entity):
 
                     self.selected_entities.clear()
                     self.show_entity(self.selected_entity)
-                    destroy(self.done_button)
+                    destroy(done_button)
 
-                self.done_button.on_click = upgrade_item
+                done_button.on_click = upgrade_item
 
                 def color_icon(entity: Union[Artifact, Weapon], icon: Button):
                     if entity in self.selected_entities:
