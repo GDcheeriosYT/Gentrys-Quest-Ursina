@@ -1,6 +1,6 @@
 import os
 import json
-
+from ursina import *
 import Game
 
 volume = 1
@@ -48,8 +48,8 @@ def save_settings():
 
 
 def apply_settings():
-    Game.window.fps_counter.disable() if hide_fps else Game.window.fps_counter.enable()
-    Game.window.fullscreen = fullscreen
+    window.fps_counter.disable() if hide_fps else window.fps_counter.enable()
+    window.fullscreen = fullscreen
 
     save_settings()
 

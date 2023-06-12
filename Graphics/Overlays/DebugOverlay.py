@@ -41,7 +41,7 @@ class DebugOverlay(Container):
                             f"extra ui: {GameConfiguration.extra_ui_info}\n" \
                             f"pitch range: {GameConfiguration.random_pitch_range}\n" \
                             f"--performance--\n" \
-                            f"fps: {Game.window.fps_counter.text}\n" \
+                            f"fps: {window.fps_counter.text}\n" \
                             f"memory: {format_memory_size(memory_usage.used)}/{format_memory_size(memory_usage.total)}\n" \
                             f"memory available: {format_memory_size(memory_usage.available)}\n" \
                             f"program using: {format_memory_size(memory_info.rss)}"

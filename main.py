@@ -34,7 +34,6 @@ import argparse
 
 # initialization
 app = Ursina()
-# application.asset_folder = os.path.dirname(__file__)
 app.setBackgroundColor(0, 0, 0)
 if os.path.isdir('Data'):
     pass
@@ -53,7 +52,6 @@ camera.orthographic = True
 camera.fov = 11
 
 # window initialization
-Game.window = window
 window.title = "Gentry's Quest"
 window.borderless = GameConfiguration.borderless
 window.fullscreen = GameConfiguration.fullscreen
@@ -61,7 +59,7 @@ window.exit_button.visible = False
 window.aspect_ratio = 1
 window.exit_button.disable()
 window.fps_counter.color = rgb(0, 0, 0)
-if GameConfiguration.hide_fps: window.fps_counter.disable()
+window.fps_counter.disable()
 
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "https://gdcheerios.com"
 
