@@ -73,12 +73,10 @@ Game.user.add_money(100000)
 Game.user.add_weapon(BraydensOsuPen())
 Game.user.add_weapon(Knife())
 
-starter_character = StarterCharacter("Big Dude")
+starter_character = BraydenMesserschmidt()
 
-# for i in range(30):
-#     Game.user.add_artifact(TestArtifact())
-
-# starter_character.artifacts[0] = artifact
+for i in range(30):
+    Game.user.add_artifact(TestArtifact())
 
 Game.user.equip_character(starter_character)
 

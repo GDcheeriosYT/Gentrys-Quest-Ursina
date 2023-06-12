@@ -13,6 +13,7 @@ from .InventoryStates import InventoryStates
 from Entity.Enemy.Enemy import Enemy
 from utils.Event import Event
 from .MoneyUpgradeUI import MoneyUpgradeUI
+from typing import Union
 
 
 class Inventory(Entity):
@@ -210,26 +211,53 @@ class Inventory(Entity):
                     position=(0.4, -0.4),
                     parent=self
                 )
-                if entity_type == "artifacts":
-                    def assign_click(icon: Button):
-                        def color_icon():
-                            if entity in self.selected_entities:
-                                icon.color = rgb(0, 255, 0, 150)
-                            else:
-                                icon.color = color.clear
 
-                        def click_handler():
-                            if entity not in self.selected_entities:
-                                self.selected_entities.append(entity)
-                                icon.color = rgb(0, 200, 0, 150)
-                            else:
-                                icon.color = color.clear
-                                self.selected_entities.remove(entity)
+                def upgrade_item():
+                    def determine_xp(item: Union[Weapon, Artifact]):
+                        if isinstance(item, Weapon):
+                            self.player.weapons.remove(item)
+                            return int(item.experience.level * (item.star_rating * 100))
 
-                        color_icon()
-                        icon.on_click = click_handler
+                        else:
+                            self.player.artifacts.remove(item)
+                            return int((item.star_rating * 10) + (item.star_rating * (item.experience.level * 25)))
 
-                    assign_click(entity_icon)
+                    for item in self.selected_entities:
+                        self.selected_entity.add_xp(determine_xp(item))
+
+                    if isinstance(self.selected_entity, Artifact):
+                        if self.selected_entity not in self.player.artifacts and not self.selected_entity.equipped_entity:
+                                self.player.add_artifact(self.selected_entity)
+
+                    else:
+                        if self.selected_entity not in self.player.weapons and not self.selected_entity.equipped_entity:
+                                self.player.add_weapon(self.selected_entity)
+
+                    self.selected_entities.clear()
+                    self.show_entity(self.selected_entity)
+                    destroy(self.done_button)
+
+                self.done_button.on_click = upgrade_item
+
+                def color_icon(entity: Union[Artifact, Weapon], icon: Button):
+                    if entity in self.selected_entities:
+                        icon.color = rgb(0, 255, 0, 150)
+                    else:
+                        icon.color = color.clear
+
+                def assign_click(entity: Union[Artifact, Weapon], icon: Button):
+                    def click_handler():
+                        if entity not in self.selected_entities:
+                            self.selected_entities.append(entity)
+                            icon.color = rgb(0, 200, 0, 150)
+                        else:
+                            icon.color = color.clear
+                            self.selected_entities.remove(entity)
+
+                    icon.on_click = click_handler
+
+                color_icon(entity, entity_icon)
+                assign_click(entity, entity_icon)
 
             self.current_page_listings.append(entity_icon)
             tracker += 1
@@ -238,6 +266,7 @@ class Inventory(Entity):
                 tracker = 0
 
         # display entities in a grid fashion
+        # also determine what click style it'll be
 
         if self.page > 0:
             self.page_down_button.enable()
@@ -530,6 +559,21 @@ class Inventory(Entity):
                 parent=entity_picture
             )
 
+            upgrade_with_weapon_button = Button(
+                "Upgrade with weapons",
+                position=(-0.25, -0.25),
+                scale=(0.35, 0.17),
+                parent=self.current_focused_entity
+            )
+
+            def upgrade_weapon_button_click():
+                if not entity.equipped_entity:
+                    self.player.weapons.remove(entity)
+                self.set_state(InventoryStates.multiSelection)
+                self.show_entity_listing("weapons")
+
+            upgrade_with_weapon_button.on_click = upgrade_weapon_button_click
+
         if isinstance(entity, Artifact):
             attribute_texts = ""
             for attribute in entity.attributes:
@@ -625,7 +669,7 @@ class Inventory(Entity):
             if Inventory.state == InventoryStates.selection:
                 self.current_focused_entity.disable()
 
-            if Inventory.state == InventoryStates.selection:
+            if Inventory.state == InventoryStates.multiSelection:
                 self.current_focused_entity.disable()
 
         Inventory.state_affected = True
