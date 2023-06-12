@@ -30,18 +30,19 @@ class EntityIcon(Button):
                 scale=(1, 1),
                 parent=self
             )
+            self._icon.z -= 1
 
             self.stars = StarRatingText(
                 entity.star_rating,
                 origin=(0, 0),
-                position=(0, 0.45, -1),
+                position=(0, 0.45, -2),
                 scale=(8, 9),
                 parent=self
             )
 
             self._text = Text(
                 entity.name,
-                position=(0, -0.45, -1),
+                position=(0, -0.45, -2),
                 scale=(5, 5),
                 origin=(0, 0),
                 color=color.black,
