@@ -67,5 +67,4 @@ class EntityIcon(Button):
                 parent=self
             )
 
-
         self._text.create_background(color=color.white)

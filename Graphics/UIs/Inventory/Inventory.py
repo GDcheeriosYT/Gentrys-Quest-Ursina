@@ -85,6 +85,8 @@ class Inventory(Entity):
 
         self.current_page_listings = []  # keep track of the listings in the current page
 
+        self.icons = [] # keep track of icons, so we can delete them for memory
+
         self.current_focused_entity = None  # keep track of the current entity
 
         self._characters_button = InvButton(
@@ -113,7 +115,9 @@ class Inventory(Entity):
             parent=self
         )
         wevent = Event("wEvent", 0)
-        self._weapons_button.on_click = lambda: self.show_entity_listing("weapons", True)
+        wevent += lambda: self.set_state(InventoryStates.listing)
+        aevent += lambda: self.show_entity_listing("weapons", True)
+        self._weapons_button.on_click = wevent
 
         # buttons for managing display of each entity types
 
@@ -140,6 +144,15 @@ class Inventory(Entity):
 
 
 
+    def clear_icons(self):  # noqa
+        for icon in self.icons:
+            destroy(icon)
+
+        self.icons.clear()
+
+
+
+
 
     def show_entity_listing(self, entity_type, clear_page: bool = False):  # noqa
         """
@@ -147,6 +160,8 @@ class Inventory(Entity):
         :param entity_type: The type of entity needed to be listed.
         :param clear_page: Whether the page should be cleared or not.
         """
+
+        self.clear_icons()
 
         def swap_weapon(entity: Character, weapon: Weapon):
             old_weapon = entity.swap_weapon(weapon)
@@ -225,6 +240,7 @@ class Inventory(Entity):
                 position=(-0.3 + (tracker * 0.3), y, -1),
                 parent=self
             )
+            self.icons.append(entity_icon)
             if Inventory.state == InventoryStates.listing:
                 entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
 
@@ -670,6 +686,7 @@ class Inventory(Entity):
                 self.page_down_button.disable()
                 self.page = 0
                 self.done_button.disable()
+                self.clear_icons()
 
             if Inventory.state == InventoryStates.selection:
                 self.current_focused_entity.disable()
