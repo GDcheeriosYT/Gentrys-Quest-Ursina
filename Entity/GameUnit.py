@@ -121,6 +121,10 @@ class GameUnit(GameEntityBase):
         self.stats.health.current_value += amount
         self.on_heal()
 
+    def recover_health(self):
+        self.stats.health.calculate_value()
+        self.on_heal()
+
     def die(self):
         self.disable()
         self.dead = True
@@ -148,6 +152,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn()
         self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.stats.health.calculate_value()
         self.dead = False
         self.spawned = True
 
