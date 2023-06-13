@@ -71,17 +71,15 @@ Game.user.add_money(100000)
 Game.user.add_weapon(BraydensOsuPen())
 Game.user.add_weapon(Knife())
 
-starter_character = BraydenMesserschmidt()
+starter_character = StarterCharacter("Guy")
 
-for i in range(30):
-    Game.user.add_artifact(TestArtifact())
+Game.user.add_character(BraydenMesserschmidt())
 
 Game.user.equip_character(starter_character)
 
 Game.user.add_character(starter_character)
 
 Game.change_state(GameStates.gameplay)
-
 
 # if GameConfiguration.play_intro:
 #     Game.state = GameStates.intro

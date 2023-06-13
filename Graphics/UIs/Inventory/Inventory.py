@@ -116,7 +116,7 @@ class Inventory(Entity):
         )
         wevent = Event("wEvent", 0)
         wevent += lambda: self.set_state(InventoryStates.listing)
-        aevent += lambda: self.show_entity_listing("weapons", True)
+        wevent += lambda: self.show_entity_listing("weapons", True)
         self._weapons_button.on_click = wevent
 
         # buttons for managing display of each entity types
@@ -416,13 +416,14 @@ class Inventory(Entity):
                 "Equip",
                 position=(0, -0.4, -1),
                 scale=(0.2, 0.1),
-                parent=entity_picture
+                parent=self.current_focused_entity
             )
             equip_on_click = Event('onClick', 0)
             equip_on_click += lambda: Game.user.equip_character(entity)
-            equip_on_click += lambda: update_data(entity)
             equip_on_click += entity_equip_button.disable
-            entity_equip_button.disable()
+            if Game.user.get_equipped_character() == entity:
+                entity_equip_button.disable()
+
             entity_equip_button.on_click = equip_on_click
 
             if Game.user.get_equipped_character() != entity:
@@ -677,7 +678,7 @@ class Inventory(Entity):
         self.money.text = f"${format(int(Game.user.user_data.money), ',')}"
         if not Inventory.state_affected:
             if Inventory.state == InventoryStates.listing:
-                pass
+                self.page_text.enable()
 
             if Inventory.state == InventoryStates.entity_overview:
                 if self.current_focused_entity:
@@ -685,14 +686,17 @@ class Inventory(Entity):
                 self.page_up_button.disable()
                 self.page_down_button.disable()
                 self.page = 0
+                self.page_text.disable()
                 self.done_button.disable()
                 self.clear_icons()
 
             if Inventory.state == InventoryStates.selection:
                 self.current_focused_entity.disable()
+                self.page_text.enable()
                 self.done_button.disable()
 
             if Inventory.state == InventoryStates.multiSelection:
+                self.page_text.enable()
                 self.current_focused_entity.disable()
 
         Inventory.state_affected = True

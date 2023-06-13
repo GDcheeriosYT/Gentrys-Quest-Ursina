@@ -33,7 +33,8 @@ class Stat:
 
     def set_default_value(self, value):
         self._default_value = value
-        self.calculate_value()
+        if self._name != "Health":
+            self.calculate_value()
 
     def get_percent_of_stat(self, percent, include_additional: bool = True):
         if include_additional:
@@ -43,15 +44,18 @@ class Stat:
 
     def set_additional_value(self, value):
         self._additional_value = value
-        self.calculate_value()
+        if self._name != "Health":
+            self.calculate_value()
 
     def boost_stat(self, percentage):
         self._additional_value += self.get_default_value() + (self.get_default_value() * (percentage * 0.01))
-        self.calculate_value()
+        if self._name != "Health":
+            self.calculate_value()
 
     def add_value(self, amount):
         self._additional_value += amount
-        self.calculate_value()
+        if self._name != "Health":
+            self.calculate_value()
 
     def remove_value(self, amount):
         if self._additional_value - amount < 0:
