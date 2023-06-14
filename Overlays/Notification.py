@@ -15,3 +15,9 @@ class Notification(Text):
     def disappear(self) -> None:
         self.fade_out(0, 1)
         invoke(lambda: self.disable(), delay=1.1)
+
+    def __del__(self):
+        print("notificaton eleted 2")
+
+    def on_destroy(self):
+        print("notificaton eleted")

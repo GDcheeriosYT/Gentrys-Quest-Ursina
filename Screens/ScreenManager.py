@@ -8,6 +8,7 @@ from .Settings.Settings import Settings
 from .Gameplay.Gameplay import Gameplay
 from Graphics.FadeScreen import FadeScreen
 from Graphics.Overlays.DebugOverlay import DebugOverlay
+from Overlays.Notification import Notification
 
 
 class ScreenManager(Entity):
@@ -64,6 +65,9 @@ class ScreenManager(Entity):
         if not Game.state_affected:
             self.change_screen(Game.state.value)
             Game.state_affected = True
+
+        if held_keys["n"]:
+            Game.notification_manager.add_notification(Notification("test notification"))
 
     def input(self, key):
         if key == "b":

@@ -36,8 +36,8 @@ class Inventory(Entity):
         )
 
         self.player = Game.user.user_data  # grab the user and set as variable
-        self.selected_entity = None # tracker for character
-        self.selected_index = None # tracker for artifact index
+        self.selected_entity = None  # tracker for character
+        self.selected_index = None  # tracker for artifact index
 
         self.money = Text(
             "$",
@@ -85,8 +85,6 @@ class Inventory(Entity):
 
         self.current_page_listings = []  # keep track of the listings in the current page
 
-        self.icons = [] # keep track of icons, so we can delete them for memory
-
         self.current_focused_entity = None  # keep track of the current entity
 
         self._characters_button = InvButton(
@@ -94,30 +92,30 @@ class Inventory(Entity):
             position=(-0.35, 0.65),
             parent=self
         )
-        cevent = Event("cEvent", 0)
-        cevent += lambda: self.set_state(InventoryStates.listing)
-        cevent += lambda: self.show_entity_listing("characters", True)
-        self._characters_button.on_click = cevent
+        character_event = Event("cEvent", 0)
+        character_event += lambda: self.set_state(InventoryStates.listing)
+        character_event += lambda: self.show_entity_listing("characters", True)
+        self._characters_button.on_click = character_event
 
         self._artifacts_button = InvButton(
             "Artifacts",
             position=(0, 0.65),
             parent=self
         )
-        aevent = Event("aEvent", 0)
-        aevent += lambda: self.set_state(InventoryStates.listing)
-        aevent += lambda: self.show_entity_listing("artifacts", True)
-        self._artifacts_button.on_click = aevent
+        artifact_event = Event("aEvent", 0)
+        artifact_event += lambda: self.set_state(InventoryStates.listing)
+        artifact_event += lambda: self.show_entity_listing("artifacts", True)
+        self._artifacts_button.on_click = artifact_event
 
         self._weapons_button = InvButton(
             "Weapons",
             position=(0.35, 0.65),
             parent=self
         )
-        wevent = Event("wEvent", 0)
-        wevent += lambda: self.set_state(InventoryStates.listing)
-        wevent += lambda: self.show_entity_listing("weapons", True)
-        self._weapons_button.on_click = wevent
+        weapon_event = Event("wEvent", 0)
+        weapon_event += lambda: self.set_state(InventoryStates.listing)
+        weapon_event += lambda: self.show_entity_listing("weapons", True)
+        self._weapons_button.on_click = weapon_event
 
         # buttons for managing display of each entity types
 
@@ -141,14 +139,7 @@ class Inventory(Entity):
         for entity in self.current_page_listings:
             destroy(entity)
 
-
-
-
-    def clear_icons(self):  # noqa
-        for icon in self.icons:
-            destroy(icon)
-
-        self.icons.clear()
+        self.current_page_listings.clear()
 
 
 
@@ -161,7 +152,8 @@ class Inventory(Entity):
         :param clear_page: Whether the page should be cleared or not.
         """
 
-        self.clear_icons()
+        if self.current_focused_entity:
+            destroy(self.current_focused_entity)
 
         def swap_weapon(entity: Character, weapon: Weapon):
             old_weapon = entity.swap_weapon(weapon)
@@ -180,9 +172,6 @@ class Inventory(Entity):
         if clear_page:
             self.page = 0
             self.page_text.text = str(self.page)
-
-        if self.current_focused_entity:
-            destroy(self.current_focused_entity)
 
         tracker = 0  # column tracker
         y = 0.4
@@ -240,7 +229,6 @@ class Inventory(Entity):
                 position=(-0.3 + (tracker * 0.3), y, -1),
                 parent=self
             )
-            self.icons.append(entity_icon)
             if Inventory.state == InventoryStates.listing:
                 entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
 
@@ -360,12 +348,12 @@ class Inventory(Entity):
         :param entity: Entity to show
         """
 
-        self.selected_entity = entity
+        self.selected_entity = entity  # set the selected entity for reference
+
         if self.current_focused_entity:
             destroy(self.current_focused_entity)
 
         self.set_state(InventoryStates.entity_overview)
-        self.page = 0
         self.clear_listing()
         self.current_focused_entity = Container(parent=self)
         entity_picture = Entity(
@@ -681,22 +669,17 @@ class Inventory(Entity):
                 self.page_text.enable()
 
             if Inventory.state == InventoryStates.entity_overview:
-                if self.current_focused_entity:
-                    self.current_focused_entity.enable()
                 self.page_up_button.disable()
                 self.page_down_button.disable()
                 self.page = 0
                 self.page_text.disable()
                 self.done_button.disable()
-                self.clear_icons()
 
             if Inventory.state == InventoryStates.selection:
-                self.current_focused_entity.disable()
                 self.page_text.enable()
                 self.done_button.disable()
 
             if Inventory.state == InventoryStates.multiSelection:
                 self.page_text.enable()
-                self.current_focused_entity.disable()
 
         Inventory.state_affected = True
