@@ -40,6 +40,8 @@ class DebugOverlay(Container):
                             f"fullscreen: {GameConfiguration.fullscreen}\n" \
                             f"extra ui: {GameConfiguration.extra_ui_info}\n" \
                             f"pitch range: {GameConfiguration.random_pitch_range}\n" \
+                            f"--engine--\n" \
+                            f"entities: {len(scene.entities)}\n" \
                             f"--performance--\n" \
                             f"fps: {window.fps_counter.text}\n" \
                             f"memory: {format_memory_size(memory_usage.used)}/{format_memory_size(memory_usage.total)}\n" \
