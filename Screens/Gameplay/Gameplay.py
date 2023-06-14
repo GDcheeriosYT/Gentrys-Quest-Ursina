@@ -10,9 +10,6 @@ from ursina import *
 class Gameplay(Screen):
     def __init__(self):
         super().__init__()
-
-        self.score = 0
-
         self.player = None
         self.hud = None
         self.inventory = None
