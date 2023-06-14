@@ -48,5 +48,5 @@ class BraydenMesserschmidt(Character):
         if self.weapon:
             print(self.weapon.name)
             if self.weapon.name == "Braydens Osu Pen":
-                Game.notification_manager.add_nofication(Notification("Brayden Messerschmidt Weapon Bonus", color=color.gold))
+                Game.notification_manager.add_notification(Notification("Brayden Messerschmidt Weapon Bonus", color=color.gold))
                 self.stats.boost_all_stats(10)

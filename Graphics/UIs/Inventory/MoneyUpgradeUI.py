@@ -35,11 +35,11 @@ class MoneyUpgradeUI(Entity):
         try:
             amount = int(self.money_input.text)
             if amount > Game.user.user_data.money:
-                NotificationManager.add_nofication(Notification("Can't afford", color=color.red))
+                Game.notification_manager.add_notification(Notification("Can't afford", color=color.red))
             else:
                 Game.user.user_data.remove_money(amount)
                 entity.add_xp(amount * 10)
                 update_method()
 
         except ValueError:
-            NotificationManager.add_nofication(Notification("This isn't a number", color=color.red))
+            Game.notification_manager.add_notification(Notification("This isn't a number", color=color.red))

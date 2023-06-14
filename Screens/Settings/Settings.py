@@ -83,7 +83,7 @@ class Settings(Screen):
                 elif setting.setting_text.text == "extra ui info":
                     GameConfiguration.extra_ui_info = setting.get_setting().toggled
 
-        Game.notification_manager.add_nofication(Notification("Applied settings", color.green))
+        Game.notification_manager.add_notification(Notification("Applied settings", color.green))
         GameConfiguration.apply_settings()
 
 

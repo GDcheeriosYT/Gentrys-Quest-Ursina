@@ -11,7 +11,7 @@ state_affected = False
 version = "Super Dooper Beta"
 user = None
 intro_music = None
-notification_manager = NotificationManager
+notification_manager = NotificationManager()
 
 
 def change_state(new_state: GameStates):

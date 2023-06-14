@@ -6,7 +6,6 @@ from ..GameUnit import GameUnit
 from typing import Union, List
 from ..EntityOverHead import EntityOverhead
 from Overlays.Notification import Notification
-from Overlays.NotificationsManager import NotificationManager
 from Content.Enemies.TestEnemy import TestEnemy
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
@@ -55,7 +54,7 @@ class Character(GameUnit):
 
     def _on_level_up(self):
         notification = Notification(f"{self.name} is now level {self.experience.level}", color.blue)
-        NotificationManager.add_nofication(notification)
+        Game.notification_manager.add_notification(notification)
 
     def set_artifact(self, artifact: Artifact, index: int):
         artifact.equipped_entity = self
