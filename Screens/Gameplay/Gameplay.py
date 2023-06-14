@@ -33,8 +33,6 @@ class Gameplay(Screen):
         self.inventory = Inventory()
         self.inventory.disable()
         self.player.spawn()
-        weapon = BraydensOsuPen()
-        # self.player.swap_weapon(weapon)
         self.map = TestMap()
         self.time_started = time.time()
         self.map.load()
