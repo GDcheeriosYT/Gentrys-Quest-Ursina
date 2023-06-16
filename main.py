@@ -56,10 +56,10 @@ window.title = "Gentry's Quest"
 window.fullscreen = GameConfiguration.fullscreen
 window.borderless = False
 window.exit_button.visible = False
-window.aspect_ratio = 1
 window.exit_button.disable()
 window.fps_counter.color = rgb(0, 0, 0)
-window.fps_counter.disable()
+window.editor_ui.hide()
+
 
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "https://gdcheerios.com"
 
