@@ -2,7 +2,6 @@ from ursina import *
 import GameConfiguration
 from Graphics.Container import Container
 import Game
-import platform
 import psutil
 from utils.IntMethods import *
 
@@ -11,7 +10,7 @@ class DebugOverlay(Container):
     def __init__(self):
         super().__init__(
             model=Quad(0.06),
-            position=(0.5, -0.5),
+            position=window.bottom_right,
             origin=(0.5, -0.5),
             scale=(0.24, 0.3),
             color=rgb(0, 0, 0, 200),
@@ -41,7 +40,8 @@ class DebugOverlay(Container):
                             f"extra ui: {GameConfiguration.extra_ui_info}\n" \
                             f"pitch range: {GameConfiguration.random_pitch_range}\n" \
                             f"--engine--\n" \
-                            f"entities: {len(scene.entities)}\n" \
+                            f"entities: {window.entity_counter.text}\n" \
+                            f"colliders: {window.collider_counter.text}\n" \
                             f"--performance--\n" \
                             f"fps: {window.fps_counter.text}\n" \
                             f"memory: {format_memory_size(memory_usage.used)}/{format_memory_size(memory_usage.total)}\n" \
