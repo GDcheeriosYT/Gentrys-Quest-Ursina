@@ -19,7 +19,7 @@ class DebugOverlay(Container):
         self.content = Text(
             "",
             origin=(0.5, 0.5),
-            position=(-0.04, 0.96),
+            position=(-0.04, 1),
             scale=(2.3, 2.3),
             parent=self
         )
