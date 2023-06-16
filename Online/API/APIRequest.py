@@ -1,7 +1,7 @@
 from ursina import *
 import traceback
 
-from Overlays.NoficationsManager import NotificationManager
+import Game
 from Overlays.Notification import Notification
 
 
@@ -33,11 +33,9 @@ class APIRequest:
     def on_fail(self) -> None:
         message = f"{self.name}Request failed"
         print(message)
-        notification = Notification(message, color.red)
-        NotificationManager.add_nofication(notification)
+        Game.notification_manager.add_notification(Notification(message, color.red))
 
     def on_success(self) -> None:
         message = f"{self.name}Request succeeded"
         print(message)
-        notification = Notification(message, color.green)
-        NotificationManager.add_nofication(notification)
+        Game.notification_manager.add_notification(Notification(message, color.green))

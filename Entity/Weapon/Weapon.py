@@ -2,20 +2,27 @@ from ..GameEntityBase import GameEntityBase
 from ursina import *
 from utils.Event import Event
 from typing import Union
+from Entity.Buff import Buff
 
 
 class Weapon(GameEntityBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, buff: Buff = Buff(), *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.on_attack = Event('onAttack', 0)
         self.on_equip = Event('onEquip', 0)
         self.on_de_equip = Event('onDeEquip', 0)
         self._equipped_entity = None
+        self.buff = buff
+        self.buff.handle_value(self.star_rating)
         self._instance = None
         self._attacking = False
         self.texture = None
+        self.damage = 0
         self.model = None
         self.enable()
+        self.update_stats()
+
+        self.on_level_up += self.update_stats
 
     @property
     def name(self) -> str:
@@ -44,6 +51,22 @@ class Weapon(GameEntityBase):
     @property
     def range(self) -> int:
         raise NotImplementedError
+
+    @property
+    def equipped_entity(self):
+        return self._equipped_entity
+
+    def update_stats(self):
+        self.damage = int(self.base_attack + (self.experience.level * 1.2) + (self.star_rating * self.experience.level))
+        self.buff.level = self.experience.level
+        self.buff.handle_value(self.star_rating)
+        self.try_update_equipped_stats()
+
+    def try_update_equipped_stats(self):
+        try:
+            self._equipped_entity.update_stats
+        except AttributeError:
+            pass
 
     def equip(self, entity):
         self._equipped_entity = entity

@@ -51,6 +51,7 @@ class GameUnit(GameEntityBase):
         self.on_damage += self._overhead.update_data
         self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
         self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.on_swap_weapon += self.update_stats
         # self.on_move += self._texture_mapping.play_walk_animation(self)
 
         # equips
@@ -99,10 +100,10 @@ class GameUnit(GameEntityBase):
 
         self._weapon = weapon
         self._weapon.equip(self)
+        self.on_swap_weapon()
         if old_weapon:
             return old_weapon
 
-        self.on_swap_weapon()
 
     def attack(self, direction=None):
         if self._weapon:
@@ -118,6 +119,10 @@ class GameUnit(GameEntityBase):
 
     def heal(self, amount):
         self.stats.health.current_value += amount
+        self.on_heal()
+
+    def recover_health(self):
+        self.stats.health.calculate_value()
         self.on_heal()
 
     def die(self):
@@ -147,6 +152,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn()
         self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.stats.health.calculate_value()
         self.dead = False
         self.spawned = True
 

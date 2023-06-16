@@ -2,8 +2,9 @@ from ursina import *
 import os
 import json
 
+import Game
 from User.User import User
-from Overlays.NoficationsManager import NotificationManager
+from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 from .GuestElement import GuestElement
 
@@ -69,7 +70,7 @@ class GuestUI(Entity):
             self._username_entry.text = "username"
             self.update_list()
         else:
-            NotificationManager.add_nofication(Notification("Username taken", color.red))
+            Game.notification_manager.add_notification(Notification("Username taken", color.red))
 
     def update_list(self) -> None:
         [destroy(guest) for guest in self._guest_entity_list]

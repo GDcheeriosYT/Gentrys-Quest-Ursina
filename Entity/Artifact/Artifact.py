@@ -8,7 +8,7 @@ from utils.Event import Event
 
 class Artifact:
     def __init__(self, star_rating: int, texture: str, buff: Buff = None):
-        self._texture = Texture(texture)
+        self._texture = texture
         if not buff:
             self._main_attribute = Buff("Random")
         else:
@@ -27,6 +27,7 @@ class Artifact:
         self.on_add_xp = Event('onAddXp', 0)
         self.on_level_up = Event('onLevelUp', 0)
         self.on_level_up += self.new_attribute_check
+        self.equipped_entity = None
 
     @property
     def name(self) -> str:

@@ -1,13 +1,21 @@
 from ursina import *
+
+from GameStates import GameStates
 from utils.Event import Event
+from .BackButton import BackButton
 
 
 class Screen(Entity):
-    def __init__(self):
+    def __init__(self, allow_back: bool = False, return_to: GameStates = GameStates.mainMenu):
         super().__init__(
             parent=camera.ui
         )
-        # if self.allow_back: self.back_button = Button("back", position=(-0.5, -0.4), scale=(0.2, 0.05))
+        self.allow_back = allow_back
+        self.back_button = BackButton(return_to)
+        self.back_button.disable()
+        if self.allow_back:
+            self.back_button.enable()
+
         self.on_show = Event('OnShow', 0)
         self.on_hide = Event('OnHide', 0)
 
@@ -21,22 +29,6 @@ class Screen(Entity):
     @property
     def color(self) -> color:
         return color.white
-
-    @property
-    def allow_back(self) -> bool:
-        """
-        Whether the user is allowed to use the back button to navigate away from this screen.
-        """
-        return True
-
-    def on_back_button(self) -> bool:
-        """
-        Called when the user presses the back button while this screen is active.
-
-        Returns:
-            bool: True if the back button press should be handled by this screen, False otherwise.
-        """
-        return False
 
     @property
     def fades(self) -> bool:
@@ -53,7 +45,11 @@ class Screen(Entity):
     def show(self) -> None:
         self.enable()
         self.on_show()
+        if self.allow_back:
+            self.back_button.enable()
 
     def hide(self) -> None:
         self.disable()
         self.on_hide()
+        if self.allow_back:
+            self.back_button.disable()

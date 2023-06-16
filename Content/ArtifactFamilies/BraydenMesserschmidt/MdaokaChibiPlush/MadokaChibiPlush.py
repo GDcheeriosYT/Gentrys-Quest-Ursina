@@ -2,14 +2,14 @@ from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
 
 
-class OsuPen(Artifact):
+class MadokaChibiPlush(Artifact):
     def __init__(self, star_rating: int):
         super().__init__(
-            "Artifact.png",
+            star_rating=star_rating,
+            texture="madoka.jpg",
+            buff=Buff("CritRate", False)
         )
-        self._main_attribute = Buff("CritRate")
-        self._star_rating = star_rating
 
     @property
     def name(self) -> str:
-        return "Osu Pen"
+        return "Madoka Chibi Plush"

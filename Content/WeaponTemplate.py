@@ -1,10 +1,13 @@
 from Entity.Weapon.Weapon import Weapon
+from Entity.Buff import Buff
 from ursina import *
 
 
 class WeaponName(Weapon):
     def __init__(self):
-        super().__init__()
+        super().__init__(
+            buff=Buff()  # set the weapon buff
+        )
 
     @property
     def name(self) -> str:
@@ -27,7 +30,7 @@ class WeaponName(Weapon):
         return "Weapon Type"
 
     @property
-    def weapon_texture(self) -> str:
+    def texture(self) -> str:
         return "Textures/texturename.fileformat"
 
     @property
@@ -37,7 +40,7 @@ class WeaponName(Weapon):
     def attack_process(self, direction):
         self._instance = Entity(
             model='quad',
-            texture=self.weapon_texture,
+            texture=self.texture,
             scale=(1, 1),
             origin=(0, 0.5),
             parent=self._equipped_entity

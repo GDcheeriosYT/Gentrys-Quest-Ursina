@@ -37,7 +37,7 @@ class Knife(Weapon):
     def attack_process(self, direction):
         self._instance = Entity(
             model='quad',
-            texture=self.weapon_texture,
+            texture=self.texture,
             scale=(1, 1),
             origin=(0, -0.5),
             rotation=(0, 0, -direction + 90),
@@ -78,7 +78,7 @@ class Knife(Weapon):
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (
                                 self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
-                    damage = self.base_attack + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
+                    damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
                     if hit_entity not in self.hit_list:
                         amount = damage - hit_entity.stats.defense.get_value()
                         damage_text = Text(str(amount if amount > 0 else "miss"), scale=(20, 20), position=(0, 0.5, -1),
