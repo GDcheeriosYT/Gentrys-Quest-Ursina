@@ -149,7 +149,7 @@ class Inventory(Entity):
         """
         Lists entities in the inventory.
         :param entity_type: The type of entity needed to be listed.
-        :param clear_page: Whether the page should be cleared or not.
+        :param clear_page: Whether the page tracker should be reset or not.
         """
 
         if self.current_focused_entity:
@@ -229,6 +229,9 @@ class Inventory(Entity):
                 position=(-0.3 + (tracker * 0.3), y, -1),
                 parent=self
             )
+
+            self.current_page_listings.append(entity_icon)  # add entity icon to listings
+
             if Inventory.state == InventoryStates.listing:
                 entity_icon.on_click = lambda entity=entity: self.show_entity(entity)
 
@@ -266,7 +269,6 @@ class Inventory(Entity):
                 color_icon(entity, entity_icon)
                 assign_click(entity, entity_icon)
 
-            self.current_page_listings.append(entity_icon)
             tracker += 1
             if tracker % 3 == 0:
                 y -= 0.2
