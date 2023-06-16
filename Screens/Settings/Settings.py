@@ -27,7 +27,6 @@ class Settings(Screen):
 
             # graphics
             Text("graphics", parent=self),
-            Setting("fps", ToggleButton(GameConfiguration.hide_fps, "hidden", "shown"), parent=self),
             Setting("fullscreen", ToggleButton(GameConfiguration.fullscreen, "on", "off"), parent=self),
             Setting("extra ui info", ToggleButton(GameConfiguration.extra_ui_info, "on", "off"), parent=self)
         ]
@@ -76,8 +75,6 @@ class Settings(Screen):
                     GameConfiguration.volume = setting.get_setting().value
 
                 # graphics
-                elif setting.setting_text.text == "fps":
-                    GameConfiguration.hide_fps = setting.get_setting().toggled
                 elif setting.setting_text.text == "fullscreen":
                     GameConfiguration.fullscreen = setting.get_setting().toggled
                 elif setting.setting_text.text == "extra ui info":
