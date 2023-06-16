@@ -65,26 +65,10 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-Game.user = User("Cool Guy", True)
-
-Game.user.add_money(100000)
-Game.user.add_weapon(BraydensOsuPen())
-Game.user.add_weapon(Knife())
-
-starter_character = StarterCharacter("Guy")
-
-Game.user.add_character(BraydenMesserschmidt())
-
-Game.user.equip_character(starter_character)
-
-Game.user.add_character(starter_character)
-
-Game.change_state(GameStates.gameplay)
-
-# if GameConfiguration.play_intro:
-#     Game.state = GameStates.intro
-# else:
-#     Game.state = GameStates.mainMenu
+if GameConfiguration.play_intro:
+    Game.state = GameStates.intro
+else:
+    Game.state = GameStates.mainMenu
 
 ScreenManager(app)
 
