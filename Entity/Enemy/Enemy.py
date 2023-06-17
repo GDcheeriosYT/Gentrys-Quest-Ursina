@@ -97,3 +97,5 @@ class Enemy(GameUnit):
                 self._experience.level -= 1
 
             self.on_level_up()
+
+        self.handle_buffs()

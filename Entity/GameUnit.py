@@ -11,6 +11,7 @@ from .EntityOverHead import EntityOverhead
 from ursina import *
 from .Weapon.Weapon import Weapon
 from .Loot import Loot
+from .Effect import Effect
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -31,6 +32,7 @@ class GameUnit(GameEntityBase):
         self.dead = False
         self.can_move = True
         self.spawned = False
+        self.effects = []
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -41,6 +43,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn = Event("OnSpawn", 0)
         self.on_update_stats = Event("OnUpdateStats", 0)
         self.on_swap_weapon = Event("OnSwapWeapon", 0)
+        self.on_affected = Event("OnAffected", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
@@ -86,10 +89,14 @@ class GameUnit(GameEntityBase):
     def set_damage_texture(self):
         self.texture = self._texture_mapping.get_damage_texture()
 
-    def damage(self, amount):
+    def damage(self, amount, text: Text = None):
         self._stats.health.current_value -= amount if amount > 0 else 0
         # self.set_damage_texture()
         self.on_damage()
+
+        if text:
+            copy(text)
+
         if self.stats.health.current_value <= 0:
             self.die()
 
@@ -104,6 +111,23 @@ class GameUnit(GameEntityBase):
         if old_weapon:
             return old_weapon
 
+    def apply_effect(self, effect: Effect):
+        found_extra = False
+        for personal_effect in self.effects:
+            if effect.name == personal_effect.name:
+                personal_effect.add_stack()
+                personal_effect.reset_counter()
+                found_extra = True
+
+        if not found_extra:
+            effect.set_effector(self)
+            self.effects.append(effect)
+
+        self.on_affected()
+
+    def handle_buffs(self):
+        for effect in self.effects:
+            effect.effect()
 
     def attack(self, direction=None):
         if self._weapon:

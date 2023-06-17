@@ -2,10 +2,10 @@ from ursina import *
 
 
 class DamageText(Text):
-    def __init__(self, damage_amount: int, is_crit: bool, *args, **kwargs):
+    def __init__(self, damage_amount: int, is_crit: bool = None, text_color: color = rgb(255, 255, 255), *args, **kwargs):
         super().__init__(
             f"{damage_amount if damage_amount > 0 else 'miss'}",
-            color=color.red if is_crit else color.white,
+            color=color.red if is_crit else text_color,
             position=(0, 0.5, -1),
             scale=(20, 20),
             origin=(0, 0),

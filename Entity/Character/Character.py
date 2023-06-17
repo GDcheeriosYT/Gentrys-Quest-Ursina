@@ -13,6 +13,7 @@ from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
 from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
+from Content.Effects.Burn.Burn import Burn
 
 
 class Character(GameUnit):
@@ -178,6 +179,8 @@ class Character(GameUnit):
         except:
             pass
 
+        self.handle_buffs()
+
     def swap_artifact(self, artifact, index: int):
         if 1 <= index <= 5:
             if self.artifacts[index - 1]:
@@ -207,3 +210,6 @@ class Character(GameUnit):
             test_enemy.x += random.randint(-7, 7)
             test_enemy.follow_entity(self)
             test_enemy.spawn()
+
+        if key == "u":
+            self.apply_effect(Burn(7))

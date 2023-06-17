@@ -3,6 +3,7 @@ from ...Container import Container
 from .StatsContainer import StatsContainer
 from .StatusBars import StatusBars
 from .SkillsContainer import SkillsContainer
+from .EffectsContainer import EffectsContainer
 from Entity.Character.Character import Character
 
 
@@ -13,11 +14,14 @@ class HUD(Container):
         self._status_bars = StatusBars()
         self._stats_container = StatsContainer()
         self._skills_container = SkillsContainer(self.player)
+        self._effects_container = EffectsContainer()
+        self._effects_container.parent = self._status_bars
 
         self.player.on_add_xp += self.update_status_bars
         self.player.on_heal += self.update_status_bars
         self.player.on_damage += self.update_status_bars
         self.player.on_update_stats += self.update_status_bars
+        self.player.on_affected += lambda: self._effects_container.update_data(self.player.effects)
 
     def update_status_bars(self):
         self._status_bars.update_data(self.player)
