@@ -11,6 +11,7 @@ from .EntityOverHead import EntityOverhead
 from ursina import *
 from .Weapon.Weapon import Weapon
 from .Loot import Loot
+from .Effect import Effect
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -31,6 +32,7 @@ class GameUnit(GameEntityBase):
         self.dead = False
         self.can_move = True
         self.spawned = False
+        self.effects = []
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -86,10 +88,14 @@ class GameUnit(GameEntityBase):
     def set_damage_texture(self):
         self.texture = self._texture_mapping.get_damage_texture()
 
-    def damage(self, amount):
+    def damage(self, amount, text: Text = None):
         self._stats.health.current_value -= amount if amount > 0 else 0
         # self.set_damage_texture()
         self.on_damage()
+
+        if text:
+            copy(text)
+
         if self.stats.health.current_value <= 0:
             self.die()
 
@@ -104,6 +110,13 @@ class GameUnit(GameEntityBase):
         if old_weapon:
             return old_weapon
 
+    def apply_effect(self, effect: Effect):
+        effect.set_effector(self)
+        self.effects.append(effect)
+
+    def handle_buffs(self):
+        for effect in self.effects:
+            effect.effect()
 
     def attack(self, direction=None):
         if self._weapon:
