@@ -13,7 +13,7 @@ class Effect:
         """
 
         self._effector = None
-        self._stack = 0
+        self._stack = 1
         self._counter = 0
         self.ticks = ticks
         self.delay = delay
@@ -36,9 +36,18 @@ class Effect:
     def texture(self) -> str:
         raise NotImplementedError
 
+    def reset_counter(self):
+        self._counter = 0
+
     def set_effector(self, entity):
         self._time_started = time.time()
         self._effector = entity
+
+    def add_stack(self):
+        self._stack += 1
+
+    def get_stack(self):
+        return self._stack
 
     def _on_effect(self):
         self._time_started = time.time()
@@ -49,8 +58,10 @@ class Effect:
     def finish(self):
         self.on_finish()
         self._effector.effects.remove(self)
+        self._effector.on_affected()
         del self
 
     def effect(self):
         if (time.time() - self._time_started) >= self.delay:
             self.on_effect()
+            self._effector.on_affected()
