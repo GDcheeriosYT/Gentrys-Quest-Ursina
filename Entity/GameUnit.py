@@ -43,6 +43,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn = Event("OnSpawn", 0)
         self.on_update_stats = Event("OnUpdateStats", 0)
         self.on_swap_weapon = Event("OnSwapWeapon", 0)
+        self.on_affected = Event("OnAffected", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
@@ -111,8 +112,18 @@ class GameUnit(GameEntityBase):
             return old_weapon
 
     def apply_effect(self, effect: Effect):
-        effect.set_effector(self)
-        self.effects.append(effect)
+        found_extra = False
+        for personal_effect in self.effects:
+            if effect.name == personal_effect.name:
+                personal_effect.add_stack()
+                personal_effect.reset_counter()
+                found_extra = True
+
+        if not found_extra:
+            effect.set_effector(self)
+            self.effects.append(effect)
+
+        self.on_affected()
 
     def handle_buffs(self):
         for effect in self.effects:
