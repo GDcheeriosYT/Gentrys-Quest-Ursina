@@ -31,7 +31,6 @@ class Register(Entity):
                 text_container.set_text("Do you need something sir?", 3)
                 destroy(text_container, 0.1)
 
-
     def update(self):
         if self.intersects().hit and not self.bought:
             entity = self.intersects().entity

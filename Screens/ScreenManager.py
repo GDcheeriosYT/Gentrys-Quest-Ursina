@@ -66,9 +66,6 @@ class ScreenManager(Entity):
             self.change_screen(Game.state.value)
             Game.state_affected = True
 
-        if held_keys["n"]:
-            Game.notification_manager.add_notification(Notification("test notification"))
-
     def input(self, key):
         if key == "b":
             if self.debug_overlay.enabled:
