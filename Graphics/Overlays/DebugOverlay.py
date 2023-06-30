@@ -31,14 +31,9 @@ class DebugOverlay(Container):
         memory_info = self.process.memory_info()
         memory_usage = psutil.virtual_memory()
         self.content.text = f"--game details--\n" \
-                            f"version: {Game.version}\n" \
                             f"{Game.state}\n" \
-                            f"{Game.state_affected}\n" \
                             f"notifications: {len(Game.notification_manager.notifications)}\n" \
                             f"volume: {round(GameConfiguration.volume, 2)}\n" \
-                            f"fullscreen: {GameConfiguration.fullscreen}\n" \
-                            f"extra ui: {GameConfiguration.extra_ui_info}\n" \
-                            f"pitch range: {GameConfiguration.random_pitch_range}\n" \
                             f"--engine--\n" \
                             f"entities: {window.entity_counter.text}\n" \
                             f"colliders: {window.collider_counter.text}\n" \
