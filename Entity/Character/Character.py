@@ -13,6 +13,8 @@ from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
 from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
+from Graphics.TextStyles.TitleText import TitleText
+from Graphics.FadeScreen import FadeScreen
 
 
 class Character(GameUnit):
@@ -39,6 +41,7 @@ class Character(GameUnit):
 
         self.on_level_up += self._on_level_up
         self.on_level_up += self.recover_health
+        self.on_death += self.death_transition
 
     @property
     def star_rating(self) -> int:
@@ -197,6 +200,27 @@ class Character(GameUnit):
         self.secondary.disable()
         self.utility.disable()
         self.ultimate.disable()
+
+    def create_texture_copy(self, delay: Union[int, float]):
+        copy = Entity(
+            model="quad",
+            texture=self.texture,
+            position=self.position
+        )
+        destroy(copy, delay)
+
+    def death_transition(self):
+        self.create_texture_copy(4)
+        fade_screen = FadeScreen()
+        invoke(lambda: camera.animate_position((camera.x, camera.y + 10), 3, curve=curve.linear), delay=0.2)
+        fade_screen.fade_in(1, 4, curve=curve.linear)
+        death_text = TitleText("You Died...", color=rgb(255, 0, 0, 0))
+        death_text.fade_in(1, 2)
+        invoke(lambda: fade_screen.fade_out(0, 2), delay=4)
+        invoke(lambda: death_text.fade_out(0, 2), delay=4)
+        destroy(fade_screen, 20)
+        destroy(death_text, 20)
+
 
     def input(self, key):
         if key == "p":
