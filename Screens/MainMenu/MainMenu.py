@@ -36,7 +36,7 @@ class MainMenu(Screen):
         super().__init__()
         self.music = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True, autoplay=False)
         self.version = VersionText(Game.version)
-        self.title = TitleText("Gentry's Quest")
+        self.title = TitleText("Gentry's Quest", color=color.black)
         self.play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
         self.settings_button = Button("Settings", position=(0, -0.3), scale=(0.2, 0.05))
         self.guest_button = TabButton("Guest", position=(-0.17, 0.45, 0))

@@ -67,3 +67,13 @@ class ParkingLot(Entity):
         amount = 7
         for i in range(amount):
             duplicate(street_lines, position=(-0.5 + i * (1 / amount), 0, -1)).combine(self)
+
+        self.cutscene_toggler = Entity(
+            model="quad",
+            position=(0, 0.12, -1),
+            scale=(1, 0.03),
+            color=rgb(100, 100, 100, 50),
+            collider="box",
+            parent=self
+        )
+        self.cutscene_toggler.hide()

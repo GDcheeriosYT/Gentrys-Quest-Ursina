@@ -79,7 +79,11 @@ class Enemy(GameUnit):
         invoke(self.attack_process, delay=self.attack_delay)
 
     def update(self):
-        self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
+        try:
+            self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
+        except AttributeError:
+            self.direction = Vec3(0, 0, 0).normalized()
+
         origin = self.world_position
         hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
         if not hit_info.hit:

@@ -65,3 +65,14 @@ class GasStation(Entity):
         duplicate(wall, position=(-0.3, -0.5, -1), scale=(0.35, 0.1))
         duplicate(wall, position=(-0.5, 0, -1), scale=(0.05, 1.1))
         duplicate(wall, position=(0.5, 0, -1), scale=(0.05, 1.1))
+
+        door = Entity(
+            model="quad",
+            color=color.black,
+            position=(0, -0.46, -1),
+            scale=(0.25, 0.02),
+            collider='box',
+            parent=self
+        )
+
+        register.buy_event += door.disable
