@@ -47,8 +47,8 @@ class MainMenu(Screen):
                            parent=camera.ui)
         self.in_menu = False
         self.menu.disable()
-        self.screen = Entity()
-        self.screen.disable()
+        self.guest_screen = GuestUI()
+        self.login_screen = LoginUI()
         self.guest_button.disable()
         self.login_button.disable()
         self.title.disable()
@@ -124,13 +124,13 @@ class MainMenu(Screen):
             if MainMenu.is_guest_menu and not already_updated:
                 self.guest_button.color = rgb(117, 117, 117)
                 self.login_button.color = rgb(0, 0, 0)
-                destroy(self.screen)
-                self.screen = GuestUI()
+                self.guest_screen.enable()
+                self.login_screen.disable()
                 already_updated = True
 
             elif MainMenu.is_login_menu and not already_updated:
                 self.guest_button.color = rgb(0, 0, 0)
                 self.login_button.color = rgb(117, 117, 117)
-                destroy(self.screen)
-                self.screen = LoginUI()
+                self.guest_screen.disable()
+                self.login_screen.enable()
                 already_updated = True
