@@ -91,7 +91,8 @@ class MainMenu(Screen):
 
     def _hide(self):
         self.disable_audio(self.music, GameConfiguration.fade_time)
-        self.screen.disable()
+        self.login_screen.disable()
+        self.guest_screen.disable()
         self.menu.disable()
         self.version.disable()
         self.guest_button.disable()
@@ -113,7 +114,6 @@ class MainMenu(Screen):
         invoke(lambda: self.guest_button.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.login_button.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.menu.enable(), delay=GameConfiguration.fade_time * 2)
-        invoke(lambda: self.screen.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.menu_toggle(), delay=GameConfiguration.fade_time * 2)
         destroy(fade_screen, GameConfiguration.fade_time * 5)

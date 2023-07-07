@@ -35,7 +35,6 @@ class TutorialMap(Entity):
         invoke(self.parking_lot.disable, delay=4)
         destroy(self.angry_pedestrian, 4)
 
-
     def update(self):
         if not self.enemy_cutscene_intro:
             if self.parking_lot.cutscene_toggler.intersects().entity == Game.user.get_equipped_character():

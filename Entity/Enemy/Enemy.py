@@ -76,7 +76,8 @@ class Enemy(GameUnit):
 
     def attack_process(self):
         self.attack(self.direction)
-        invoke(self.attack_process, delay=self.attack_delay)
+        if not self.dead:
+            invoke(self.attack_process, delay=self.attack_delay)
 
     def update(self):
         try:

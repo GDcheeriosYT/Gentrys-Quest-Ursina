@@ -164,6 +164,9 @@ class GameUnit(GameEntityBase):
     def get_loot(self) -> Loot:
         return Loot()
 
+    def on_destroy(self):
+        self.dead = True
+
     def toggle_movement(self):
         self.can_move = not self.can_move
 

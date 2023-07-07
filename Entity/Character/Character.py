@@ -221,7 +221,6 @@ class Character(GameUnit):
         destroy(fade_screen, 20)
         destroy(death_text, 20)
 
-
     def input(self, key):
         if key == "p":
             test_enemy = TestEnemy()
