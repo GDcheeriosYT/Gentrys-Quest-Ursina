@@ -34,9 +34,15 @@ class GuestConfirmBox(Entity):
         user = User(self._username, True)
         user.replace_data(open(f"Data/{self._username}.json", "r").read())
         Game.user = user
-        Game.user.equip_character(StarterCharacter(user.username))
-        user.add_character(StarterCharacter(user.username))
-        Game.change_state(GameStates.tutorial)
+        if Game.user.user_data.startup_amount == 0:
+            Game.user.user_data.increment_startup_amount()
+            Game.user.equip_character(StarterCharacter(user.username))
+            user.add_character(StarterCharacter(user.username))
+            Game.change_state(GameStates.tutorial)
+        else:
+            Game.user.user_data.increment_startup_amount()
+            Game.change_state(GameStates.selection)
+
         self._menu.enable()
         destroy(self)
 

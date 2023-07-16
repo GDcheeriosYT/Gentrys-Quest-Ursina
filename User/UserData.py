@@ -80,6 +80,9 @@ class UserData:
     def equip_character(self, character: Character):
         self._equipped_character = character
 
+    def increment_startup_amount(self):
+        self._startup_amount += 1
+
     def jsonify_data(self) -> dict:
         characters = [character.jsonify() for character in self._characters]
         artifacts = [artifact.jsonify() for artifact in self._artifacts]

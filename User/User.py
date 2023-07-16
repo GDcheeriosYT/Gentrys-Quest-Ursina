@@ -1,8 +1,10 @@
+import Game
 from .UserData import UserData
 from Entity.Character.Character import Character
 from Entity.Artifact.Artifact import Artifact
 from Entity.Weapon.Weapon import Weapon
 from typing import List
+import json
 
 
 class User:
@@ -10,7 +12,7 @@ class User:
         self._username = username
         self._user_data = UserData()
         self._is_guest = is_guest
-        self._gp = 0
+        self._gp = Game.rating_program.rater.generate_power_details(self._user_data.jsonify_data(), True)['rating']['weighted']
 
     @property
     def username(self) -> str:
@@ -56,6 +58,10 @@ class User:
 
     def equip_character(self, character: Character):
         self._user_data.equip_character(character)
+
+    def unload(self):
+        if self._is_guest:
+            json.dump(self._user_data.jsonify_data(), open(f"Data/{self._username}.json", "w"), indent=4)
 
     def __repr__(self):
         print(self._username, self._gp, "GP")

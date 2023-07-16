@@ -48,7 +48,7 @@ class Stat:
             self.calculate_value()
 
     def boost_stat(self, percentage):
-        self._additional_value += self.get_default_value() + (self.get_default_value() * (percentage * 0.01))
+        self._additional_value += self.get_default_value() * (percentage * 0.01)
         if self._name != "Health":
             self.calculate_value()
 
