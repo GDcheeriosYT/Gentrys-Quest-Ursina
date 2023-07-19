@@ -19,7 +19,7 @@ from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
 from Content.Enemies.AngryChineseMan.AngryChineseMan import AngryChineseMan
 
 # Locations
-# no locations lol
+from Content.Locations.TestLocation.TestLocation import TestLocation
 
 # Weapon
 from Content.Weapons.Knife.Knife import Knife
@@ -50,7 +50,9 @@ class ContentManager:
             AngryChineseMan
         ]
 
-        self.locations = []
+        self.locations = [
+            TestLocation
+        ]
 
         self.weapons = [
             Knife,

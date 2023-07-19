@@ -1,6 +1,7 @@
 from ursina import *
 
-from Content.Locations.TestLocation.TestLocation import TestLocation
+import Game
+from .LocationButton import LocationButton
 
 
 class TravelMenu(Entity):
@@ -14,7 +15,10 @@ class TravelMenu(Entity):
         self.selected_location = None
         self.area_info = None
 
-        for locations in self.locations:
-            area_button = Button(
-                area.name
-            )
+        position_y = 0.4
+        for location in Game.content_manager.locations:
+            print(location().name)
+            area_button = LocationButton(location().name, self)
+            area_button.y = position_y
+            self.locations.append(area_button)
+            position_y -= 0.1

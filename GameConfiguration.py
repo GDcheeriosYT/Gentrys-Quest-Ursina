@@ -1,7 +1,5 @@
-import os
 import json
 from ursina import *
-import Game
 
 volume = 1
 play_intro = False

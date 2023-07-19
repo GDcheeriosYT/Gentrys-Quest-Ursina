@@ -65,15 +65,15 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-# character = BraydenMesserschmidt()
-# Game.user = User("I hate my life...", True)
-# Game.user.equip_character(character)
-# Game.user.add_character(character)
-# Game.user.add_weapon(BraydensOsuPen())
-#
-# Game.state = GameStates.gameplay
+character = BraydenMesserschmidt()
+Game.user = User("I hate my life...", True)
+Game.user.equip_character(character)
+Game.user.add_character(character)
+Game.user.add_weapon(BraydensOsuPen())
 
-Game.state = GameStates.selection
+Game.state = GameStates.gameplay
+
+# Game.state = GameStates.selection
 
 # if GameConfiguration.play_intro:
 #     Game.state = GameStates.intro

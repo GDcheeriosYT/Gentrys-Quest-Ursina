@@ -8,6 +8,7 @@ from Graphics.Container import Container
 from .SelectionStatus import SelectionStatus
 from .MenuButton import MenuButton
 from .Changelog import ChangelogMenu
+from .TravelMenu import TravelMenu
 
 
 class Selection(Screen):
@@ -31,7 +32,9 @@ class Selection(Screen):
             parent=self.menu
         )
 
-        self.changelog = ChangelogMenu(self.menu)
+        self.changelog_menu = ChangelogMenu(self.menu)
+
+        self.travel_menu = TravelMenu(self.menu)
 
         self.changelog_button = MenuButton(
             "Changelog",
@@ -48,6 +51,11 @@ class Selection(Screen):
         )
 
         self.travel_button.on_click_event += lambda: self.change_status(SelectionStatus.travel)
+
+        self.menus = [
+            self.changelog_menu,
+            self.travel_menu
+        ]
 
         self.menu_buttons = [
             self.changelog_button,
@@ -72,12 +80,17 @@ class Selection(Screen):
         for button in self.menu_buttons:
             button.deactivate()
 
+    def disable_menus(self):
+        for menu in self.menus:
+            menu.disable()
+
     def _show(self):
         for button in self.menu_buttons:
             button.enable()
 
     def _hide(self):
-        self.changelog.disable()
+        self.changelog_menu.disable()
+        self.travel_menu.disable()
         for button in self.menu_buttons:
             button.disable()
 
@@ -91,12 +104,13 @@ class Selection(Screen):
     def update(self):
         if self.status_changed:
             self.deactivate_buttons()
+            self.disable_menus()
             if self.status == SelectionStatus.changelog:
                 self.changelog_button.activate()
-                self.changelog.enable()
+                self.changelog_menu.enable()
 
             elif self.status == SelectionStatus.travel:
-                self.changelog.disable()
                 self.travel_button.activate()
+                self.travel_menu.enable()
 
             self.status_changed = False
