@@ -84,10 +84,14 @@ class MainMenu(Screen):
         self.in_menu = not self.in_menu
 
     def _show(self):
+        global already_updated
         self.title.enable()
         self.version.enable()
         self.play_button.enable()
         self.settings_button.enable()
+        MainMenu.is_guest_menu = False
+        MainMenu.is_login_menu = True
+        already_updated = False
 
     def _hide(self):
         self.disable_audio(self.music, GameConfiguration.fade_time)
@@ -100,6 +104,7 @@ class MainMenu(Screen):
         self.title.disable()
         self.play_button.disable()
         self.settings_button.disable()
+        self.in_menu = False
 
     def play(self) -> None:
         fade_screen = FadeScreen()

@@ -3,13 +3,13 @@ from ursina import *
 from utils.Event import Event
 
 
-class LocationButton(Button):
-    def __init__(self, location_name: str, parent: Entity):
+class AreaButton(Button):
+    def __init__(self, area_name: str, parent: Entity):
         super().__init__(
-            location_name,
+            area_name,
             origin=(-0.5, 0),
-            position=(-0.5, 0),
-            scale=(1, 0.2),
+            position=(-0.48, 0),
+            scale=(0.4, 0.2),
             parent=parent
         )
 

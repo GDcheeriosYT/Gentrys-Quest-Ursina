@@ -18,6 +18,7 @@ class Gameplay(Screen):
         self.time_started = None
 
         self.on_show += self._on_show
+        self.on_hide += self._on_hide
 
     @property
     def name(self) -> str:
@@ -31,12 +32,22 @@ class Gameplay(Screen):
         self.player = Game.user.get_equipped_character()
         self.hud = HUD(self.player)
         self.inventory = Inventory()
+        self.inventory.update_player()
         self.inventory.disable()
         self.player.spawn()
-        self.map = TestMap()
+        self.map = Game.selected_area
         self.time_started = time.time()
         self.map.load()
         self.spawned = False
+
+    def _on_hide(self):
+        if self.map:
+            self.map.unload()
+
+        if self.hud:
+            self.hud.end()
+
+        destroy(self.inventory)
 
     def toggle_spawned(self):
         self.spawned = False
@@ -65,13 +76,13 @@ class Gameplay(Screen):
                 self.map.can_spawn = False
                 self.hud.hide_elements()
                 self.player.disable()
-                self.map.manage_entities(False, False)
+                self.map.toggle_enemies()
                 self.inventory.enable()
                 self.in_inventory = True
             else:
                 self.map.can_spawn = True
                 self.hud.show_elements()
                 self.player.enable()
-                self.map.manage_entities(False, True)
+                self.map.toggle_enemies()
                 self.inventory.disable()
                 self.in_inventory = False

@@ -12,7 +12,7 @@ class User:
         self._username = username
         self._user_data = UserData()
         self._is_guest = is_guest
-        self._gp = Game.rating_program.rater.generate_power_details(self._user_data.jsonify_data(), True)['rating']['weighted']
+        self._gp = 0
 
     @property
     def username(self) -> str:
@@ -58,6 +58,9 @@ class User:
 
     def equip_character(self, character: Character):
         self._user_data.equip_character(character)
+
+    def calculate_gp(self):
+        self._gp = Game.rating_program.rater.generate_power_details(self._user_data.jsonify_data(), True)['rating']['weighted']
 
     def unload(self):
         if self._is_guest:

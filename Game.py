@@ -17,6 +17,7 @@ intro_music = None
 changelog = Changelog()
 content_manager = ContentManager()
 notification_manager = NotificationManager()
+selected_area = None
 
 
 def change_state(new_state: GameStates):

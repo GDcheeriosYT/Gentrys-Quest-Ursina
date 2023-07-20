@@ -61,25 +61,40 @@ class ContentManager:
 
     def get_family(self, name: str):
         for family in self.artifact_families:
-            if name == family.name:
+            if name == family().name:
                 return family()
+
+    def get_artifact(self, name: str, star_rating: int):
+        for family in self.artifact_families:
+            for artifact in family().artifacts:
+                try:
+                    if artifact(star_rating).name == name:
+                        return artifact(star_rating)
+                except TypeError:
+                    if artifact().name == name:
+                        return artifact()
 
     def get_character(self, name):
         for character in self.characters:
-            if name == character.name:
-                return character()
+            try:
+                if name == character().name:
+                    return character()
+            except TypeError:
+                pass
+
+        return StarterCharacter(name)
 
     def get_enemy(self, name):
         for enemy in self.enemies:
-            if name == enemy.name:
+            if name == enemy().name:
                 return enemy()
 
     def get_location(self, name):
         for location in self.locations:
-            if name == location.name:
+            if name == location().name:
                 return location()
 
     def get_weapon(self, name):
         for weapon in self.weapons:
-            if name == weapon.name:
+            if name == weapon().name:
                 return weapon()

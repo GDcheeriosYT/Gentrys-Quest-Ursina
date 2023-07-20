@@ -7,7 +7,7 @@ class EntityIcon(Button):
     """
     EntityIcon acts as an icon for an entity.
     """
-    def __init__(self, entity, scale: tuple = (0.15, 0.15), *args, **kwargs):
+    def __init__(self, entity, scale: tuple = (0.18, 0.18), *args, **kwargs):
         """
 
         :param entity: The Entity to create an icon of.

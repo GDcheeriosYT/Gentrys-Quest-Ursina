@@ -78,7 +78,11 @@ class UserData:
         self._money -= money
 
     def equip_character(self, character: Character):
+        if self._equipped_character:
+            self.equipped_character.unequip()
+
         self._equipped_character = character
+        self._equipped_character.equip()
 
     def increment_startup_amount(self):
         self._startup_amount += 1
