@@ -16,8 +16,8 @@ class UserData:
         if json_str:
             json_data = json.loads(json_str)
             self._characters = DataLoader.parse_characters(json_data["inventory"]["characters"])
-            self._artifacts = DataLoader.parse_characters(json_data["inventory"]["artifacts"])
-            self._weapons = DataLoader.parse_characters(json_data["inventory"]["weapons"])
+            self._artifacts = DataLoader.parse_artifacts(json_data["inventory"]["artifacts"])
+            self._weapons = DataLoader.parse_weapons(json_data["inventory"]["weapons"])
             self._items = []
             self._equipped_character = None
             self._money = json_data["inventory"]["money"]
