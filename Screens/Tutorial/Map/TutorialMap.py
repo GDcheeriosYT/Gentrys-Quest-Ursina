@@ -53,3 +53,4 @@ class TutorialMap(Entity):
                 invoke(self.angry_pedestrian.toggle_movement, delay=5)
                 invoke(self.character_copy.disable, delay=5)
                 invoke(Game.user.get_equipped_character().enable, delay=5)
+                invoke(Game.user.get_equipped_character().toggle_movement, delay=5)

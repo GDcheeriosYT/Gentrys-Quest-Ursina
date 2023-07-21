@@ -51,6 +51,7 @@ class GuestUI(Entity):
         for file in os.listdir('Data'):
             user = User(file[:-5], True)
             user.replace_data(open(f"Data/{file}", 'r').read())
+            # user.calculate_gp() # have to update GPSystem to support newer json file types
             self._user_list.append(user)
 
     def create_guest(self) -> None:

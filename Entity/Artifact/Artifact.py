@@ -37,6 +37,10 @@ class Artifact:
     def main_attribute(self) -> Buff:
         return self._main_attribute
 
+    def set_main_attribute(self, buff: Buff):
+        self._main_attribute = buff
+        self._main_attribute.handle_value(self._star_rating)
+
     @property
     def attributes(self) -> List[Buff]:
         return self._attributes
@@ -44,6 +48,12 @@ class Artifact:
     @property
     def star_rating(self) -> int:
         return self._star_rating
+
+    def set_star_rating(self, star_rating: int):
+        self._star_rating = star_rating
+        self._main_attribute.handle_value(star_rating)
+        for attribute in self._attributes:
+            attribute.handle_value(star_rating)
 
     @property
     def texture(self):
@@ -90,3 +100,23 @@ class Artifact:
 
         if not exists:
             self._attributes.append(buff)
+
+    def jsonify(self):
+        attributes = []
+        for attribute in self.attributes:
+            attributes.append(attribute.jsonify())
+
+        return {
+            "stats": {
+                "attributes": attributes,
+                "main attribute": self.main_attribute.jsonify()
+            },
+            "name": self.name,
+            "experience": {
+                "xp required": self.experience.get_xp_required(self.star_rating),
+                "level": self.experience.level,
+                "xp": self.experience.xp,
+                "previous xp required": 0
+            },
+            "star rating": self.star_rating
+        }

@@ -6,6 +6,7 @@ from .Intro.Intro import Intro
 from .Tutorial.Tutorial import Tutorial
 from .Settings.Settings import Settings
 from .Gameplay.Gameplay import Gameplay
+from .Selection.Selection import Selection
 from Graphics.FadeScreen import FadeScreen
 from Graphics.Overlays.DebugOverlay import DebugOverlay
 from Overlays.Notification import Notification
@@ -29,6 +30,7 @@ class ScreenManager(Entity):
         self.assign_screen(Tutorial)
         self.assign_screen(Settings)
         self.assign_screen(Gameplay)
+        self.assign_screen(Selection)
 
         self.current_screen = None
 

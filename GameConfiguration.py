@@ -1,10 +1,8 @@
-import os
 import json
 from ursina import *
-import Game
 
 volume = 1
-play_intro = True
+play_intro = False
 hide_fps = False
 borderless = False
 fullscreen = True

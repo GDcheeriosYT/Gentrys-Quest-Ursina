@@ -15,6 +15,10 @@ class BraydensOsuPen(Weapon):
         return "Braydens Osu Pen"
 
     @property
+    def description(self) -> str:
+        return "The pen that brayden uses to click circles"
+
+    @property
     def base_attack(self) -> int:
         return 50
 

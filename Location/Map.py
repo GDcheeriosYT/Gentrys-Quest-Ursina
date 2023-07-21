@@ -10,6 +10,8 @@ from Content.ArtifactFamilies.TestFamily.TestFamily import TestFamily
 class Map:
     def __init__(
             self,
+            name: str = "Map",
+            description: str = "This is an area...",
             entities: list = None,
             enemies: list = None,
             difficulty: int = 0,
@@ -19,6 +21,10 @@ class Map:
             music: list = None,
             spawn_delay: Union[int, float] = 7
     ):
+        self.name = name
+
+        self.description = description
+
         if enemies:
             self.enemies = enemies
         else:
@@ -51,16 +57,25 @@ class Map:
 
     def load(self):
         self.calculate_difficulty(Game.user.get_equipped_character())
-        self.manage_entities(True, True)
+        self.manage_entities(True)
         self.music = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
 
     def unload(self):
-        self.manage_entities(True, False)
+        self.manage_entities(False)
+        self.destroy_enemies()
 
-    def manage_entities(self, unloaded: bool = True, enable: bool = True):
-        entity_list = self.entities if unloaded else self.enemy_tracker
+    def destroy_enemies(self):
+        for enemy in self.enemy_tracker:
+            destroy(enemy)
 
-        for entity in entity_list:
+        self.enemy_tracker.clear()
+
+    def toggle_enemies(self):
+        for enemy in self.enemy_tracker:
+            enemy.disable() if enemy.enabled else enemy.enable()
+
+    def manage_entities(self, enable: bool = True):
+        for entity in self.entities:
             entity.enable() if enable else entity.disable()
 
     def spawn_sequence(self):

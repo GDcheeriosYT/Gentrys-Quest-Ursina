@@ -28,8 +28,6 @@ class DebugOverlay(Container):
         self.process = psutil.Process(self.pid)
 
     def update(self):
-        memory_info = self.process.memory_info()
-        memory_usage = psutil.virtual_memory()
         self.content.text = f"--game details--\n" \
                             f"{Game.state}\n" \
                             f"notifications: {len(Game.notification_manager.notifications)}\n" \
@@ -38,7 +36,4 @@ class DebugOverlay(Container):
                             f"entities: {window.entity_counter.text}\n" \
                             f"colliders: {window.collider_counter.text}\n" \
                             f"--performance--\n" \
-                            f"fps: {window.fps_counter.text}\n" \
-                            f"memory: {format_memory_size(memory_usage.used)}/{format_memory_size(memory_usage.total)}\n" \
-                            f"memory available: {format_memory_size(memory_usage.available)}\n" \
-                            f"program using: {format_memory_size(memory_info.rss)}"
+                            f"fps: {window.fps_counter.text}\n"

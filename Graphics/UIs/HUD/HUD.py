@@ -36,6 +36,9 @@ class HUD(Container):
         self._skills_container.enable()
 
     def end(self):
+        destroy(self._status_bars)
+        destroy(self._stats_container)
+        destroy(self._skills_container)
         destroy(self)
 
     def update(self):

@@ -39,5 +39,12 @@ class Buff:
     def get_buff_level_string(self) -> str:
         return f"[{self.level}]"
 
+    def jsonify(self):
+        return {
+            'stat': self._stat,
+            'is percent': self._is_percent,
+            'level': self.level
+        }
+
     def __repr__(self):
         return f"{self._stat}{self.get_buff_level_string() if self.level > 1 else ''} {self._value}{'%' if self._is_percent else ''}\n"
