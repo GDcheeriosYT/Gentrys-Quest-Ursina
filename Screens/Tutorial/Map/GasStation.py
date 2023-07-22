@@ -47,7 +47,7 @@ class GasStation(Entity):
             collider='box',
             parent=self
         )
-        wall.disable()
+        wall.enable()
 
         register = Register(self)
 
@@ -65,6 +65,8 @@ class GasStation(Entity):
         duplicate(wall, position=(-0.3, -0.5, -1), scale=(0.35, 0.1))
         duplicate(wall, position=(-0.5, 0, -1), scale=(0.05, 1.1))
         duplicate(wall, position=(0.5, 0, -1), scale=(0.05, 1.1))
+
+        wall.disable()
 
         door = Entity(
             model="quad",
