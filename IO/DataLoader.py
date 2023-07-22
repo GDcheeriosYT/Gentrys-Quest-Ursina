@@ -15,7 +15,6 @@ class DataLoader:
 
     @staticmethod
     def parse_character(character_json):
-        print(character_json['name'])
         character = Game.content_manager.get_character(character_json["name"])
         if character_json['equips']['weapon'] is not None:
             character.swap_weapon(DataLoader.parse_weapon(character_json['equips']['weapon']))

@@ -71,6 +71,11 @@ class Selection(Screen):
 
         self.inventory_button.on_click_event += lambda: self.change_status(SelectionStatus.inventory)
 
+        self.gacha_button = MenuButton(
+            "Gacha",
+            parent=self.menu_buttons_container
+        )
+
         self.menus = [
             self.changelog_menu,
             self.travel_menu,
@@ -80,7 +85,8 @@ class Selection(Screen):
         self.menu_buttons = [
             self.changelog_button,
             self.travel_button,
-            self.inventory_button
+            self.inventory_button,
+            self.gacha_button
         ]
 
         space_coefficient = 1
@@ -107,12 +113,13 @@ class Selection(Screen):
 
     def _show(self):
         self.inventory_menu.update_player()
-        self.status_changed = True
+        self.change_status(SelectionStatus.changelog)
         for button in self.menu_buttons:
             button.enable()
 
     def _hide(self):
         self.disable_menus()
+        self.inventory_menu.show_entity_listing('characters')
         for button in self.menu_buttons:
             button.disable()
 

@@ -123,10 +123,15 @@ class MainMenu(Screen):
         invoke(lambda: self.menu_toggle(), delay=GameConfiguration.fade_time * 2)
         destroy(fade_screen, GameConfiguration.fade_time * 5)
 
+    def input(self, key):
+        if key == 'p':
+            self.guest_screen.update_list()
+
     def update(self):
         global already_updated
         if self.in_menu:
             if MainMenu.is_guest_menu and not already_updated:
+                self.guest_screen.update_list()
                 self.guest_button.color = rgb(117, 117, 117)
                 self.login_button.color = rgb(0, 0, 0)
                 self.guest_screen.enable()

@@ -208,6 +208,11 @@ class Character(GameUnit):
         self.utility.disable()
         self.ultimate.disable()
 
+    def enable_skills(self):
+        self.secondary.enable()
+        self.utility.enable()
+        self.ultimate.enable()
+
     def create_texture_copy(self, delay: Union[int, float]):
         copy = Entity(
             model="quad",

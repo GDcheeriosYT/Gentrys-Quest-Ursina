@@ -104,7 +104,6 @@ class GameUnit(GameEntityBase):
         if old_weapon:
             return old_weapon
 
-
     def attack(self, direction=None):
         if self._weapon:
             if self._weapon.is_ready():
@@ -152,6 +151,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn()
         self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.update_stats()
         self.stats.health.calculate_value()
         self.dead = False
         self.spawned = True

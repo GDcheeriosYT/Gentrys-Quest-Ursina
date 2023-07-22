@@ -12,6 +12,7 @@ class Notification(Text):
         )
         self.always_on_top = True
         self.fade_out(0, 0)
+        print(f"{text} [{color}]")
 
     def disappear(self) -> None:
         self.fade_out(0, 1)

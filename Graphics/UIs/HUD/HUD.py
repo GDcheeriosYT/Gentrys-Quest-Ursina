@@ -36,10 +36,13 @@ class HUD(Container):
         self._skills_container.enable()
 
     def end(self):
+        self.player.on_update_stats -= self.update_status_bars  # remove the update event
         destroy(self._status_bars)
         destroy(self._stats_container)
         destroy(self._skills_container)
         destroy(self)
+
+        # destroy children and self
 
     def update(self):
         self.update_stats_container()

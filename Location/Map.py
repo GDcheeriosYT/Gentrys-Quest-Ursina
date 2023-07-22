@@ -45,6 +45,8 @@ class Map:
         else:
             self.music = ["Audio/questfightvidgame.mp3", "Audio/1drill.mp3", "Audio/90ssound.mp3", "Audio/ooky.mp3", "Audio/gentrys_quest_jungle_1.mp3"]
 
+        self.music_player = None
+
         self.spawn_delay = spawn_delay
 
         self.difficulty = difficulty
@@ -58,11 +60,12 @@ class Map:
     def load(self):
         self.calculate_difficulty(Game.user.get_equipped_character())
         self.manage_entities(True)
-        self.music = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
+        self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
 
     def unload(self):
         self.manage_entities(False)
         self.destroy_enemies()
+        destroy(self.music_player)
 
     def destroy_enemies(self):
         for enemy in self.enemy_tracker:

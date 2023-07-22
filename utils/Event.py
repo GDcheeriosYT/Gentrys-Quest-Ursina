@@ -22,3 +22,10 @@ class Event:
 
         self._callbacks.append(callback)
         return self
+
+    def __isub__(self, callback: 'Callable') -> 'Event':
+        if not callable(callback):
+            raise RuntimeError("event callback must be a callable")
+
+        self._callbacks.remove(callback)
+        return self

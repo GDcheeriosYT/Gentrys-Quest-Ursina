@@ -1,3 +1,5 @@
+from ursina import *
+
 import Game
 from .UserData import UserData
 from Entity.Character.Character import Character
@@ -13,6 +15,7 @@ class User:
         self._user_data = UserData()
         self._is_guest = is_guest
         self._gp = 0
+        self._ranking = 'unranked', ''
 
     @property
     def username(self) -> str:
@@ -25,6 +28,10 @@ class User:
     @property
     def gp(self) -> int:
         return self._gp
+
+    @property
+    def ranking(self) -> tuple:
+        return self._ranking
 
     def get_equipped_character(self) -> Character:
         return self._user_data.equipped_character
@@ -60,11 +67,31 @@ class User:
         self._user_data.equip_character(character)
 
     def calculate_gp(self):
-        self._gp = Game.rating_program.rater.generate_power_details(self._user_data.jsonify_data(), True)['rating']['weighted']
+        if self._user_data.data_parsed:
+            data = self._user_data.jsonify_data()
+        else:
+            data = {
+                'inventory': {
+                    'characters': self._user_data.characters,
+                    'artifacts': self._user_data.artifacts,
+                    'weapons': self._user_data.weapons
+                }
+            }
+
+        rating = Game.rating_program.rater.generate_power_details(data, True)
+        self._gp = rating['rating']['weighted']
+        self._ranking = rating['ranking']['tier'], rating['ranking']['tier value']
+
+    def load(self):
+        self._user_data.load_items()
 
     def unload(self):
         if self._is_guest:
             json.dump(self._user_data.jsonify_data(), open(f"Data/{self._username}.json", "w"), indent=4)
+
+        [destroy(item) for item in self._user_data.characters]
+        [destroy(item) for item in self._user_data.weapons]
+        # [destroy(item) for item in self._user_data.artifacts]
 
     def __repr__(self):
         print(self._username, self._gp, "GP")

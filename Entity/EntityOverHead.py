@@ -3,7 +3,7 @@ from ursina.prefabs.health_bar import HealthBar
 
 
 class EntityOverhead(Entity):
-    def __init__(self, entity):
+    def __init__(self, entity: Entity):
         self._entity = entity
         super().__init__(
             model="quad",
@@ -19,7 +19,7 @@ class EntityOverhead(Entity):
         except AttributeError:
             name = None
 
-        self.entity_name = Text(f"{name}\nlevel {self._entity.experience.level}", parent=self, color=rgb(0, 0, 0, 255), scale=(5, 5), origin=(0, 0), position=(0, 0.2))
+        self.entity_name = Text(f"{name}", parent=self, color=rgb(0, 0, 0, 255), scale=(5, 5), origin=(0, 0), position=(0, 0.2))
         self.health_bar = HealthBar(max_value=entity.stats.health.get_value(), parent=self, position=(-0.25, 0.1), show_text=False)
         self.health_bar.collider = None
 

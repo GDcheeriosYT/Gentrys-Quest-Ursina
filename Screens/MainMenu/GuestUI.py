@@ -44,14 +44,13 @@ class GuestUI(Entity):
         self._username_entry.scale_y = 0.04
 
         self._add_button.on_click = self.create_guest
-        self.update_list()
 
     def load_guest_data(self) -> None:
         self._user_list = []
         for file in os.listdir('Data'):
             user = User(file[:-5], True)
             user.replace_data(open(f"Data/{file}", 'r').read())
-            # user.calculate_gp() # have to update GPSystem to support newer json file types
+            user.calculate_gp()
             self._user_list.append(user)
 
     def create_guest(self) -> None:
@@ -76,13 +75,12 @@ class GuestUI(Entity):
     def update_list(self) -> None:
         [destroy(guest) for guest in self._guest_entity_list]
         self.load_guest_data()
-        self._guest_entity_list = []
         y = 0.25
         if len(self._guest_entity_list) == 0:
             self._guest_entity_list.append(Text("No guest users found...", scale=(2.5, 2.5), origin=(0, 0), position=(0, 0.25), parent=self))
 
         for user in self._user_list:
-            guest_element = GuestElement(user.username, user.gp, self, position=(0, y), parent=self)
+            guest_element = GuestElement(user, self, position=(0, y), parent=self)
             self._guest_entity_list.append(
                 guest_element
             )
