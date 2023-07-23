@@ -1,3 +1,4 @@
+import ursina.scene
 from ursina import *
 from typing import Union
 import random
@@ -66,6 +67,7 @@ class Map:
         self.enemy_tracker = []
 
     def load(self):
+        self.destroy_enemies()
         self.calculate_difficulty(Game.user.get_equipped_character())
         self.manage_entities(True)
         self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
@@ -92,40 +94,37 @@ class Map:
     def spawn_sequence(self):
         self.calculate_difficulty(Game.user.get_equipped_character())
         self.enemy_limit = self.current_difficulty * 4
-        spawn_amount = random.randint(self.current_difficulty, self.current_difficulty * 2)
-        if len(self.enemy_tracker) + spawn_amount <= self.enemy_limit and self.can_spawn:
-            for i in range(spawn_amount):
-                enemy = random.choice(self.enemies)()
-                enemy.experience.level = ((self.current_difficulty - 1) * 20) + ((Game.user.get_equipped_character().experience.level % 20) + random.randint(0, 3))
-                enemy.follow_entity(Game.user.get_equipped_character())
-                enemy.position = Game.user.get_equipped_character().position
-                enemy.y += random.randint(-20, 20)
-                enemy.x += random.randint(-20, 20)
-                if random.randint(1, 10) > 8:
-                    enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
+        # spawn_amount = random.randint(self.current_difficulty, self.current_difficulty * 2)
+        if len(self.enemy_tracker) + 1 <= self.enemy_limit and self.can_spawn:
+            enemy = random.choice(self.enemies)()
+            enemy.experience.level = ((self.current_difficulty - 1) * 20) + ((Game.user.get_equipped_character().experience.level % 20) + random.randint(0, 3))
+            enemy.follow_entity(Game.user.get_equipped_character())
+            enemy.position = Game.user.get_equipped_character().position
+            enemy.y += random.randint(random.randint(-20, -15), random.randint(15, 20))
+            enemy.x += random.randint(random.randint(-20, -15), random.randint(15, 20))
+            if random.randint(1, 10) > 8:
+                enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
 
-                if random.randint(1, 20) > 18:
-                    enemy.on_death += lambda: Game.user.add_weapon(self.generate_weapon())
+            if random.randint(1, 20) > 18:
+                enemy.on_death += lambda: Game.user.add_weapon(self.generate_weapon())
 
-                enemy.on_death += lambda: Game.user.get_equipped_character().manage_loot(enemy.get_loot())
-                enemy.on_death += lambda: self.enemy_tracker.remove(enemy)
-                self.enemy_tracker.append(enemy)
-                # Game.notification_manager.add_notification(Notification(str(enemy in self.enemy_tracker), color.green if enemy in self.enemy_tracker else color.red))
-                enemy.spawn()
-
-        invoke(self.spawn_sequence, delay=(10/self.current_difficulty))
+            enemy.on_death += lambda: Game.user.get_equipped_character().manage_loot(enemy.get_loot())
+            enemy.on_death += lambda: self.enemy_tracker.remove(enemy)
+            self.enemy_tracker.append(enemy)
+            # Game.notification_manager.add_notification(Notification(str(enemy in self.enemy_tracker), color.green if enemy in self.enemy_tracker else color.red))
+            enemy.spawn()
 
     def generate_artifact(self):
         random_num = random.randint(0, int(10000/self.current_difficulty))
         star_rating = 1
-        if random_num <= 3500:
-            star_rating = 2
-        elif random_num <= 2000:
-            star_rating = 3
+        if random_num <= 300:
+            star_rating = 5
         elif random_num <= 750:
             star_rating = 4
-        elif random_num <= 300:
-            star_rating = 5
+        elif random_num <= 2000:
+            star_rating = 3
+        elif random_num <= 3500:
+            star_rating = 2
 
         artifact = random.choice(self.artifact_families).get_random_artifact()(star_rating)
         return artifact

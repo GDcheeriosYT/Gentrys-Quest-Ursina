@@ -31,6 +31,7 @@ class GameUnit(GameEntityBase):
         self.dead = False
         self.can_move = True
         self.spawned = False
+        self.range = 1
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -101,6 +102,8 @@ class GameUnit(GameEntityBase):
 
         self._weapon = weapon
         self._weapon.equip(self)
+        if weapon:
+            self.range = 1 + self._weapon.range
         self._weapon.on_level_up += self.update_stats
         self.on_swap_weapon()
         if old_weapon:

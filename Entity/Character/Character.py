@@ -80,6 +80,7 @@ class Character(GameUnit):
     def remove_artifact(self, index: int):
         self.artifacts[index].equipped_entity = None
         self.artifacts[index] = None
+        self.update_stats()
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -195,11 +196,11 @@ class Character(GameUnit):
             if self.artifacts[index - 1]:
                 swapped_artifact = self.artifacts[index - 1]
                 self.artifacts[index - 1] = artifact
-                self.update_stats()
                 return swapped_artifact
             else:
                 self.artifacts[index - 1] = artifact
-                self.update_stats()
+
+        self.update_stats()
 
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)

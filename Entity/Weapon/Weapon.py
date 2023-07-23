@@ -59,7 +59,7 @@ class Weapon(GameEntityBase):
     def update_stats(self):
         self.damage = int(self.base_attack + (self.experience.level * 1.2) + (self.star_rating * self.experience.level))
         self.buff.level = self.experience.level
-        self.buff.handle_value(self.star_rating)
+        self.buff.handle_value(self.star_rating, True)
         self.try_update_equipped_stats()
 
     def try_update_equipped_stats(self):

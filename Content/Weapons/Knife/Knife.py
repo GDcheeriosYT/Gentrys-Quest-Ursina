@@ -1,5 +1,6 @@
 from Entity.Weapon.Weapon import Weapon
 from ursina import *
+from Graphics.TextStyles.DamageText import DamageText
 
 
 class Knife(Weapon):
@@ -75,20 +76,13 @@ class Knife(Weapon):
                     self.hit_list.append(hit_info.entity)
                 try:
                     hit_entity = hit_info.entity
-                    is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
-                    crit_damage = (self._equipped_entity.stats.attack.get_value() * (
-                                self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
-                    damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
                     if hit_entity not in self.hit_list:
+                        is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
+                        crit_damage = (self._equipped_entity.stats.attack.get_value() * (self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
+                        damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
                         amount = damage - hit_entity.stats.defense.get_value()
-                        damage_text = Text(str(amount if amount > 0 else "miss"), scale=(20, 20), position=(0, 0.5, -1),
-                                           origin=(0, 0), color=color.red if is_crit else color.white,
-                                           parent=hit_info.entity)
-                        damage_text.animate_position((damage_text.x + 0.1, damage_text.y + 0.5), 1)
-                        damage_text.fade_out(0, 1)
-                        destroy(damage_text, delay=1.5)
+                        DamageText(amount, is_crit, parent=hit_entity)
                         hit_entity.damage(amount)
-                        self.hit_list.append(hit_info.entity)
-                        print(f"{'critical ' if is_crit else ''}hit {hit_info.entity} for {self.damage}")
+                        self.hit_list.append(hit_entity)
                 except AttributeError:
                     pass
