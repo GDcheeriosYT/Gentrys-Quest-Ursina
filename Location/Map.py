@@ -2,9 +2,11 @@ from ursina import *
 from typing import Union
 import random
 import Game
+import copy
 import GameConfiguration
 from Content.Enemies.TestEnemy import TestEnemy
 from Content.ArtifactFamilies.TestFamily.TestFamily import TestFamily
+from Overlays.Notification import Notification
 
 
 class Map:
@@ -18,6 +20,7 @@ class Map:
             difficulty_scales: bool = True,
             enemy_limit: int = 5,
             artifact_families: list = None,
+            weapon_list: list = None,
             music: list = None,
             spawn_delay: Union[int, float] = 7
     ):
@@ -39,6 +42,11 @@ class Map:
             self.artifact_families = artifact_families
         else:
             self.artifact_families = [TestFamily()]
+
+        if weapon_list:
+            self.weapon_list = weapon_list
+        else:
+            self.weapon_list = [Game.content_manager.get_weapon("Knife")]
 
         if music:
             self.music = music
@@ -91,15 +99,21 @@ class Map:
                 enemy.experience.level = ((self.current_difficulty - 1) * 20) + ((Game.user.get_equipped_character().experience.level % 20) + random.randint(0, 3))
                 enemy.follow_entity(Game.user.get_equipped_character())
                 enemy.position = Game.user.get_equipped_character().position
-                enemy.y += random.randint(-7, 7)
-                enemy.x += random.randint(-7, 7)
-                enemy.spawn()
+                enemy.y += random.randint(-20, 20)
+                enemy.x += random.randint(-20, 20)
                 if random.randint(1, 10) > 8:
                     enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
 
+                if random.randint(1, 20) > 18:
+                    enemy.on_death += lambda: Game.user.add_weapon(self.generate_weapon())
+
                 enemy.on_death += lambda: Game.user.get_equipped_character().manage_loot(enemy.get_loot())
-                enemy.on_death += lambda: self.enemy_tracker.pop(0)
+                enemy.on_death += lambda: self.enemy_tracker.remove(enemy)
                 self.enemy_tracker.append(enemy)
+                # Game.notification_manager.add_notification(Notification(str(enemy in self.enemy_tracker), color.green if enemy in self.enemy_tracker else color.red))
+                enemy.spawn()
+
+        invoke(self.spawn_sequence, delay=(10/self.current_difficulty))
 
     def generate_artifact(self):
         random_num = random.randint(0, int(10000/self.current_difficulty))
@@ -115,6 +129,10 @@ class Map:
 
         artifact = random.choice(self.artifact_families).get_random_artifact()(star_rating)
         return artifact
+
+    def generate_weapon(self):
+        weapon = type(random.choice(self.weapon_list))
+        return weapon()
 
     def calculate_difficulty(self, player):
         if self.difficulty_scales:

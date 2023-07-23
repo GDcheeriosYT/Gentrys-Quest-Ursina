@@ -1,27 +1,27 @@
 from ursina import *
 
-
 class GPText(Text):
-    def __init__(self, gp: int, ranking: str, *args, **kwargs):
+    def __init__(self, gp: int, ranking: tuple, *args, **kwargs):
+        rank_text = ranking[1]
         super().__init__(
-            f"{gp} GP",
+            f"{gp} GP {rank_text}",
             *args,
             **kwargs
         )
 
-        if ranking == 'copper':
+        if ranking[0] == 'copper':
             self.color = color.red
-        elif ranking == 'bronze':
+        elif ranking[0] == 'bronze':
             self.color = color.brown
-        elif ranking == 'silver':
+        elif ranking[0] == 'silver':
             self.color = color.light_gray
-        elif ranking == 'gold':
+        elif ranking[0] == 'gold':
             self.color = color.gold
-        elif ranking == 'platinum':
+        elif ranking[0] == 'platinum':
             self.color = color.blue
-        elif ranking == 'diamond':
+        elif ranking[0] == 'diamond':
             self.color = color.cyan
-        elif ranking == 'gentry warrior':
+        elif ranking[0] == 'gentry warrior':
             self.color = color.lime
         else:
             self.color = color.white

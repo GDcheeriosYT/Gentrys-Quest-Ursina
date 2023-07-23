@@ -72,8 +72,10 @@ class Character(GameUnit):
         self.update_stats()
 
     def remove_weapon(self):
+        self._weapon.on_level_up -= self.update_stats
         self._weapon.de_equip()
         self._weapon = None
+        self.update_stats()
 
     def remove_artifact(self, index: int):
         self.artifacts[index].equipped_entity = None

@@ -21,12 +21,13 @@ class DataLoader:
 
         for i in range(5):
             if character_json['equips']['artifacts'][i] is not None:
-                character.artifacts[i] = DataLoader.parse_artifact(character_json['equips']['artifacts'][i])
+                character.set_artifact(DataLoader.parse_artifact(character_json['equips']['artifacts'][i]), i)
 
         character.experience.level = character_json['experience']['level']
         character.experience.xp = character_json['experience']['xp']
 
         character.update_stats()
+        character.stats.health.calculate_value()
 
         return character
 
@@ -61,14 +62,13 @@ class DataLoader:
 
     @staticmethod
     def parse_artifact(artifact_json):
-        artifact = Game.content_manager.get_artifact(artifact_json['name'], artifact_json['star rating'])
-        artifact.set_main_attribute(DataLoader.parse_buff(artifact_json['stats']['main attribute']))
-        for attribute in artifact_json['stats']['attributes']:
-            artifact.add_attribute(DataLoader.parse_buff(attribute))
-
-        artifact.set_star_rating(artifact_json['star rating'])
-        artifact.experience.level = artifact_json['experience']['level']
+        attributes = [DataLoader.parse_buff(attribute) for attribute in artifact_json['stats']['attributes']]
+        artifact = Game.content_manager.get_artifact(name=artifact_json['name'], star_rating=artifact_json['star rating'])
         artifact.experience.xp = artifact_json['experience']['xp']
+        artifact.experience.level = artifact_json['experience']['level']
+        artifact.set_main_attribute(DataLoader.parse_buff(artifact_json['stats']['main attribute']))
+        artifact.set_attributes(attributes)
+        artifact.set_star_rating(artifact_json['star rating'])
 
         return artifact
 

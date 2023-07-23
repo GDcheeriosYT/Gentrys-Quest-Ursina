@@ -96,10 +96,12 @@ class GameUnit(GameEntityBase):
     def swap_weapon(self, weapon: Weapon) -> Weapon:
         old_weapon = self._weapon
         if old_weapon:
+            old_weapon.on_level_up -= self.update_stats
             self._weapon.de_equip()
 
         self._weapon = weapon
         self._weapon.equip(self)
+        self._weapon.on_level_up += self.update_stats
         self.on_swap_weapon()
         if old_weapon:
             return old_weapon

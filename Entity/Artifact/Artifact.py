@@ -15,14 +15,16 @@ class Artifact:
             self._main_attribute = buff
 
         self._star_rating = star_rating
+
         self._attributes = []
+        if star_rating - 2 > 0:
+            for i in range(star_rating - 2):
+                self.add_attribute()
+
         experience = Experience()
         experience.limit = star_rating * 4
         self._experience = experience
         self._main_attribute.handle_value(star_rating)
-        if star_rating - 2 > 0:
-            for i in range(star_rating - 2):
-                self.add_attribute()
 
         self.on_add_xp = Event('onAddXp', 0)
         self.on_level_up = Event('onLevelUp', 0)
@@ -39,7 +41,11 @@ class Artifact:
 
     def set_main_attribute(self, buff: Buff):
         self._main_attribute = buff
+        self._main_attribute.level = self._experience.level
         self._main_attribute.handle_value(self._star_rating)
+
+    def set_attributes(self, attributes: List[Buff]):
+        self._attributes = attributes
 
     @property
     def attributes(self) -> List[Buff]:
@@ -82,13 +88,28 @@ class Artifact:
     def level_up(self):
         self.experience.level += 1
         self.experience.xp = 0
+        self._main_attribute.level_up()
+        self._main_attribute.handle_value(self._star_rating)
         self.on_level_up()
+
+    def check_attribute(self, attribute: Buff):
+        if attribute.stat == self.main_attribute.stat and attribute.is_percent == self.main_attribute.is_percent:
+            return True
+
+        for other_attribute in self.attributes:
+            if attribute.stat == other_attribute.stat and attribute.is_percent == other_attribute.is_percent:
+                return True
+
+        return False
 
     def add_attribute(self, buff: Buff = None):
         if buff:
             buff = buff
         else:
             buff = Buff()
+            while self.check_attribute(buff):
+                buff = Buff()
+
             buff.handle_value(self.star_rating)
 
         exists = False

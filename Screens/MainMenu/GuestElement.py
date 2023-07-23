@@ -22,7 +22,7 @@ class GuestElement(Button):
             self._gp_element = Text('unrated', origin=(0.5, 0), position=(0.45, 0), scale=(2, 12), color=color.yellow, parent=self)
         else:
             self._username_element = Text(user.username, origin=(-0.5, 0), position=(-0.45, 0), scale=(2, 12), color=color.white, parent=self)
-            self._gp_element = GPText(user.gp, user.ranking[0], origin=(0.5, 0), position=(0.45, 0), scale=(2, 12), parent=self)
+            self._gp_element = GPText(user.gp, user.ranking, origin=(0.5, 0), position=(0.45, 0), scale=(2, 12), parent=self)
 
     def on_click(self):
         GuestConfirmBox(self._user, self._menu)

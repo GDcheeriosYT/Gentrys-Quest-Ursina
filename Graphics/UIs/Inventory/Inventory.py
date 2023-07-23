@@ -215,11 +215,11 @@ class Inventory(Entity):
                 def determine_xp(item: Union[Weapon, Artifact]):
                     if isinstance(item, Weapon):
                         self.player.weapons.remove(item)
-                        return int(item.experience.level * (item.star_rating * 100))
+                        return int((item.experience.level * item.star_rating) * 100)
 
                     else:
                         self.player.artifacts.remove(item)
-                        return int((item.star_rating * 10) + (item.star_rating * (item.experience.level * 25)))
+                        return int((item.experience.level * item.star_rating) * 100)
 
                 for item in self.selected_entities:
                     self.selected_entity.add_xp(determine_xp(item))

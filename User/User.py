@@ -85,9 +85,12 @@ class User:
     def load(self):
         self._user_data.load_items()
 
-    def unload(self):
+    def save_data(self):
         if self._is_guest:
             json.dump(self._user_data.jsonify_data(), open(f"Data/{self._username}.json", "w"), indent=4)
+
+    def unload(self):
+        self.save_data()
 
         [destroy(item) for item in self._user_data.characters]
         [destroy(item) for item in self._user_data.weapons]

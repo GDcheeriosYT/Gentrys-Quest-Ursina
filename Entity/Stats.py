@@ -8,8 +8,8 @@ class Stats:
         self._defense = Stat("Defense", 12)
         self._crit_rate = Stat("CritRate", 5)
         self._crit_damage = Stat("CritDamage", 50)
-        self._speed = Stat("Speed", 2)
-        self._attack_speed = Stat("AttackSpeed", 1)
+        self._speed = Stat("Speed", 2, False)
+        self._attack_speed = Stat("AttackSpeed", 1, False)
 
     @property
     def health(self) -> Stat:
@@ -46,7 +46,7 @@ class Stats:
         self._crit_rate.boost_stat(percentage)
         self._crit_damage.boost_stat(percentage)
         self._speed.boost_stat(percentage)
-        self.attack_speed.boost_stat(percentage)
+        self._attack_speed.boost_stat(percentage)
 
     @staticmethod
     def get_stat_strings() -> list:

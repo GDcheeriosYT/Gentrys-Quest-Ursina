@@ -38,6 +38,7 @@ class Gameplay(Screen):
         self.map = Game.selected_area
         self.time_started = time.time()
         self.map.load()
+        invoke(self.map.spawn_sequence, delay=5)
         self.spawned = False
 
     def _on_hide(self):
@@ -53,14 +54,14 @@ class Gameplay(Screen):
         self.spawned = False
 
     def update(self):
-        time_elapsed = time.time() - self.time_started
-        difficulty_factor = 1.0 / self.map.current_difficulty
-        next_spawn_time = self.map.spawn_delay
-        spawn_interval = self.map.spawn_delay * difficulty_factor
-        if time_elapsed >= next_spawn_time and self.map.can_spawn:
-            self.map.spawn_sequence()
-            self.spawned = True
-            invoke(self.toggle_spawned, delay=1)
+        # time_elapsed = time.time() - self.time_started
+        # difficulty_factor = 1.0 / self.map.current_difficulty
+        # next_spawn_time = self.map.spawn_delay
+        # spawn_interval = self.map.spawn_delay * difficulty_factor
+        # if time_elapsed >= next_spawn_time and self.map.can_spawn:
+        #     self.map.spawn_sequence()
+        #     self.spawned = True
+        #     self.spawned = False
 
         if self.player != Game.user.get_equipped_character():
             self.player.despawn()
