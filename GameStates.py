@@ -8,3 +8,4 @@ class GameStates(Enum):
     settings = 3
     gameplay = 4
     selection = 5
+    testing = 6

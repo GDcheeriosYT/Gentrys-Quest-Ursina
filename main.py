@@ -48,6 +48,7 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("-s", "--server")
+parser.add_argument("-d", "--debug", action="store_true")
 args = parser.parse_args()
 
 camera.orthographic = True
@@ -67,10 +68,13 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-if GameConfiguration.play_intro:
-    Game.state = GameStates.intro
+if args.debug:
+    Game.state = GameStates.testing
 else:
-    Game.state = GameStates.mainMenu
+    if GameConfiguration.play_intro:
+        Game.state = GameStates.intro
+    else:
+        Game.state = GameStates.mainMenu
 
 ScreenManager(app)
 
