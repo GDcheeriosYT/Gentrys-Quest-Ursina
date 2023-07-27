@@ -7,6 +7,7 @@ import copy
 import GameConfiguration
 from Content.Enemies.TestEnemy import TestEnemy
 from Content.ArtifactFamilies.TestFamily.TestFamily import TestFamily
+from Entity.EntityPool import EntityPool
 from Overlays.Notification import Notification
 
 
@@ -62,12 +63,14 @@ class Map:
         self.difficulty_scales = difficulty_scales
         self.enemy_limit = enemy_limit
         self.current_difficulty = 0
+        self.enemy_pool = None
         self.can_spawn = True
 
         self.enemy_tracker = []
 
     def load(self):
         self.destroy_enemies()
+
         self.calculate_difficulty(Game.user.get_equipped_character())
         self.manage_entities(True)
         self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
@@ -93,25 +96,9 @@ class Map:
 
     def spawn_sequence(self):
         self.calculate_difficulty(Game.user.get_equipped_character())
-        self.enemy_limit = self.current_difficulty * 4
-        # spawn_amount = random.randint(self.current_difficulty, self.current_difficulty * 2)
-        if len(self.enemy_tracker) + 1 <= self.enemy_limit and self.can_spawn:
-            enemy = random.choice(self.enemies)()
-            enemy.experience.level = ((self.current_difficulty - 1) * 20) + ((Game.user.get_equipped_character().experience.level % 20) + random.randint(0, 3))
+        if self.can_spawn:
+            enemy = self.enemy_pool.get_entity()
             enemy.follow_entity(Game.user.get_equipped_character())
-            enemy.position = Game.user.get_equipped_character().position
-            enemy.y += random.randint(random.randint(-20, -15), random.randint(15, 20))
-            enemy.x += random.randint(random.randint(-20, -15), random.randint(15, 20))
-            if random.randint(1, 10) > 8:
-                enemy.on_death += lambda: Game.user.user_data.add_artifact(self.generate_artifact())
-
-            if random.randint(1, 20) > 18:
-                enemy.on_death += lambda: Game.user.add_weapon(self.generate_weapon())
-
-            enemy.on_death += lambda: Game.user.get_equipped_character().manage_loot(enemy.get_loot())
-            enemy.on_death += lambda: self.enemy_tracker.remove(enemy)
-            self.enemy_tracker.append(enemy)
-            # Game.notification_manager.add_notification(Notification(str(enemy in self.enemy_tracker), color.green if enemy in self.enemy_tracker else color.red))
             enemy.spawn()
 
     def generate_artifact(self):
@@ -138,3 +125,8 @@ class Map:
             self.current_difficulty = self.difficulty + player.difficulty
         else:
             self.current_difficulty = self.difficulty
+
+        if self.enemy_pool:
+            del self.enemy_pool
+
+        self.enemy_pool = EntityPool(self.current_difficulty * 4, self.enemies)

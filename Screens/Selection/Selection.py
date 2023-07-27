@@ -97,11 +97,17 @@ class Selection(Screen):
             button.scale = (scale_x - (scale_x * 0.1), 0.5)
             button.text_entity.scale = (button, 1)
             button.position = ((index * scale_x) - center_offset, 0.35)
-            print("scale", str(button.scale))
-            print("position", str(button.position))
 
         self.on_show += self._show
         self.on_hide += self._hide
+
+    @property
+    def name(self) -> str:
+        return "Selection"
+
+    @property
+    def fades(self) -> bool:
+        return True
 
     def deactivate_buttons(self):
         for button in self.menu_buttons:

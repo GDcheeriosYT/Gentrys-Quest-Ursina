@@ -13,3 +13,7 @@ class PepsiBottle(Artifact):
     @property
     def name(self) -> str:
         return "Pepsi Bottle"
+
+    @property
+    def family(self) -> str:
+        return "Brayden Messerschmidt"

@@ -11,3 +11,8 @@ class ElHefe(Artifact):
     @property
     def name(self) -> str:
         return "El Hefe"
+
+    @property
+    def family(self) -> str:
+        return "HyVee"
+

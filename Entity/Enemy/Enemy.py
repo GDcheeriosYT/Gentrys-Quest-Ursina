@@ -74,6 +74,11 @@ class Enemy(GameUnit):
             money
         )
 
+    # def movement_update(self):
+    #
+    #
+    #     invoke(self.movement_update, delay=time.dt * 4)
+
     def attack_switch(self, on: bool):
         self.not_attacking = on
 
@@ -94,13 +99,10 @@ class Enemy(GameUnit):
     def update(self):
         if self.not_attacking:
             self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
-
-            if distance(self._follow_entity, self) <= self.range:
+            if sqrt((self._follow_entity.position[0] - self.position[0]) ** 2 + (self._follow_entity.position[1] - self.position[1]) ** 2) <= self.range:
                 self.attack(self.direction)
-
-            origin = self.world_position
-            hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
-            if not hit_info.hit:
-                if self.can_move:
-                    self.position += self.direction * self._stats.speed.get_value() * time.dt
-                    self.on_move()
+            #
+            # if not self.ray.hit:
+            #     if self.can_move:
+            self.position += self.direction * self._stats.speed.get_value() * time.dt
+            self.on_move()

@@ -1,7 +1,6 @@
-import random
-
-import Game
 import GameConfiguration
+from Graphics.TextStyles.DamageText import DamageText
+from .EntityPool import EntityPool
 from .GameEntityBase import GameEntityBase
 from .Stats import Stats
 from .TextureMapping import TextureMapping
@@ -9,7 +8,6 @@ from .AudioMapping import AudioMapping
 from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
-from .Weapon.Weapon import Weapon
 from .Loot import Loot
 
 low = GameConfiguration.random_pitch_range[0]
@@ -32,6 +30,7 @@ class GameUnit(GameEntityBase):
         self.can_move = True
         self.spawned = False
         self.range = 1
+        self.damage_text_pool = EntityPool(5, DamageText)
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -78,7 +77,7 @@ class GameUnit(GameEntityBase):
         return self._audio_mapping
 
     @property
-    def weapon(self) -> Weapon:
+    def weapon(self):
         return self._weapon
 
     def set_idle_texture(self):
@@ -87,14 +86,15 @@ class GameUnit(GameEntityBase):
     def set_damage_texture(self):
         self.texture = self._texture_mapping.get_damage_texture()
 
-    def damage(self, amount):
+    def damage(self, amount: int, color: Vec4 = color.white):
         self._stats.health.current_value -= amount if amount > 0 else 0
         # self.set_damage_texture()
+        self.damage_text_pool.get_entity().display(amount if amount > 0 else "miss", color, self)
         self.on_damage()
         if self.stats.health.current_value <= 0:
             self.die()
 
-    def swap_weapon(self, weapon: Weapon) -> Weapon:
+    def swap_weapon(self, weapon):
         old_weapon = self._weapon
         if old_weapon:
             old_weapon.on_level_up -= self.update_stats

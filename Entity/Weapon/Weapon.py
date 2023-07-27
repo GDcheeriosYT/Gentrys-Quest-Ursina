@@ -1,8 +1,10 @@
 from ..GameEntityBase import GameEntityBase
 from ursina import *
 from utils.Event import Event
-from typing import Union
+from utils.TypeMethods import determine_hit_type
 from Entity.Buff import Buff
+from Entity.EntityPool import EntityPool
+from Graphics.TextStyles.DamageText import DamageText
 
 
 class Weapon(GameEntityBase):
@@ -16,9 +18,13 @@ class Weapon(GameEntityBase):
         self.buff.handle_value(self.star_rating)
         self._instance = None
         self._attacking = False
-        self.texture = None
         self.damage = 0
         self.model = None
+        self.entity_hit_type = None
+        self.hit_list = []
+        self.time_started = 0
+        self.speed = 0
+        self.angle = 0
         self.enable()
         self.update_stats()
 
@@ -70,6 +76,7 @@ class Weapon(GameEntityBase):
 
     def equip(self, entity):
         self._equipped_entity = entity
+        self.entity_hit_type = determine_hit_type(self._equipped_entity)
         self.on_equip()
 
     def de_equip(self):
@@ -91,6 +98,32 @@ class Weapon(GameEntityBase):
 
     def attack_process(self, direction):
         pass
+
+    def manage_collision(self):
+        hit_info = raycast(
+            self._instance.world_position,
+            self._instance.down,
+            ignore=[self],
+            # traverse_target=self.entity_hit_type,
+            distance=self.range,
+            debug=True
+           )
+        print(hit_info.hit)
+        if hit_info.hit:
+            try:
+                hit_entity = hit_info.entity
+                print(hit_entity)
+                if hit_entity not in self.hit_list:
+                    print("list stat", hit_entity in self.hit_list)
+                    is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
+                    crit_damage = (self._equipped_entity.stats.attack.get_value() * (
+                                self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
+                    damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
+                    amount = damage - hit_entity.stats.defense.get_value()
+                    hit_entity.damage(amount, color.red if is_crit else color.white)
+                    self.hit_list.append(hit_entity)
+            except AttributeError as e:
+                print(e)
 
     def jsonify(self):
         return {

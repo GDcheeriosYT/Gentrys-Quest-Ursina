@@ -13,3 +13,7 @@ class OsuTablet(Artifact):
     @property
     def name(self) -> str:
         return "Osu Tablet"
+
+    @property
+    def family(self) -> str:
+        return "Brayden Messerschmidt"

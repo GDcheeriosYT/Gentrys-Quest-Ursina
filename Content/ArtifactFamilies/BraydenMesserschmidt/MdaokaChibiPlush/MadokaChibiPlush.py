@@ -13,3 +13,7 @@ class MadokaChibiPlush(Artifact):
     @property
     def name(self) -> str:
         return "Madoka Chibi Plush"
+
+    @property
+    def family(self) -> str:
+        return "Brayden Messerschmidt"

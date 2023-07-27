@@ -297,7 +297,7 @@ class Inventory(Entity):
         else:
             self.page_down_button.disable()
 
-        print((self.page + 1) * 12, len(category), self.page * 12 < len(category))
+        # print((self.page + 1) * 12, len(category), self.page * 12 < len(category))
         if (self.page + 1) * 12 < len(category):
             self.page_up_button.enable()
             self.page_up_button.on_click = lambda: self.page_up(entity_type)

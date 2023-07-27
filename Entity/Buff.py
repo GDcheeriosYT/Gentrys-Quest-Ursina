@@ -21,7 +21,7 @@ class Buff:
     def handle_value(self, star_rating, is_weapon: bool = False):
         calculation = ((self.level * 1.75) + (star_rating * 1.25) + (star_rating * int(self.level / star_rating)))
         if self._stat == "CritRate":
-            calculation = self.level + (star_rating * 0.5)
+            calculation = self.level + (star_rating * 1.5)
         elif self._stat == "CritDamage":
             calculation * 4
         elif self._stat == "Speed":
@@ -34,12 +34,12 @@ class Buff:
         if self._is_percent:
             calculation /= 4
 
-        if is_weapon:
+        if is_weapon and self._stat != "CritRate":
             calculation /= 4
 
         self._value = round(calculation, 2)
         if Stats().get_stat_by_string(self._stat).is_int() and not self._is_percent: self._value = int(round(self._value, 2))
-        print(self._stat, self.level, self._value, calculation)
+        # print(self._stat, self.level, self._value, calculation)
 
     @property
     def stat(self) -> str:

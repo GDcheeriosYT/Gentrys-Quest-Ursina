@@ -69,18 +69,4 @@ class SwingWeapon(Weapon):
             self._instance.rotation_z = -angle - 90
             self._instance.position = pivot_point + Vec3(x_offset, y_offset, 0)
             self._instance.y = y_offset
-            hit_info = raycast(self._instance.world_position, self._instance.down, ignore=[self, self._equipped_entity], distance=self.range, debug=False)
-            if hit_info.hit:
-                try:
-                    hit_entity = hit_info.entity
-                    if hit_entity not in self.hit_list:
-                        is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
-                        crit_damage = (self._equipped_entity.stats.attack.get_value() * (self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
-                        damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
-                        amount = damage - hit_entity.stats.defense.get_value()
-                        DamageText(amount, is_crit, parent=hit_entity)
-                        hit_entity.damage(amount)
-                        self.hit_list.append(hit_entity)
-                except AttributeError:
-                    pass
-
+            self.manage_collision()

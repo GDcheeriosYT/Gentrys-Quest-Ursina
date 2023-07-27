@@ -37,3 +37,5 @@ class DebugOverlay(Container):
                             f"colliders: {window.collider_counter.text}\n" \
                             f"--performance--\n" \
                             f"fps: {window.fps_counter.text}\n"
+
+        self.position = window.bottom_right

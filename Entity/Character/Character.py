@@ -7,10 +7,8 @@ from ..GameUnit import GameUnit
 from typing import Union, List
 from ..EntityOverHead import EntityOverhead
 from Overlays.Notification import Notification
-from Content.Enemies.TestEnemy import TestEnemy
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
-from Entity.Enemy.Enemy import Enemy
 from Entity.Loot import Loot
 from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
@@ -120,8 +118,21 @@ class Character(GameUnit):
             else:
                 self.stats.get_stat_by_string(attribute.stat).add_value(value)
 
+        families = {}
+        star_rating_count = 0
+        avg_star_rating = 0
+        count = 0
+
         for artifact in self.artifacts:
             if artifact:
+                star_rating_count += artifact.star_rating
+                count += 1
+                family = artifact.family
+                # append family
+                if family not in families.keys():
+                    families[family] = 1
+                else:
+                    families[family] += 1
 
                 # main attribute
                 manage_attribute(artifact.main_attribute)
@@ -129,6 +140,22 @@ class Character(GameUnit):
                 # attributes
                 for attribute in artifact.attributes:
                     manage_attribute(attribute)
+
+        try:
+            avg_star_rating = star_rating_count / count
+        except ZeroDivisionError:
+            pass
+
+        print(families)
+
+        for family in families.keys():
+            family_reference = Game.content_manager.get_family(family)
+            if families[family] >= 2:
+                family_reference.two_piece_buff.apply_buff(self)
+            if families[family] >= 4:
+                family_reference.four_piece_buff.apply_buff(self)
+            if families[family] == 5:
+                self._stats.boost_all_stats(avg_star_rating)
 
         # weapon buff
         if self.weapon:
@@ -156,14 +183,12 @@ class Character(GameUnit):
             self.up * (held_keys['w'] - held_keys['s'])
             + self.right * (held_keys['d'] - held_keys['a'])
         ).normalized()  # get the direction we're trying to walk in.
-        if self.direction == 0:
-            self.set_idle_texture()
-        origin = self.world_position
-        hit_info = raycast(origin, self.direction, ignore=[self, Enemy], distance=.1)
-        if not hit_info.hit:
-            if self.can_move:
-                self.position += self.direction * self._stats.speed.get_value() * time.dt
-                self.on_move()
+
+        # if not .hit:
+        #     if self.can_move:
+
+        self.position += self.direction * self._stats.speed.get_value() * time.dt
+        self.on_move()
 
         if held_keys["left mouse"] and self._weapon:
             if self._weapon.is_ready():

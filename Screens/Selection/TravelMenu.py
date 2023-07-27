@@ -46,7 +46,6 @@ class TravelMenu(Entity):
 
         for location in Game.content_manager.locations:
             location = location()
-            print(location.name)
             location_button = LocationButton(location.name, self)
             assign_click_event(location_button, location)
             location_button.y = position_y
@@ -72,7 +71,6 @@ class TravelMenu(Entity):
             button.on_click_event += lambda: self.set_area(area)
 
         for area in area_list:
-            print(area.name)
             area_button = AreaButton(area.name, self)
             assign_click_event(area_button, area)
             area_button.y = position_y

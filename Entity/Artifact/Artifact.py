@@ -36,6 +36,10 @@ class Artifact:
         raise NotImplementedError
 
     @property
+    def family(self) -> str:
+        raise NotImplementedError
+
+    @property
     def main_attribute(self) -> Buff:
         return self._main_attribute
 

@@ -2,17 +2,22 @@ from ursina import *
 
 
 class DamageText(Text):
-    def __init__(self, damage_amount: int, is_crit: bool, *args, **kwargs):
+    def __init__(self):
         super().__init__(
-            f"{damage_amount if damage_amount > 0 else 'miss'}",
-            color=color.red if is_crit else color.white,
+            "",
             position=(0, 0.5, -1),
             scale=(20, 20),
             origin=(0, 0),
-            *args,
-            **kwargs
         )
 
-        self.animate_position((self.x + 0.1, self.y + 0.5), 1)
-        self.fade_out(0, 1)
-        destroy(self, 1.5)
+    def display(self, damage, color: Vec4, parent: entity):
+        try:
+            self.text = str(damage)
+            self.position = (0, 0)
+            self.color = color
+            self.parent = parent
+            self.animate_position((self.x + 0.1, self.y + 0.5), 1)
+            self.fade_out(0, 1)
+            invoke(self.disable, delay=1)
+        except AssertionError:
+            self.disable()
