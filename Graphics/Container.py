@@ -2,9 +2,9 @@ from ursina import *
 
 
 class Container(Entity):
-    def __init__(self, parent=None, *args, **kwargs):
+    def __init__(self, parent=camera.ui, *args, **kwargs):
         super().__init__(
-            parent=camera.ui if not parent else parent,
+            parent=parent,
             *args,
             **kwargs
         )

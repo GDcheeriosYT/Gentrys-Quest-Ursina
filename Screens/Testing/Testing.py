@@ -12,7 +12,7 @@ class Testing(Screen):
 
         self.screen = Container(
             position=(0.4, -0.1),
-            scale=(0.6, 0.6),
+            scale=(1, 100),
             parent=self
         )
 
