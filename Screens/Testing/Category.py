@@ -6,4 +6,4 @@ class Category:
 
     def select_test(self, index: int):
         self.selected_test = self.tests[index]
-        self.selected_test.load
+        self.selected_test.load()

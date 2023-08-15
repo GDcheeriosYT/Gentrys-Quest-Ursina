@@ -5,6 +5,7 @@ from Graphics.Container import Container
 from utils.Event import Event
 
 from .TestingCategories.Entity.Entity import Entity
+from .TestingScreen import TestingScreen
 
 
 class Testing(Screen):
@@ -13,7 +14,7 @@ class Testing(Screen):
             False
         )
 
-        self.screen = Container(
+        self.screen = TestingScreen(
             position=(0.35, -0.1),
             scale=(1, 0.7),
             color=color.gray,
@@ -40,7 +41,7 @@ class Testing(Screen):
             parent=self.screen
         )
 
-        self.categories = []
+        self.categories = [Entity()]
 
         self.tests = []
 
