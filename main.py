@@ -7,19 +7,6 @@ from GameStates import GameStates
 # User
 from User.User import User
 
-# graphics
-
-# Entity
-from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
-from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
-from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
-from Content.Weapons.Knife.Knife import Knife
-from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
-from Content.Characters.PeteMarks.PeteMarks import PeteMarks
-from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
-from Content.ArtifactFamilies.TestFamily.TestArtifact import TestArtifact
-from Entity.GameUnit import GameUnit
-
 # screens
 from Screens.ScreenManager import ScreenManager
 

@@ -2,22 +2,26 @@ from ursina import *
 
 
 class Container(Entity):
-    def __init__(self, parent=camera.ui, *args, **kwargs):
+    def __init__(self, parent=None, model="quad", color=color.clear, allow_highlighting: bool = True, *args, **kwargs):
         super().__init__(
-            parent=parent,
+            parent=camera.ui if not parent else parent,
+            model=model,
+            color=color,
             *args,
             **kwargs
         )
 
+        self._allow_highlighting = allow_highlighting
         self.original_color = self.color
         self.highlighted = False
 
     def input(self, key):
         if key == "h":
-            if self.highlighted:
-                self.unhighlight()
-            else:
-                self.highlight()
+            if self._allow_highlighting:
+                if self.highlighted:
+                    self.unhighlight()
+                else:
+                    self.highlight()
 
     def highlight(self):
         self.color = rgb(17, 17, 17, 125)

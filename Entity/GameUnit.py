@@ -30,7 +30,7 @@ class GameUnit(GameEntityBase):
         self.can_move = True
         self.spawned = False
         self.range = 1
-        self.damage_text_pool = EntityPool(5, DamageText)
+        self.damage_text_pool = EntityPool(20, DamageText)
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)

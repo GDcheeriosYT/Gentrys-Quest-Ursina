@@ -14,7 +14,8 @@ class DebugOverlay(Container):
             origin=(0.5, -0.5),
             scale=(0.24, 0.3),
             color=rgb(0, 0, 0, 200),
-            parent=camera.ui
+            parent=camera.ui,
+            allow_highlighting=False
         )
         self.content = Text(
             "",

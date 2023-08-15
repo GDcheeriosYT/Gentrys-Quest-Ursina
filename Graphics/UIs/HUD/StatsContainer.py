@@ -1,4 +1,6 @@
 from ursina import *
+
+import GameConfiguration
 from Graphics.Container import Container
 
 
@@ -18,4 +20,4 @@ class StatsContainer(Container):
         )
 
     def update_data(self, player):
-        self._stats_text.text = player.stats
+        self._stats_text.text = player.stats if GameConfiguration.extra_ui_info else ""

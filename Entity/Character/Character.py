@@ -176,8 +176,6 @@ class Character(GameUnit):
         if held_keys["="]:
             self.level_up()
             self.experience.xp = 0
-        if held_keys["/"]:
-            self.damage(50)
 
         self.direction = Vec3(
             self.up * (held_keys['w'] - held_keys['s'])
@@ -215,6 +213,10 @@ class Character(GameUnit):
             self.ultimate.update_time()
         except:
             pass
+
+    def input(self, key):
+        if key == "/":
+            self.die()
 
     def swap_artifact(self, artifact, index: int):
         if 1 <= index <= 5:
