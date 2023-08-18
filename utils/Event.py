@@ -1,5 +1,5 @@
 class Event:
-    def __init__(self, name: str, argcount: int) -> None:
+    def __init__(self, name: str, argcount: int = 0) -> None:
         self._name = name
         self._argcount = argcount
         self._callbacks = []

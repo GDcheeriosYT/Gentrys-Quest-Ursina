@@ -2,6 +2,8 @@ from Entity.Character.Character import Character
 
 
 class TestCharacter(Character):
+    def __init__(self, *args):
+        super().__init__(*args)
 
     @property
     def name(self) -> str:

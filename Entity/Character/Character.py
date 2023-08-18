@@ -17,10 +17,11 @@ from Graphics.FadeScreen import FadeScreen
 
 
 class Character(GameUnit):
-    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping()):
+    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping(), *args):
         super().__init__(
             texture_mapping=texture_mapping,
-            audio_mapping=audio_mapping
+            audio_mapping=audio_mapping,
+            *args
         )
 
         self.texture = self.texture_mapping.get_idle_texture()
@@ -165,8 +166,6 @@ class Character(GameUnit):
         self.on_update_stats()
 
     def update(self):
-        if self.spawned:
-            camera.position = (self.x, self.y, -20)
         if held_keys["-"]:
             if self.experience.level > 1:
                 self.experience.level -= 1

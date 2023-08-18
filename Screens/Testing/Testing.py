@@ -6,6 +6,7 @@ from utils.Event import Event
 
 from .TestingCategories.Entity.Entity import Entity
 from .TestingScreen import TestingScreen
+from .Test import Test
 
 
 class Testing(Screen):
@@ -20,6 +21,8 @@ class Testing(Screen):
             color=color.gray,
             parent=self
         )
+
+        Test.screen = self.screen
 
         self.category_container = Container(
             position=(0, 0.45),
@@ -48,7 +51,7 @@ class Testing(Screen):
         self.screen_info_text = Text(
             "",
             position=(-0.5, 0.5),
-            origin=(-0.5, 0.5),
+            origin=(-0.52, 0.55),
             parent=self.screen
         )
 
@@ -82,6 +85,10 @@ class Testing(Screen):
         self.load_category()
 
     def load_category(self):
+        """
+        load a category
+        """
+
         self.clear_tests()
         for test in self.category.tests:
             def assign_click(button, index):
@@ -94,7 +101,7 @@ class Testing(Screen):
 
             button = Button(
                 test.name,
-                position=(0.85, 0.5 - (index * 0.12)),
+                position=(0.53, 0.5 - (index * 0.12)),
                 scale=(1, 0.1),
                 parent=self.tests_container
             )
