@@ -11,7 +11,6 @@ from .AudioMapping import AudioMapping
 from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
-from Entity.Weapon.Weapon import Weapon
 from .Loot import Loot
 from .Effect import Effect
 
@@ -87,7 +86,7 @@ class GameUnit(GameEntityBase):
         return self._audio_mapping
 
     @property
-    def weapon(self) -> Weapon:
+    def weapon(self):
         return self._weapon
 
     def set_idle_texture(self):
@@ -104,7 +103,7 @@ class GameUnit(GameEntityBase):
         if self.stats.health.current_value <= 0:
             self.die()
 
-    def swap_weapon(self, weapon: Weapon) -> Weapon:
+    def swap_weapon(self, weapon):
         old_weapon = self._weapon
         if old_weapon:
             old_weapon.on_level_up -= self.update_stats
