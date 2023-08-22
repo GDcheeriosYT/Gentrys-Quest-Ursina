@@ -120,14 +120,14 @@ class Selection(Screen):
     def _show(self):
         self.inventory_menu.update_player()
         self.change_status(SelectionStatus.changelog)
-        for button in self.menu_buttons:
-            button.enable()
+        self.menu.enable()
+        self.menu_buttons_container.enable()
 
     def _hide(self):
+        self.menu.disable()
+        self.menu_buttons_container.disable()
         self.disable_menus()
         self.inventory_menu.show_entity_listing('characters')
-        for button in self.menu_buttons:
-            button.disable()
 
     def change_status(self, status: SelectionStatus):
         self.status = status

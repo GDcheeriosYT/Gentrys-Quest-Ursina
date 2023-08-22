@@ -54,6 +54,8 @@ class Gameplay(Screen):
         self.spawned = False
 
     def update(self):
+        if self.player.spawned:
+            camera.position = (self.player.x, self.player.y, -20)
         time_elapsed = time.time() - self.time_started
         difficulty_factor = 1.0 / self.map.current_difficulty
         next_spawn_time = self.map.spawn_delay

@@ -10,10 +10,12 @@ from Entity.Loot import Loot
 
 
 class Enemy(GameUnit):
-    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping()):
+    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping(), *args, **kwargs):
         super().__init__(
             texture_mapping,
-            audio_mapping
+            audio_mapping,
+            *args,
+            **kwargs
         )
         self.set_idle_texture()
 

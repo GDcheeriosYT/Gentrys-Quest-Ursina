@@ -17,3 +17,7 @@ def format_memory_size(size_in_bytes):
     formatted_size += units[unit_index]
 
     return formatted_size
+
+
+def format_seconds(number) -> str:
+    return f"{round(number, 2)}s"

@@ -4,14 +4,17 @@ from Entity.Character import Character
 
 
 class SkillsContainer(Container):
-    def __init__(self, player):
+    def __init__(self, player, parent):
+        super().__init__(
+            position=(0.32, -0.32),
+            scale=(parent.scale_x * 0.5, parent.scale_y * 0.4),
+            origin=(0, 0),
+            parent=parent
+        )
         text_size = (2.6, 2.6)
         text_height = 0.2
         self._player = player
-        super().__init__(
-            position=(0.6, -0.37),
-            scale=(0.7, 0.5)
-        )
+
         self.primary_info = Text("ready", position=(-0.5, text_height), scale=text_size, origin=(0, 0), parent=self)
         self.primary_key = Text("M1", position=(-0.5, -text_height), scale=text_size, origin=(0, 0), parent=self)
         self.primary_box = Entity(

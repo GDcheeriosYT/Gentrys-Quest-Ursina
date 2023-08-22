@@ -9,7 +9,7 @@ from Overlays.Notification import Notification
 
 
 class BraydenMesserschmidt(Character):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__(
             TextureMapping(
                 idle_textures=["Content/Characters/BraydenMesserschmidt/Textures/body.png"]
@@ -17,7 +17,9 @@ class BraydenMesserschmidt(Character):
             AudioMapping(
                 spawn_sounds=["Audio/spawn.mp3"],
                 damage_sounds=["Audio/damage.mp3"]
-            )
+            ),
+            *args,
+            **kwargs
         )
         # stats
         self._stats.speed.points = 1

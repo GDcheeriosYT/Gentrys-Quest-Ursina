@@ -4,7 +4,7 @@ from Entity.AudioMapping import AudioMapping
 
 
 class CharacterName(Character):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__(
             TextureMapping(
                 idle_textures=["Textures/texturename.fileformat"],
@@ -16,7 +16,9 @@ class CharacterName(Character):
                 levelup_sounds=["Audio/audioname.fileformat"],
                 damage_sounds=["Audio/audioname.fileformat"],
                 death_sounds=["Audio/audioname.fileformat"]
-            )
+            ),
+            *args,
+            **kwargs
         )
 
         # stats

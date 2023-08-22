@@ -10,9 +10,9 @@ from Graphics.TextStyles.DamageText import DamageText
 class Weapon(GameEntityBase):
     def __init__(self, buff: Buff = Buff(), *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.on_attack = Event('onAttack', 0)
-        self.on_equip = Event('onEquip', 0)
-        self.on_de_equip = Event('onDeEquip', 0)
+        self.on_attack = Event('onAttack')
+        self.on_equip = Event('onEquip')
+        self.on_de_equip = Event('onDeEquip')
         self._equipped_entity = None
         self.buff = buff
         self.buff.handle_value(self.star_rating)

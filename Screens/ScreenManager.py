@@ -3,13 +3,13 @@ import Game
 import GameConfiguration
 from .MainMenu.MainMenu import MainMenu
 from .Intro.Intro import Intro
+from .Testing.Testing import Testing
 from .Tutorial.Tutorial import Tutorial
 from .Settings.Settings import Settings
 from .Gameplay.Gameplay import Gameplay
 from .Selection.Selection import Selection
 from Graphics.FadeScreen import FadeScreen
 from Graphics.Overlays.DebugOverlay import DebugOverlay
-from Overlays.Notification import Notification
 
 
 class ScreenManager(Entity):
@@ -31,6 +31,7 @@ class ScreenManager(Entity):
         self.assign_screen(Settings)
         self.assign_screen(Gameplay)
         self.assign_screen(Selection)
+        self.assign_screen(Testing)
 
         self.current_screen = None
 

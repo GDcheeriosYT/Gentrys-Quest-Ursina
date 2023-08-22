@@ -3,21 +3,27 @@ from ...Container import Container
 from .StatsContainer import StatsContainer
 from .StatusBars import StatusBars
 from .SkillsContainer import SkillsContainer
+from .EffectsContainer import EffectsContainer
 from Entity.Character.Character import Character
 
 
 class HUD(Container):
-    def __init__(self, player: Character):
-        super().__init__()
+    def __init__(self, player: Character, parent=camera.ui):
+        super().__init__(parent=parent)
         self.player = player
-        self._status_bars = StatusBars()
-        self._stats_container = StatsContainer()
-        self._skills_container = SkillsContainer(self.player)
+        self._status_bars = StatusBars(self)
+        self._stats_container = StatsContainer(self)
+        self._skills_container = SkillsContainer(self.player, self)
+        self._effects_container = EffectsContainer(self)
+        self._effects_container.parent = self._status_bars
 
         self.player.on_add_xp += self.update_status_bars
         self.player.on_heal += self.update_status_bars
         self.player.on_damage += self.update_status_bars
         self.player.on_update_stats += self.update_status_bars
+        self.player.on_affected += lambda: self._effects_container.update_data(self.player.effects)
+
+        self.update_status_bars()
 
     def update_status_bars(self):
         self._status_bars.update_data(self.player)
@@ -43,6 +49,7 @@ class HUD(Container):
         destroy(self._status_bars)
         destroy(self._stats_container)
         destroy(self._skills_container)
+        destroy(self._effects_container)
         destroy(self)
 
         # destroy children and self
