@@ -5,17 +5,18 @@ from Graphics.Container import Container
 
 
 class StatsContainer(Container):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__(
-            origin=(-0.5, 0),
-            position=(-0.9, 0.5),
-            scale=(0.5, 0.5)
+            origin=(-0.5, 0.5),
+            position=(-0.5, 0.5),
+            scale=(0.5, 0.5),
+            parent=parent
         )
         self._stats_text = Text(
             "",
             parent=self,
             color=rgb(0, 0, 0),
-            position=(0.05, 0.02),
+            position=(0.01, 0.02),
             scale=(2, 2)
         )
 

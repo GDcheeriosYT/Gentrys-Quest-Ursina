@@ -15,7 +15,7 @@ class Burn(Effect):
     def handle_damage(self):
         percent = 1
         damage = int(self._effector.stats.health.get_percent_of_stat(percent) * self._stack)
-        self._effector.damage(damage), DamageText(damage, text_color=rgb(249, 132, 69), parent=self._effector)
+        self._effector.damage(damage, color=color.orange)
 
     @property
     def texture(self) -> str:

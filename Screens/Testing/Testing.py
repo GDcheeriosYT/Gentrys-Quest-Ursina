@@ -5,6 +5,7 @@ from Graphics.Container import Container
 from utils.Event import Event
 
 from .TestingCategories.Entity.Entity import Entity
+from .TestingCategories.UI.UI import UI
 from .TestingScreen import TestingScreen
 from .Test import Test
 
@@ -44,7 +45,7 @@ class Testing(Screen):
             parent=self.screen
         )
 
-        self.categories = [Entity()]
+        self.categories = [Entity(), UI()]
 
         self.tests = []
 
@@ -66,16 +67,16 @@ class Testing(Screen):
             scale=(1, 0.07)
         )
 
-        event = Event("clickEvent")
-        event += self.category.selected_test.reload
-        event += self.display_test
-
-        reload_button.on_click = event
+        reload_button.on_click = self.reload_test
 
         x = 0
         space_coefficient = 1
         scale_x = 1 / (space_coefficient * len(self.categories))
         center_offset = (len(self.categories) - 1) * scale_x / 2
+
+        def assign_click(button, category):
+            button.on_click = lambda: self.change_category(category)
+
         for category in self.categories:
             button = Button(
                 category.name,
@@ -85,7 +86,7 @@ class Testing(Screen):
             button.scale = (scale_x - (scale_x * 0.1), 0.4) if len(self.categories) > 2 else (0.4, 0.4)
             button.text_entity.scale = (0.3, 0.5)
             button.position = ((x * scale_x) - center_offset, -0.1)
-            button.on_click = lambda: self.change_category(category)
+            assign_click(button, category)
 
             x += 1
 
@@ -147,3 +148,7 @@ class Testing(Screen):
 
     def update_screen_text(self):
         self.screen_info_text.text = f"Testing {self.category.name}.{self.category.selected_test.name}"
+
+    def reload_test(self):
+        self.category.selected_test.reload()
+        self.display_test()
