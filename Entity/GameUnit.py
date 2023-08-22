@@ -1,3 +1,6 @@
+import random
+
+import Game
 import GameConfiguration
 from Graphics.TextStyles.DamageText import DamageText
 from .EntityPool import EntityPool
@@ -8,7 +11,9 @@ from .AudioMapping import AudioMapping
 from utils.Event import Event
 from .EntityOverHead import EntityOverhead
 from ursina import *
+from Entity.Weapon.Weapon import Weapon
 from .Loot import Loot
+from .Effect import Effect
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -34,6 +39,7 @@ class GameUnit(GameEntityBase):
         self.spawned = False
         self.range = 1
         self.damage_text_pool = EntityPool(20, DamageText)
+        self.effects = []
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -44,6 +50,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn = Event("OnSpawn", 0)
         self.on_update_stats = Event("OnUpdateStats", 0)
         self.on_swap_weapon = Event("OnSwapWeapon", 0)
+        self.on_affected = Event("OnAffected", 0)
 
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
@@ -80,7 +87,7 @@ class GameUnit(GameEntityBase):
         return self._audio_mapping
 
     @property
-    def weapon(self):
+    def weapon(self) -> Weapon:
         return self._weapon
 
     def set_idle_texture(self):
@@ -97,7 +104,7 @@ class GameUnit(GameEntityBase):
         if self.stats.health.current_value <= 0:
             self.die()
 
-    def swap_weapon(self, weapon):
+    def swap_weapon(self, weapon: Weapon) -> Weapon:
         old_weapon = self._weapon
         if old_weapon:
             old_weapon.on_level_up -= self.update_stats
@@ -111,6 +118,24 @@ class GameUnit(GameEntityBase):
         self.on_swap_weapon()
         if old_weapon:
             return old_weapon
+
+    def apply_effect(self, effect: Effect):
+        found_extra = False
+        for personal_effect in self.effects:
+            if effect.name == personal_effect.name:
+                personal_effect.add_stack()
+                personal_effect.reset_counter()
+                found_extra = True
+
+        if not found_extra:
+            effect.set_effector(self)
+            self.effects.append(effect)
+
+        self.on_affected()
+
+    def handle_buffs(self):
+        for effect in self.effects:
+            effect.effect()
 
     def attack(self, direction=None):
         if self._weapon:

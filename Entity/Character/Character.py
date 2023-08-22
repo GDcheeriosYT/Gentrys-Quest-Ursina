@@ -14,6 +14,7 @@ from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
 from Graphics.TextStyles.TitleText import TitleText
 from Graphics.FadeScreen import FadeScreen
+from Content.Effects.Burn.Burn import Burn
 
 
 class Character(GameUnit):
@@ -212,15 +213,14 @@ class Character(GameUnit):
         except:
             pass
 
-    def input(self, key):
-        if key == "/":
-            self.die()
+        self.handle_buffs()
 
     def swap_artifact(self, artifact, index: int):
         if 1 <= index <= 5:
             if self.artifacts[index - 1]:
                 swapped_artifact = self.artifacts[index - 1]
                 self.artifacts[index - 1] = artifact
+                self.update_stats()
                 return swapped_artifact
             else:
                 self.artifacts[index - 1] = artifact

@@ -32,6 +32,7 @@ class Enemy(GameUnit):
 
     def follow_entity(self, entity: Entity):
         self._follow_entity = entity
+        invoke(self.attack_process, delay=self.attack_delay)
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
