@@ -58,6 +58,7 @@ server = ServerConnection(server_url if args.server is None else args.server)
 
 if args.debug:
     Game.state = GameStates.testing
+    Game.user = User("Test User", True)
 else:
     if GameConfiguration.play_intro:
         Game.state = GameStates.intro
