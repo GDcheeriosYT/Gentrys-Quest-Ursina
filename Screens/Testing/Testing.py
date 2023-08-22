@@ -38,8 +38,8 @@ class Testing(Screen):
         )
 
         self.tests_option_container = Container(
-            position=(-0.55, 0),
-            origin=(0.5, 0),
+            position=(-0.65, 0),
+            origin=(0, 0),
             scale=(0.25, 1),
             parent=self.screen
         )
@@ -50,7 +50,7 @@ class Testing(Screen):
 
         self.screen_info_text = Text(
             "",
-            position=(-0.5, 0.5),
+            position=(-0.5, 0.5, -1),
             origin=(-0.52, 0.55),
             parent=self.screen
         )
@@ -58,6 +58,19 @@ class Testing(Screen):
         self.category = None
 
         self.change_category(Entity())
+
+        reload_button = Button(
+            "Reload",
+            parent=self.tests_option_container,
+            position=(0, 0.57),
+            scale=(1, 0.07)
+        )
+
+        event = Event("clickEvent")
+        event += self.category.selected_test.reload
+        event += self.display_test
+
+        reload_button.on_click = event
 
         x = 0
         space_coefficient = 1
@@ -81,7 +94,11 @@ class Testing(Screen):
         return color.rgb(35, 35, 35)
 
     def change_category(self, category):
+        if self.category:
+            self.category.selected_test.unload()
+
         self.category = category
+        self.category.selected_test.load()
         self.load_category()
 
     def load_category(self):
@@ -95,6 +112,7 @@ class Testing(Screen):
                 clicky = Event("onClick", 0)
                 clicky += lambda: self.category.select_test(index)
                 clicky += self.update_screen_text
+                clicky += self.display_test
                 button.on_click = clicky
 
             index = self.category.tests.index(test)
@@ -109,6 +127,20 @@ class Testing(Screen):
             self.tests.append(button)
 
         self.update_screen_text()
+        self.display_test()
+
+    def display_test(self):
+        """
+        Load the selected test
+        """
+
+        y = 0.5
+
+        for button in self.category.selected_test.method_buttons:
+            button.parent = self.tests_option_container
+            button.enable()
+            button.position = (0, y)
+            y -= 0.06
 
     def clear_tests(self):
         [destroy(test) for test in self.tests]

@@ -17,11 +17,12 @@ from Graphics.FadeScreen import FadeScreen
 
 
 class Character(GameUnit):
-    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping(), *args):
+    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping(), *args, **kwargs):
         super().__init__(
             texture_mapping=texture_mapping,
             audio_mapping=audio_mapping,
-            *args
+            *args,
+            **kwargs
         )
 
         self.texture = self.texture_mapping.get_idle_texture()
@@ -181,11 +182,9 @@ class Character(GameUnit):
             + self.right * (held_keys['d'] - held_keys['a'])
         ).normalized()  # get the direction we're trying to walk in.
 
-        # if not .hit:
-        #     if self.can_move:
-
-        self.position += self.direction * self._stats.speed.get_value() * time.dt
-        self.on_move()
+        if self.can_move:
+            self.position += self.direction * self._stats.speed.get_value() * time.dt
+            self.on_move()
 
         if held_keys["left mouse"] and self._weapon:
             if self._weapon.is_ready():
@@ -251,17 +250,18 @@ class Character(GameUnit):
         destroy(copy, delay)
 
     def death_transition(self):
-        self.create_texture_copy(4)
-        fade_screen = FadeScreen()
-        invoke(lambda: camera.animate_position((camera.x, camera.y + 10), 3, curve=curve.linear), delay=0.2)
-        fade_screen.fade_in(1, 4, curve=curve.linear)
-        death_text = TitleText("You Died...", color=rgb(255, 0, 0, 0))
-        death_text.fade_in(1, 2)
-        invoke(lambda: fade_screen.fade_out(0, 2), delay=4)
-        invoke(lambda: death_text.fade_out(0, 2), delay=4)
-        destroy(fade_screen, 20)
-        destroy(death_text, 20)
-        invoke(lambda: Game.change_state(GameStates.selection), delay=5)
+        if Game.state != GameStates.testing:
+            self.create_texture_copy(4)
+            fade_screen = FadeScreen()
+            invoke(lambda: camera.animate_position((camera.x, camera.y + 10), 3, curve=curve.linear), delay=0.2)
+            fade_screen.fade_in(1, 4, curve=curve.linear)
+            death_text = TitleText("You Died...", color=rgb(255, 0, 0, 0))
+            death_text.fade_in(1, 2)
+            invoke(lambda: fade_screen.fade_out(0, 2), delay=4)
+            invoke(lambda: death_text.fade_out(0, 2), delay=4)
+            destroy(fade_screen, 20)
+            destroy(death_text, 20)
+            invoke(lambda: Game.change_state(GameStates.selection), delay=5)
 
     def jsonify(self):
         artifacts = []

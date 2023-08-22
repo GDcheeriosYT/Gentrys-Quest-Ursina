@@ -15,11 +15,12 @@ high = GameConfiguration.random_pitch_range[1]
 
 
 class GameUnit(GameEntityBase):
-    def __init__(self, texture_mapping: TextureMapping, audio_mapping: AudioMapping, *args):
+    def __init__(self, texture_mapping: TextureMapping, audio_mapping: AudioMapping, *args, **kwargs):
         super().__init__(
             scale=(1, 1),
             collider='box',
-            *args
+            *args,
+            **kwargs
         )
 
         self._stats = Stats()

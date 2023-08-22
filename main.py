@@ -46,6 +46,7 @@ window.title = "Gentry's Quest"
 window.fullscreen = GameConfiguration.fullscreen
 window.borderless = False
 window.exit_button.visible = False
+window.vsync = False
 window.exit_button.disable()
 window.fps_counter.color = rgb(0, 0, 0)
 window.editor_ui.hide()
@@ -62,6 +63,9 @@ else:
         Game.state = GameStates.intro
     else:
         Game.state = GameStates.mainMenu
+
+black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
+destroy(black_thing, 3)
 
 ScreenManager(app)
 
