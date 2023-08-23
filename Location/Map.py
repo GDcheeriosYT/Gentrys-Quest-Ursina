@@ -70,8 +70,8 @@ class Map:
 
     def load(self):
         self.destroy_enemies()
-
         self.calculate_difficulty(Game.user.get_equipped_character())
+        self.enemy_pool = EntityPool(self.current_difficulty * 4, self.enemies)
         self.manage_entities(True)
         self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
 
@@ -128,5 +128,3 @@ class Map:
 
         if self.enemy_pool:
             del self.enemy_pool
-
-        self.enemy_pool = EntityPool(self.current_difficulty * 4, self.enemies)

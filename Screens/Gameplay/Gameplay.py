@@ -29,15 +29,15 @@ class Gameplay(Screen):
         return color.gray
 
     def _on_show(self):
+        self.map = Game.selected_area
         self.player = Game.user.get_equipped_character()
         self.hud = HUD(self.player)
         self.inventory = Inventory()
         self.inventory.update_player()
         self.inventory.disable()
-        self.player.spawn()
-        self.map = Game.selected_area
-        self.time_started = time.time()
         self.map.load()
+        self.player.spawn()
+        self.time_started = time.time()
         invoke(self.map.spawn_sequence, delay=5)
         self.spawned = False
 
@@ -60,8 +60,8 @@ class Gameplay(Screen):
         difficulty_factor = 1.0 / self.map.current_difficulty
         next_spawn_time = self.map.spawn_delay
         spawn_interval = self.map.spawn_delay * difficulty_factor
-        if time_elapsed >= next_spawn_time and self.map.can_spawn:
-            self.map.spawn_sequence()
+        # if time_elapsed >= next_spawn_time and self.map.can_spawn:
+        #     self.map.spawn_sequence()
             # self.spawned = True
             # self.spawned = False
 

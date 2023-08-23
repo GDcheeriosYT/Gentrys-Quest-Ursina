@@ -38,6 +38,8 @@ class StatusBars(Container):
             position=(0, 0.1),
             parent=self._experience_container
         )
+        self._health_bar.text_entity.scale_x *= 1.5
+        self._experience_bar.text_entity.scale_x *= 1.5
 
     def update_data(self, player):
         self._health_bar.max_value = int(player.stats.health.get_value())
