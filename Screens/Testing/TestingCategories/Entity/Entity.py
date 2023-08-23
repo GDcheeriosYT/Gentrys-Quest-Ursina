@@ -2,6 +2,7 @@ from ...Category import Category
 
 from .CharacterTest import CharacterTest
 from .EnemyTest import EnemyTest
+from .EntityPoolTest import EntityPoolTest
 
 
 class Entity(Category):
@@ -10,6 +11,7 @@ class Entity(Category):
             "Entity",
             [
                 CharacterTest(),
-                EnemyTest()
+                EnemyTest(),
+                EntityPoolTest()
             ]
         )
