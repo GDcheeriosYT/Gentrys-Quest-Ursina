@@ -69,15 +69,19 @@ class Map:
         self.enemy_tracker = []
 
     def load(self):
+        print("started loading")
         self.destroy_enemies()
         self.calculate_difficulty(Game.user.get_equipped_character())
-        self.enemy_pool = EntityPool(self.current_difficulty * 4, self.enemies)
+        self.enemy_pool = EntityPool(self.enemy_limit, self.enemies)
+        print(self.enemy_pool)
         self.manage_entities(True)
         self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
+        print("finished")
 
     def unload(self):
         self.manage_entities(False)
         self.destroy_enemies()
+        self.enemy_pool.destroy()
         destroy(self.music_player)
 
     def destroy_enemies(self):
@@ -94,12 +98,19 @@ class Map:
         for entity in self.entities:
             entity.enable() if enable else entity.disable()
 
-    def spawn_sequence(self):
-        self.calculate_difficulty(Game.user.get_equipped_character())
+    def spawn(self):
         if self.can_spawn:
             enemy = self.enemy_pool.get_entity()
-            enemy.follow_entity(Game.user.get_equipped_character())
-            enemy.spawn()
+            if enemy:
+                enemy.follow_entity(Game.user.get_equipped_character())
+                enemy.spawn()
+
+    def spawn_sequence(self):
+        for i in range(self.generate_enemy_spawn_number()):
+            self.spawn()
+
+    def generate_enemy_spawn_number(self):
+        return random.randint(1, self.current_difficulty) * random.randint(1, 2)
 
     def generate_artifact(self):
         random_num = random.randint(0, int(10000/self.current_difficulty))

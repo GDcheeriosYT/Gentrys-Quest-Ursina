@@ -168,22 +168,12 @@ class Character(GameUnit):
         self.on_update_stats()
 
     def update(self):
-        if held_keys["-"]:
-            if self.experience.level > 1:
-                self.experience.level -= 1
-                self.experience.xp = 0
-                self.on_level_up()
-                self.update_stats()
-        if held_keys["="]:
-            self.level_up()
-            self.experience.xp = 0
-
         self.direction = Vec3(
             self.up * (held_keys['w'] - held_keys['s'])
             + self.right * (held_keys['d'] - held_keys['a'])
-        ).normalized()  # get the direction we're trying to walk in.
+        ).normalized()
 
-        if self.can_move:
+        if self.can_move and not self.hits(self.direction):
             self.position += self.direction * self._stats.speed.get_value() * time.dt
             self.on_move()
 

@@ -2,8 +2,6 @@ import Game
 from Screens.Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 from Graphics.UIs.Inventory.Inventory import Inventory
-from Content.Maps.TestMap import TestMap
-from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
 from ursina import *
 
 
@@ -15,7 +13,8 @@ class Gameplay(Screen):
         self.inventory = None
         self.in_inventory = False
         self.map = None
-        self.time_started = None
+        self.time_tracker = time.time()
+
 
         self.on_show += self._on_show
         self.on_hide += self._on_hide
@@ -38,7 +37,6 @@ class Gameplay(Screen):
         self.map.load()
         self.player.spawn()
         self.time_started = time.time()
-        invoke(self.map.spawn_sequence, delay=5)
         self.spawned = False
 
     def _on_hide(self):
@@ -53,17 +51,24 @@ class Gameplay(Screen):
     def toggle_spawned(self):
         self.spawned = False
 
+    def spawn_ready(self):
+        difficulty_factor = 1.0 / self.map.current_difficulty
+        spawn_interval = self.map.spawn_delay * difficulty_factor
+        if time.time() - self.time_tracker >= spawn_interval:
+            self.set_starting_time()
+            return True
+        else:
+            return False
+
+    def set_starting_time(self):
+        self.time_tracker = time.time()
+
     def update(self):
         if self.player.spawned:
             camera.position = (self.player.x, self.player.y, -20)
-        time_elapsed = time.time() - self.time_started
-        difficulty_factor = 1.0 / self.map.current_difficulty
-        next_spawn_time = self.map.spawn_delay
-        spawn_interval = self.map.spawn_delay * difficulty_factor
-        # if time_elapsed >= next_spawn_time and self.map.can_spawn:
-        #     self.map.spawn_sequence()
-            # self.spawned = True
-            # self.spawned = False
+
+        if self.spawn_ready() and self.map.can_spawn:
+            self.map.spawn_sequence()
 
         if self.player != Game.user.get_equipped_character():
             self.player.despawn()

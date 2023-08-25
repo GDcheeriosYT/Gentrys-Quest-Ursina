@@ -12,7 +12,7 @@ class BraydensOsuPen(SwingWeapon):
 
     @property
     def name(self) -> str:
-        return "Braydens Osu Pen"
+        return "Brayden's Osu Pen"
 
     @property
     def description(self) -> str:

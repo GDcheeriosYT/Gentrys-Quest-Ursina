@@ -40,6 +40,7 @@ class GameUnit(GameEntityBase):
         self.damage_text_pool = EntityPool(20, DamageText)
         self.effects = []
 
+
         # event initialization
         self.on_heal = Event("OnHeal", 0)
         self.on_damage = Event("OnDamage", 0)
@@ -157,9 +158,7 @@ class GameUnit(GameEntityBase):
         self.on_heal()
 
     def die(self):
-        self.disable()
-        self.dead = True
-        self.spawned = False
+        self.despawn()
         self.on_death()
 
     def move_left(self):
@@ -187,6 +186,11 @@ class GameUnit(GameEntityBase):
         self.stats.health.calculate_value()
         self.dead = False
         self.spawned = True
+
+    def hits(self, direction):
+        origin = self.world_position
+        hit_info = raycast(origin, direction, ignore=[self], distance=.1)
+        return hit_info.hits
 
     def despawn(self):
         self.disable()
