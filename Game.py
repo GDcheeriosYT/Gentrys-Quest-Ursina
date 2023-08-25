@@ -5,6 +5,7 @@ from Online.Presence.Presence import GamePresence
 from Content.ContentManager import ContentManager
 from GPSystem.GPmain import GPSystem
 from Changelog import *
+from Audio.AudioSystem import AudioSystem
 
 state = GameStates.intro
 # presence = GamePresence()
@@ -13,10 +14,10 @@ rating_program = GPSystem()
 state_affected = False
 version = "Super Dooper Beta"
 user = None
-intro_music = None
 changelog = Changelog()
 content_manager = ContentManager()
 notification_manager = NotificationManager()
+audio_system = AudioSystem(GameConfiguration.v)
 selected_area = None
 testing_screen = None
 

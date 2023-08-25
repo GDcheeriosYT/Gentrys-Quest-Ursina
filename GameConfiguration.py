@@ -2,7 +2,7 @@ import json
 from ursina import *
 
 volume = 1
-play_intro = False
+play_intro = True
 hide_fps = False
 borderless = False
 fullscreen = True
