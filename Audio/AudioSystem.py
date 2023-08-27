@@ -10,6 +10,7 @@ class AudioSystem:
         self._music_volume = music_volume
         self._sound_volume = sound_volume
         self._background_music = None
+        self._background_music: Audio
 
     def set_music(self, audio_file: str, play: bool = True):
         """
@@ -32,10 +33,12 @@ class AudioSystem:
         :param fade_time: The amount of time the fade takes.
         """
 
-        if self._background_music.playing:
+        print("is playing", self._background_music.playing)
+
+        if self._background_music.playing == 1:
             if fade:
                 self._background_music.fade(0, fade_time)
-                invoke(self._background_music.pause, fade_time)
+                invoke(self._background_music.pause, delay=fade_time)
             else:
                 self._background_music.pause()
 
