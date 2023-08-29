@@ -23,7 +23,11 @@ class AudioSystem:
         if self._background_music:
             self._background_music.stop()
 
-        self._background_music = Audio(audio_file, loop=True, autoplay=play)
+        self._background_music = Audio(audio_file, loop=True, autoplay=False)
+        if play:
+            self._background_music.play()
+        else:
+            self._background_music.pause()
 
     def toggle_music_pause(self, fade: bool = True, fade_time: Union[int, bool] = 0.5):
         """
@@ -37,6 +41,7 @@ class AudioSystem:
 
         if self._background_music.playing == 1:
             if fade:
+                self._background_music.volume = self._music_volume
                 self._background_music.fade(0, fade_time)
                 invoke(self._background_music.pause, delay=fade_time)
             else:
@@ -44,8 +49,9 @@ class AudioSystem:
 
         else:
             if fade:
+                self._background_music.volume = 0
                 self._background_music.resume()
-                self._background_music.fade(1, fade_time)
+                self._background_music.fade(self._music_volume, fade_time)
             else:
                 self._background_music.resume()
 
