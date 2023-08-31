@@ -34,7 +34,6 @@ class MainMenu(Screen):
 
     def __init__(self):
         super().__init__()
-        self.music = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True, autoplay=False)
         self.version = VersionText(Game.version)
         self.title = TitleText("Gentry's Quest", color=color.black)
         self.play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
@@ -56,7 +55,6 @@ class MainMenu(Screen):
         self.settings_button.disable()
         self.settings_button.on_click = lambda: Game.change_state(GameStates.settings)
         self.version.disable()
-        self.music.disable()
         self.play_button.on_click = self.play
 
         self.on_show += self._show
@@ -94,7 +92,6 @@ class MainMenu(Screen):
         already_updated = False
 
     def _hide(self):
-        self.disable_audio(self.music, GameConfiguration.fade_time)
         self.login_screen.disable()
         self.guest_screen.disable()
         self.menu.disable()
@@ -109,10 +106,7 @@ class MainMenu(Screen):
     def play(self) -> None:
         fade_screen = FadeScreen()
         fade_screen.fade_in(1, GameConfiguration.fade_time)
-        self.disable_audio(Game.intro_music, GameConfiguration.fade_time)
-        self.music.enable()
-        invoke(lambda: self.music.play(), delay=GameConfiguration.fade_time)
-        self.music.fade_in(GameConfiguration.volume, GameConfiguration.fade_time * 2)
+        Game.audio_system.fade_music("Audio/Gentrys_Quest_Ambient_1.mp3", GameConfiguration.fade_time * 2)
         invoke(lambda: self.play_button.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.settings_button.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.title.disable(), delay=GameConfiguration.fade_time * 2)

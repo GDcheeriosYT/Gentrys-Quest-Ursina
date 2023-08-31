@@ -40,6 +40,8 @@ class GameUnit(GameEntityBase):
         self.damage_text_pool = EntityPool(20, DamageText)
         self.effects = []
 
+        # audio
+
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)

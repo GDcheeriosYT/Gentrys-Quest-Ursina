@@ -10,7 +10,7 @@ import GameConfiguration
 class Intro(Screen):
     def __init__(self):
         super().__init__()
-        Game.intro_music = Audio("Audio/GentrysTheme.mp3", loop=True, time=4, volume=0, autoplay=False, parent=self)
+        Game.audio_system.set_music("Audio/GentrysTheme.mp3", False)
         self.engine_icon = Entity(model="quad", scale=(0.25, 0.25), texture="Graphics/Textures/ursina_chan_alpha.png",
                              alpha=0, parent=self)
         self.engine_info_container = Entity(aplha=0, parent=self)
@@ -25,8 +25,7 @@ class Intro(Screen):
         self.on_show += self._show
 
     def _show(self):
-        Game.intro_music.play()
-        Game.intro_music.fade_in(GameConfiguration.volume, 4.5, delay=0.5, curve=in_sine)
+        Game.audio_system.toggle_music_pause(True, 4.5)
         invoke(lambda: self.engine_icon.fade_in(1, self.fade_time), delay=self.fade_delay)
         invoke(lambda: self.engine_title.fade_in(1, self.fade_time), delay=self.fade_delay)
         invoke(lambda: self.engine_description.fade_in(1, self.fade_time), delay=self.fade_delay * 4)

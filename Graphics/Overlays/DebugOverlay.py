@@ -32,7 +32,8 @@ class DebugOverlay(Container):
         self.content.text = f"--game details--\n" \
                             f"{Game.state}\n" \
                             f"notifications: {len(Game.notification_manager.notifications)}\n" \
-                            f"volume: {round(GameConfiguration.volume, 2)}\n" \
+                            f"musicV: {round(GameConfiguration.music_volume, 2)}\n" \
+                            f"soundV: {round(GameConfiguration.sound_volume, 2)}\n" \
                             f"--engine--\n" \
                             f"entities: {window.entity_counter.text}\n" \
                             f"colliders: {window.collider_counter.text}\n" \

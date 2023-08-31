@@ -23,7 +23,8 @@ class Settings(Screen):
         self.settings = [
             # audio
             Text("Audio", parent=self),
-            Setting("volume", Slider(default=GameConfiguration.volume), parent=self),
+            Setting("music volume", Slider(default=GameConfiguration.music_volume), parent=self),
+            Setting("sound volume", Slider(default=GameConfiguration.sound_volume), parent=self),
 
             # graphics
             Text("graphics", parent=self),
@@ -71,8 +72,14 @@ class Settings(Screen):
             if isinstance(setting, Setting):
                 print(setting.setting_text.text, setting.second_entity)
                 # audio
-                if setting.setting_text.text == "volume":
-                    GameConfiguration.volume = setting.get_setting().value
+                if setting.setting_text.text == "music volume":
+                    value = setting.get_setting().value
+                    GameConfiguration.music_volume = value
+                    Game.audio_system.change_music_volume(value)
+                elif setting.setting_text.text == "sound volume":
+                    value = setting.get_setting().value
+                    GameConfiguration.sound_volume = value
+                    Game.audio_system.change_sound_volume(value)
 
                 # graphics
                 elif setting.setting_text.text == "fullscreen":

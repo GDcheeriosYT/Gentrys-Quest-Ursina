@@ -75,3 +75,6 @@ class ScreenManager(Entity):
                 self.debug_overlay.disable()
             else:
                 self.debug_overlay.enable()
+
+        if key == "f2":
+            GameConfiguration.save_settings()
