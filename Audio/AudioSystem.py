@@ -1,4 +1,5 @@
 from ursina import *
+from ursina import curve
 
 from typing import Union
 
@@ -26,8 +27,10 @@ class AudioSystem:
         self._background_music = Audio(audio_file, loop=True, autoplay=False)
         if play:
             self._background_music.play()
+            self._background_music.volume = self._music_volume
         else:
             self._background_music.pause()
+            self._background_music.volume = 0
 
     def toggle_music_pause(self, fade: bool = True, fade_time: Union[int, bool] = 0.5):
         """
@@ -40,18 +43,18 @@ class AudioSystem:
         print("is playing", self._background_music.playing)
 
         if self._background_music.playing == 1:
+            self._background_music.volume = self._music_volume
             if fade:
-                self._background_music.volume = self._music_volume
-                self._background_music.fade(0, fade_time)
+                self._background_music.fade_out(duration=fade_time, curve=curve.linear)
                 invoke(self._background_music.pause, delay=fade_time)
             else:
                 self._background_music.pause()
 
         else:
             if fade:
-                self._background_music.volume = 0
                 self._background_music.resume()
-                self._background_music.fade(self._music_volume, fade_time)
+                self._background_music.volume = 0
+                self._background_music.fade_in(value=self._music_volume, duration=fade_time, curve=curve.linear)
             else:
                 self._background_music.resume()
 
@@ -89,3 +92,15 @@ class AudioSystem:
         """
 
         self._sound_volume = value
+
+    def fade_music(self, new_music_path: str, fade_time: Union[int, float]):
+        """
+        Fades out old music into new music.
+
+        :param new_music_path: The new music file.
+        :param fade_time: Fade time
+        """
+
+        self._background_music.fade_out(duration=fade_time, curve=curve.linear)
+        invoke(lambda: self.set_music(new_music_path, False), delay=fade_time)
+        invoke(lambda: self.toggle_music_pause(True, fade_time), delay=fade_time+0.1)

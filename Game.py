@@ -17,7 +17,7 @@ user = None
 changelog = Changelog()
 content_manager = ContentManager()
 notification_manager = NotificationManager()
-audio_system = AudioSystem(GameConfiguration.volume, GameConfiguration.volume)
+audio_system = AudioSystem(GameConfiguration.music_volume, GameConfiguration.sound_volume)
 selected_area = None
 testing_screen = None
 

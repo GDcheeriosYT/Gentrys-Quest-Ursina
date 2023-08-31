@@ -43,14 +43,11 @@ camera.fov = 11
 
 # window initialization
 window.title = "Gentry's Quest"
-window.fullscreen = GameConfiguration.fullscreen
 window.borderless = False
-window.exit_button.visible = False
-window.vsync = False
 window.exit_button.disable()
-window.fps_counter.color = rgb(0, 0, 0)
 window.editor_ui.hide()
 
+GameConfiguration.apply_settings()
 
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http://gdcheerios.com"
 
