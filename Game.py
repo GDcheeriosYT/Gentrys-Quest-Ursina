@@ -6,6 +6,7 @@ from Content.ContentManager import ContentManager
 from GPSystem.GPmain import GPSystem
 from Changelog import *
 from Audio.AudioSystem import AudioSystem
+from utils.ExceptionHandler import ExceptionHandler
 
 state = GameStates.intro
 # presence = GamePresence()
@@ -20,6 +21,7 @@ notification_manager = NotificationManager()
 audio_system = AudioSystem(GameConfiguration.music_volume, GameConfiguration.sound_volume)
 selected_area = None
 testing_screen = None
+exception_handler = ExceptionHandler(notification_manager)
 
 
 def change_state(new_state: GameStates):
