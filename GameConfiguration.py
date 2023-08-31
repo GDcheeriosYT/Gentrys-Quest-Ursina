@@ -3,7 +3,7 @@ from ursina import *
 
 music_volume = 1
 sound_volume = 1
-play_intro = True
+play_intro = False
 hide_fps = False
 borderless = False
 fullscreen = True
@@ -15,6 +15,7 @@ local_dev_branch = False
 fade_time = 0.6
 window_position = 0, 0
 window_ratio = 1.333
+window_size = 0, 0
 
 
 def update_config(settings: dict):
@@ -30,15 +31,20 @@ def update_config(settings: dict):
         global fullscreen
         global borderless
         global extra_ui_info
-        global window_position
-        global window_ratio
         hide_fps = settings["graphics"]["hide fps"]
         fullscreen = settings["graphics"]["fullscreen"]
         borderless = settings["graphics"]["borderless"]
         extra_ui_info = settings["graphics"]["extra ui info"]
+
+        # cache
+        global window_position
+        global window_ratio
+        global window_size
         window_position = settings["cache"]["window position"][0], settings["cache"]["window position"][1]
         window_ratio = settings["cache"]["window ratio"]
+        window_size = settings["cache"]["window size"][0], settings["cache"]["window size"][1]
         print("Updated Config!")
+
     except KeyError:
         print("There was an error updating configuration...")
         print("Resetting settings... T_T")
@@ -59,7 +65,8 @@ def save_settings():
         },
         "cache": {
             "window position": [window.position[0], window.position[1]],
-            "window ratio": window.aspect_ratio
+            "window ratio": window.aspect_ratio,
+            "window size": [window.size[0], window.size[1]]
         }
     }
     json.dump(settings, open("settings.json", "w+"), indent=4)
@@ -69,7 +76,7 @@ def save_settings():
 def apply_settings():
     window.position = window_position
     window.forced_aspect_ratio = window_ratio
-    window.fps_counter.disable() if hide_fps else window.fps_counter.enable()
+    window.size = window_size
     window.fullscreen = fullscreen
     print("Applied Settings!")
 
