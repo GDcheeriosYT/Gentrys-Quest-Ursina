@@ -1,5 +1,8 @@
+import traceback
+
 from ursina import *
 
+import Game
 from utils.Event import Event
 
 from .TestMethodButton import TestMethodButton
@@ -32,16 +35,23 @@ class Test:
         """
         Load the test
         """
-        self.on_load()
+
+        try:
+            self.on_load()
+        except Exception as e:
+            Game.exception_handler.handle_exception(e)
 
     def unload(self):
         """
         Unload the test
         """
 
-        [destroy(button) for button in self.method_buttons]
-        self.method_buttons.clear()
-        self.on_unload()
+        try:
+            [destroy(button) for button in self.method_buttons]
+            self.method_buttons.clear()
+            self.on_unload()
+        except Exception as e:
+            Game.exception_handler.handle_exception(e)
 
     def reload(self):
         self.unload()
