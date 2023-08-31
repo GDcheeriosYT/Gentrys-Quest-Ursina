@@ -11,7 +11,7 @@ from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
 from Content.Characters.MasonJames.MasonJames import MasonJames
 
 # Effects
-# no effects lol
+from Content.Effects.Burn.Burn import Burn
 
 # Enemies
 from Content.Enemies.TestEnemy import TestEnemy
@@ -21,9 +21,12 @@ from Content.Enemies.AngryChineseMan.AngryChineseMan import AngryChineseMan
 # Locations
 from Content.Locations.TestLocation.TestLocation import TestLocation
 
-# Weapon
+# Weapons
 from Content.Weapons.Knife.Knife import Knife
 from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
+
+# Gachas
+from Content.Gachas.TestGacha import TestGacha
 
 
 class ContentManager:
@@ -42,7 +45,9 @@ class ContentManager:
             MasonJames
         ]
         
-        self.effects = []
+        self.effects = [
+            Burn
+        ]
         
         self.enemies = [
             TestEnemy,
@@ -57,6 +62,10 @@ class ContentManager:
         self.weapons = [
             Knife,
             BraydensOsuPen
+        ]
+
+        self.gachas = [
+            TestGacha
         ]
 
     def get_family(self, name: str):

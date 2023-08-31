@@ -57,12 +57,12 @@ class GameUnit(GameEntityBase):
         self.on_level_up += self.print_data
         self.on_level_up += self.update_stats
         self.on_level_up += self._overhead.update_data
-        self.on_level_up += lambda: Audio(self.audio_mapping.get_levelup_sound(), volume=GameConfiguration.volume)
+        self.on_level_up += lambda: Game.audio_system.play_sound(self._audio_mapping.get_levelup_sound(), True)
         self.on_spawn += self.update_stats
         self.on_heal += self._overhead.update_data
         self.on_damage += self._overhead.update_data
-        self.on_damage += lambda: Audio(self.audio_mapping.get_damage_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
-        self.on_death += lambda: Audio(self.audio_mapping.get_death_sounds(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        self.on_damage += lambda: Game.audio_system.play_sound(self._audio_mapping.get_damage_sounds(), True)
+        self.on_death += lambda: Game.audio_system.play_sound(self._audio_mapping.get_death_sounds(), True)
         self.on_swap_weapon += self.update_stats
         # self.on_move += self._texture_mapping.play_walk_animation(self)
 
@@ -183,7 +183,7 @@ class GameUnit(GameEntityBase):
         self.enable()
         self.on_spawn()
         self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
-        Audio(self._audio_mapping.get_spawn_sound(), pitch=random.uniform(low, high), volume=GameConfiguration.volume)
+        Game.audio_system.play_sound(self._audio_mapping.get_spawn_sound(), True)
         self.update_stats()
         self.stats.health.calculate_value()
         self.dead = False

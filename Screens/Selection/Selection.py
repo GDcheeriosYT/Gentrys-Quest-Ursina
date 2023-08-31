@@ -11,6 +11,7 @@ from .SelectionStatus import SelectionStatus
 from .MenuButton import MenuButton
 from .Changelog import ChangelogMenu
 from .TravelMenu import TravelMenu
+from .GachaMenu import GachaMenu
 
 
 class Selection(Screen):
@@ -41,6 +42,8 @@ class Selection(Screen):
         self.inventory_menu = Inventory(True, self.menu)
         self.inventory_menu.scale = (0.805, 0.85)
         self.inventory_menu.y -= 0.05
+
+        self.gacha_menu = GachaMenu(self.menu)
 
         self.changelog_button = MenuButton(
             "Changelog",
@@ -76,10 +79,13 @@ class Selection(Screen):
             parent=self.menu_buttons_container
         )
 
+        self.gacha_button.on_click_event += lambda: self.change_status(SelectionStatus.gacha)
+
         self.menus = [
             self.changelog_menu,
             self.travel_menu,
-            self.inventory_menu
+            self.inventory_menu,
+            self.gacha_menu
         ]
 
         self.menu_buttons = [
@@ -151,5 +157,9 @@ class Selection(Screen):
             elif self.status == SelectionStatus.inventory:
                 self.inventory_button.activate()
                 self.inventory_menu.enable()
+
+            elif self.status == SelectionStatus.gacha:
+                self.gacha_button.activate()
+                self.gacha_menu.enable()
 
             self.status_changed = False

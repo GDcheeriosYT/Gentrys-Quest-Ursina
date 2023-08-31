@@ -1,6 +1,8 @@
 from ...Category import Category
 
 from .HUDTest import HUDTest
+from .InventoryTest import InventoryTest
+from .GachaMenuTest import GachaMenuTest
 
 
 class UI(Category):
@@ -9,5 +11,7 @@ class UI(Category):
             "UI",
             [
                 HUDTest(),
+                InventoryTest(),
+                GachaMenuTest()
             ]
         )
