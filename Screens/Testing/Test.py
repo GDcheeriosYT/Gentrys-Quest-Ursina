@@ -46,9 +46,10 @@ class Test:
         Unload the test
         """
 
+        [destroy(button) for button in self.method_buttons]
+        self.method_buttons.clear()
+
         try:
-            [destroy(button) for button in self.method_buttons]
-            self.method_buttons.clear()
             self.on_unload()
         except Exception as e:
             Game.exception_handler.handle_exception(e)
