@@ -69,6 +69,10 @@ class ScreenManager(Entity):
             self.change_screen(Game.state.value)
             Game.state_affected = True
 
+        GameConfiguration.window_ratio = window.aspect_ratio
+        GameConfiguration.window_size = window.size
+        GameConfiguration.window_position = window.position
+
     def input(self, key):
         if key == "b":
             if self.debug_overlay.enabled:

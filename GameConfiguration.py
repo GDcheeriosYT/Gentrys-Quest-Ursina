@@ -11,11 +11,11 @@ server = "https://gdcheerios.com"
 extra_ui_info = True
 discord_presence = False
 random_pitch_range = (0.7, 1.3)
-local_dev_branch = False
+local_dev_branch = True
 fade_time = 0.6
 window_position = 0, 0
 window_ratio = 1.333
-window_size = 0, 0
+window_size = 500, 500
 
 
 def update_config(settings: dict):
@@ -64,9 +64,9 @@ def save_settings():
             "extra ui info": extra_ui_info
         },
         "cache": {
-            "window position": [window.position[0], window.position[1]],
-            "window ratio": window.aspect_ratio,
-            "window size": [window.size[0], window.size[1]]
+            "window position": [window_position[0], window_position[1]],
+            "window ratio": window_ratio,
+            "window size": [window_size[0], window_size[1]]
         }
     }
     json.dump(settings, open("settings.json", "w+"), indent=4)
@@ -75,7 +75,7 @@ def save_settings():
 
 def apply_settings():
     window.position = window_position
-    window.forced_aspect_ratio = window_ratio
+    # window.forced_aspect_ratio = window_ratio
     window.size = window_size
     window.fullscreen = fullscreen
     print("Applied Settings!")
