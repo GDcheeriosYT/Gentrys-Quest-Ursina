@@ -39,6 +39,12 @@ class User:
     def get_money(self) -> int:
         return self._user_data.money
 
+    def add_money(self, amount):
+        self._user_data.add_money(amount)
+
+    def remove_money(self, amount):
+        self._user_data.remove_money(amount)
+
     def get_characters(self) -> List[Character]:
         return self._user_data.characters
 

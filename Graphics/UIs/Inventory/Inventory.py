@@ -30,7 +30,7 @@ class Inventory(Entity):
     def __init__(self, character_swapping: bool = False, parent: Entity = None):
         super().__init__(
             model=Quad(radius=0.06),
-            scale=(1.2, 0.75),
+            scale=(1, 0.75),
             color=rgb(117, 117, 117, 255),
             position=(0, -0.1),
             parent=camera.ui if parent is None else parent

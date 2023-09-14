@@ -8,10 +8,11 @@ from Entity.Weapon.Weapon import Weapon
 
 
 class Gacha:
-    def __init__(self, name: str, characters: List[Character], weapons: List[Weapon]):
+    def __init__(self, name: str, cost: int, characters: List[Character], weapons: List[Weapon]):
         self.name = name
-        self.characters = characters
-        self.weapons = weapons
+        self.cost = cost
+        self.characters = [character() for character in characters]
+        self.weapons = [weapon() for weapon in weapons]
 
     def pull(self, amount: int, type: GachaTypes):
         pulled = []
@@ -51,6 +52,7 @@ class Gacha:
                     if weapon.star_rating == star_rating:
                         pool.append(weapon)
 
-            pulled.append(pull_thing())
+            if len(pool) > 0:
+                pulled.append(pull_thing())
 
         return pulled

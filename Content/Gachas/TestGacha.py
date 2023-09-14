@@ -8,6 +8,7 @@ class TestGacha(Gacha):
     def __init__(self):
         super().__init__(
             name="Test Gacha",
+            cost=100,
             characters=[TestCharacter],
             weapons=[Knife]
         )
