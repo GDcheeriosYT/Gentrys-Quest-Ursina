@@ -61,6 +61,7 @@ class GachaMenu(Entity):
 
         self.banners = ScrollableContainer(
             is_down=False,
+            scroll=1,
             position=(0.25, 0),
             scale=(0.5, 0.85),
             parent=self
