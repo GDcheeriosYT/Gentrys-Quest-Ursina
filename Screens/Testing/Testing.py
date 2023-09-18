@@ -6,6 +6,7 @@ from utils.Event import Event
 
 from .TestingCategories.Entity.Entity import Entity
 from .TestingCategories.UI.UI import UI
+from .TestingCategories.Components.Components import Components
 
 from .TestingScreen import TestingScreen
 from .Test import Test
@@ -18,8 +19,8 @@ class Testing(Screen):
         )
 
         self.screen = TestingScreen(
-            position=(0.35, -0.1),
-            scale=(1, 0.7),
+            position=(0.32, -0.1),
+            scale=(0.7, 0.7),
             color=color.gray,
             parent=self
         )
@@ -40,13 +41,13 @@ class Testing(Screen):
         )
 
         self.tests_option_container = Container(
-            position=(-0.65, 0),
-            origin=(0, 0),
-            scale=(0.25, 1),
-            parent=self.screen
+            position=(-0.22, -0.3),
+            origin=(0, 0.5),
+            scale=(0.3, 1),
+            parent=self
         )
 
-        self.categories = [Entity(), UI()]
+        self.categories = [Entity(), UI(), Components()]
 
         self.tests = []
 
