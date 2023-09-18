@@ -18,16 +18,17 @@ class DirectionalContainerTest(Test):
         self.on_unload += self._unload
 
     def _load(self):
+        amount = 3
+        spacing = 3
+
         def create_horizontal_container():
             if not self.directional_container_horizontal:
                 self.directional_container_horizontal = DirectionalContainer(
                     horizontal=True,
                     items=[
-                        Entity(model="quad", color=color.black),
-                        Entity(model="quad", color=color.black),
-                        Entity(model="quad", color=color.black)
+                        Entity(model="quad", color=color.black) for i in range(amount)
                     ],
-                    spacing=3,
+                    spacing=spacing,
                     color=color.white,
                     parent=Test.screen,
                     scale=(0.45, 0.45),
@@ -39,11 +40,9 @@ class DirectionalContainerTest(Test):
                 self.directional_container_vertical = DirectionalContainer(
                     horizontal=False,
                     items=[
-                        Entity(model="quad", color=color.black),
-                        Entity(model="quad", color=color.black),
-                        Entity(model="quad", color=color.black)
+                        Entity(model="quad", color=color.black) for i in range(amount)
                     ],
-                    spacing=3,
+                    spacing=spacing,
                     color=color.white,
                     parent=Test.screen,
                     scale=(0.45, 0.45),
