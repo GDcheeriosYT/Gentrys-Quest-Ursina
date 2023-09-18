@@ -2,7 +2,7 @@
 import GameConfiguration
 import Game
 from GameStates import GameStates
-
+from Overlays.Notification import Notification
 
 # User
 from User.User import User

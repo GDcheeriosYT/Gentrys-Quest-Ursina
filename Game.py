@@ -10,7 +10,6 @@ from utils.ExceptionHandler import ExceptionHandler
 
 state = GameStates.intro
 presence = GamePresence() if not GameConfiguration.local_dev_branch else None
-presence = None
 rating_program = GPSystem()
 state_affected = False
 version = "Super Dooper Beta"
