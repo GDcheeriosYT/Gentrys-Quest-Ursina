@@ -3,7 +3,7 @@ from ursina import *
 import Game
 
 from Graphics.Container import Container
-from Graphics.Containers.ScrollableContainer import ScrollableContainer
+from Graphics.Containers.DirectionalContainer import DirectionalContainer
 from Gacha.GachaTypes import GachaTypes
 from Overlays.Notification import Notification
 
@@ -59,19 +59,23 @@ class GachaMenu(Entity):
         )
         self.amount_up.on_click = lambda: self.increase_amount(True)
 
-        self.banners = ScrollableContainer(
-            is_down=False,
-            scroll=1,
+        banner_list = []
+
+        for gacha in self.gachas:
+            banner = GachaBanner(gacha())
+            banner.on_click = lambda: self.select_banner(banner)
+            banner_list.append(banner)
+
+        self.banners = DirectionalContainer(
+            horizontal=True,
+            items=banner_list,
+            spacing=1,
             position=(0.25, 0),
             scale=(0.5, 0.85),
             parent=self
         )
-        for gacha in self.gachas:
-            banner = GachaBanner(gacha())
-            banner.on_click = lambda: self.select_banner(banner)
-            self.banners.add_to_container(banner)
 
-        self.select_banner(self.banners.container_children[0])
+        self.select_banner(self.banners.items[0])
 
         self.pull_character_button = Button(
             "Pull character",
@@ -99,14 +103,14 @@ class GachaMenu(Entity):
         self.amount_text.text = str(self.amount)
 
     def select_banner(self, banner):
-        for banner in self.banners.container_children:
+        for banner in self.banners.items:
             banner.deselect()
 
         banner.select()
-        self.selected_gacha = self.gachas[self.banners.container_children.index(banner)]()
+        self.selected_gacha = self.gachas[self.banners.items.index(banner)]()
 
     def pull(self, is_character: bool):
-        if Game.user.get_money() > self.selected_gacha.cost * self.amount:
+        if Game.user.get_money() >= self.selected_gacha.cost * self.amount:
             Game.user.remove_money(self.selected_gacha.cost * self.amount)
             if is_character:
                 characters = self.selected_gacha.pull(self.amount, GachaTypes.Character)
