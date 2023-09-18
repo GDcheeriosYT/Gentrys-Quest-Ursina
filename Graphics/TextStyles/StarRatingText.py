@@ -10,7 +10,7 @@ class StarRatingText(Text):
         if star_rating == 2:
             text_color = color.green
         if star_rating == 3:
-            text_color = color.blue
+            text_color = color.cyan
         if star_rating == 4:
             text_color = color.pink
         if star_rating == 5:

@@ -7,18 +7,6 @@ from GameStates import GameStates
 # User
 from User.User import User
 
-# graphics
-
-# Entity
-from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
-from Content.Characters.BraydenMesserschmidt.BraydenMesserschmidt import BraydenMesserschmidt
-from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
-from Content.Weapons.Knife.Knife import Knife
-from Content.Characters.PhilipMcClure.PhilipMcClure import PhilipMcClure
-from Content.Characters.PeteMarks.PeteMarks import PeteMarks
-from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
-from Content.ArtifactFamilies.TestFamily.TestArtifact import TestArtifact
-
 # screens
 from Screens.ScreenManager import ScreenManager
 
@@ -31,6 +19,7 @@ import os
 # external packages
 from ursina import *
 import argparse
+import json
 
 # initialization
 app = Ursina()
@@ -46,6 +35,7 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("-s", "--server")
+parser.add_argument("-d", "--debug", action="store_true")
 args = parser.parse_args()
 
 camera.orthographic = True
@@ -53,22 +43,27 @@ camera.fov = 11
 
 # window initialization
 window.title = "Gentry's Quest"
-window.fullscreen = GameConfiguration.fullscreen
 window.borderless = False
-window.exit_button.visible = False
 window.exit_button.disable()
-window.fps_counter.color = rgb(0, 0, 0)
 window.editor_ui.hide()
 
+GameConfiguration.apply_settings()
 
-server_url = "http://localhost" if GameConfiguration.local_dev_branch else "https://gdcheerios.com"
+server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http://gdcheerios.com"
 
 server = ServerConnection(server_url if args.server is None else args.server)
 
-if GameConfiguration.play_intro:
-    Game.state = GameStates.intro
+if args.debug:
+    Game.state = GameStates.testing
+    Game.user = User("Test User", True)
 else:
-    Game.state = GameStates.mainMenu
+    if GameConfiguration.play_intro:
+        Game.state = GameStates.intro
+    else:
+        Game.state = GameStates.mainMenu
+
+black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
+destroy(black_thing, 3)
 
 ScreenManager(app)
 

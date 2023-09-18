@@ -7,7 +7,7 @@ class EntityIcon(Button):
     """
     EntityIcon acts as an icon for an entity.
     """
-    def __init__(self, entity, scale: tuple = (0.15, 0.15), *args, **kwargs):
+    def __init__(self, entity, scale: tuple = (0.18, 0.18), *args, **kwargs):
         """
 
         :param entity: The Entity to create an icon of.
@@ -41,7 +41,7 @@ class EntityIcon(Button):
             )
 
             self._text = Text(
-                entity.name,
+                f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''}",
                 position=(0, -0.45, -2),
                 scale=(5, 5),
                 origin=(0, 0),

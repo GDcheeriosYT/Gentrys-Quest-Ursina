@@ -3,10 +3,11 @@ from ursina import *
 
 
 class EffectsContainer(Container):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__(
             position=(0.2, 1),
-            scale=(1, 1.5)
+            scale=(1, 1.5),
+            parent=parent
         )
 
         self._effects = []

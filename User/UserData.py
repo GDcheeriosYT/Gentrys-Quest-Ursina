@@ -15,9 +15,9 @@ class UserData:
     def __init__(self, json_str: str = None):
         if json_str:
             json_data = json.loads(json_str)
-            self._characters = DataLoader.parse_characters(json_data["inventory"]["characters"])
-            self._artifacts = DataLoader.parse_characters(json_data["inventory"]["artifacts"])
-            self._weapons = DataLoader.parse_characters(json_data["inventory"]["weapons"])
+            self._characters = json_data['inventory']['characters']
+            self._artifacts = json_data['inventory']['artifacts']
+            self._weapons = json_data['inventory']['weapons']
             self._items = []
             self._equipped_character = None
             self._money = json_data["inventory"]["money"]
@@ -30,6 +30,8 @@ class UserData:
             self._weapons = []
             self._money = 0
             self._startup_amount = 0
+
+        self.data_parsed = False
 
     @property
     def characters(self) -> List[Character]:
@@ -59,6 +61,12 @@ class UserData:
     def equipped_character(self) -> Character:
         return self._equipped_character
 
+    def load_items(self):
+        self._characters = DataLoader.parse_characters(self._characters)
+        self._artifacts = DataLoader.parse_artifacts(self._artifacts)
+        self._weapons = DataLoader.parse_weapons(self._weapons)
+        self.data_parsed = True
+
     def add_character(self, character: Character):
         Game.notification_manager.add_notification(Notification(f"obtained {character.star_rating} star {character.name} character", color=color.blue))
         self._characters.append(character)
@@ -78,7 +86,14 @@ class UserData:
         self._money -= money
 
     def equip_character(self, character: Character):
+        if self._equipped_character:
+            self.equipped_character.unequip()
+
         self._equipped_character = character
+        self._equipped_character.equip()
+
+    def increment_startup_amount(self):
+        self._startup_amount += 1
 
     def jsonify_data(self) -> dict:
         characters = [character.jsonify() for character in self._characters]

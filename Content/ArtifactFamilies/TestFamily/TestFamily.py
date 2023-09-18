@@ -9,3 +9,7 @@ class TestFamily(ArtifactFamily):
                 TestArtifact
             ]
         )
+
+    @property
+    def name(self) -> str:
+        return "Test Family"

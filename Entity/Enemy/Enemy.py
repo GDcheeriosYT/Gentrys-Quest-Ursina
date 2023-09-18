@@ -10,14 +10,17 @@ from Entity.Loot import Loot
 
 
 class Enemy(GameUnit):
-    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping()):
+    def __init__(self, texture_mapping: TextureMapping = TextureMapping(), audio_mapping: AudioMapping = AudioMapping(), *args, **kwargs):
         super().__init__(
             texture_mapping,
-            audio_mapping
+            audio_mapping,
+            *args,
+            **kwargs
         )
         self.set_idle_texture()
 
         self._follow_entity = None
+        self.not_attacking = True
 
         self.on_death += lambda: destroy(self)
         self.on_death += lambda: destroy(self.weapon)
@@ -29,7 +32,6 @@ class Enemy(GameUnit):
 
     def follow_entity(self, entity: Entity):
         self._follow_entity = entity
-        invoke(self.attack_process, delay=self.attack_delay)
 
     def update_stats(self):
         def calculate(variable, multiplier: Union[int, float] = 1):
@@ -74,28 +76,29 @@ class Enemy(GameUnit):
             money
         )
 
-    def attack_process(self):
-        self.attack(self.direction)
-        invoke(self.attack_process, delay=self.attack_delay)
+    def attack_switch(self, on: bool):
+        self.not_attacking = on
+
+    def attack(self, direction=None):
+        self.not_attacking = False
+        invoke(lambda: self.attack_switch(True), delay=self.attack_delay)
+        if self._weapon:
+            if self._weapon.is_ready():
+                if not direction:
+                    mouse_pos = mouse.position
+                    direction = math.atan2(mouse_pos[1], mouse_pos[0]) * (180 / 3.14)
+                else:
+                    direction = math.atan2(direction[1], direction[0]) * (180 / 3.14)
+
+                self.on_attack()
+                self.weapon.attack(direction)
 
     def update(self):
-        self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
-        origin = self.world_position
-        hit_info = raycast(origin, self.direction, ignore=[self], distance=.5)
-        if not hit_info.hit:
-            if self.can_move:
+        if self.not_attacking:
+            self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
+            if sqrt((self._follow_entity.position[0] - self.position[0]) ** 2 + (self._follow_entity.position[1] - self.position[1]) ** 2) <= self.range:
+                self.attack(self.direction)
+
+            if self.can_move and not self.hits(self.direction):
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()
-
-        if held_keys['o']:
-            self.damage(self.experience.level * 50)
-
-        if held_keys["l"]:
-            self.level_up()
-        elif held_keys["k"]:
-            if self._experience.level > 1:
-                self._experience.level -= 1
-
-            self.on_level_up()
-
-        self.handle_buffs()

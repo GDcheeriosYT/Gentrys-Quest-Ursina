@@ -2,8 +2,6 @@ import Game
 from Screens.Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 from Graphics.UIs.Inventory.Inventory import Inventory
-from Content.Maps.TestMap import TestMap
-from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
 from ursina import *
 
 
@@ -15,9 +13,11 @@ class Gameplay(Screen):
         self.inventory = None
         self.in_inventory = False
         self.map = None
-        self.time_started = None
+        self.time_tracker = time.time()
+
 
         self.on_show += self._on_show
+        self.on_hide += self._on_hide
 
     @property
     def name(self) -> str:
@@ -28,28 +28,47 @@ class Gameplay(Screen):
         return color.gray
 
     def _on_show(self):
+        self.map = Game.selected_area
         self.player = Game.user.get_equipped_character()
         self.hud = HUD(self.player)
         self.inventory = Inventory()
+        self.inventory.update_player()
         self.inventory.disable()
-        self.player.spawn()
-        self.map = TestMap()
-        self.time_started = time.time()
         self.map.load()
+        self.player.spawn()
+        self.time_started = time.time()
         self.spawned = False
+
+    def _on_hide(self):
+        if self.map:
+            self.map.unload()
+
+        if self.hud:
+            self.hud.end()
+
+        destroy(self.inventory)
 
     def toggle_spawned(self):
         self.spawned = False
 
-    def update(self):
-        time_elapsed = time.time() - self.time_started
+    def spawn_ready(self):
         difficulty_factor = 1.0 / self.map.current_difficulty
-        next_spawn_time = self.map.spawn_delay
         spawn_interval = self.map.spawn_delay * difficulty_factor
-        if time_elapsed >= next_spawn_time and self.map.can_spawn:
+        if time.time() - self.time_tracker >= spawn_interval:
+            self.set_starting_time()
+            return True
+        else:
+            return False
+
+    def set_starting_time(self):
+        self.time_tracker = time.time()
+
+    def update(self):
+        if self.player.spawned:
+            camera.position = (self.player.x, self.player.y, -20)
+
+        if self.spawn_ready() and self.map.can_spawn:
             self.map.spawn_sequence()
-            self.spawned = True
-            invoke(self.toggle_spawned, delay=1)
 
         if self.player != Game.user.get_equipped_character():
             self.player.despawn()
@@ -65,13 +84,13 @@ class Gameplay(Screen):
                 self.map.can_spawn = False
                 self.hud.hide_elements()
                 self.player.disable()
-                self.map.manage_entities(False, False)
+                self.map.toggle_enemies()
                 self.inventory.enable()
                 self.in_inventory = True
             else:
                 self.map.can_spawn = True
                 self.hud.show_elements()
                 self.player.enable()
-                self.map.manage_entities(False, True)
+                self.map.toggle_enemies()
                 self.inventory.disable()
                 self.in_inventory = False

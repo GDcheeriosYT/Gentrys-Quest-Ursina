@@ -34,9 +34,8 @@ class MainMenu(Screen):
 
     def __init__(self):
         super().__init__()
-        self.music = Audio("Audio/Gentrys_Quest_Ambient_1.mp3", volume=0, loop=True, autoplay=False)
         self.version = VersionText(Game.version)
-        self.title = TitleText("Gentry's Quest")
+        self.title = TitleText("Gentry's Quest", color=color.black)
         self.play_button = Button("Play", position=(0, -0.1), scale=(0.2, 0.05))
         self.settings_button = Button("Settings", position=(0, -0.3), scale=(0.2, 0.05))
         self.guest_button = TabButton("Guest", position=(-0.17, 0.45, 0))
@@ -47,8 +46,8 @@ class MainMenu(Screen):
                            parent=camera.ui)
         self.in_menu = False
         self.menu.disable()
-        self.screen = Entity()
-        self.screen.disable()
+        self.guest_screen = GuestUI()
+        self.login_screen = LoginUI()
         self.guest_button.disable()
         self.login_button.disable()
         self.title.disable()
@@ -56,7 +55,6 @@ class MainMenu(Screen):
         self.settings_button.disable()
         self.settings_button.on_click = lambda: Game.change_state(GameStates.settings)
         self.version.disable()
-        self.music.disable()
         self.play_button.on_click = self.play
 
         self.on_show += self._show
@@ -84,14 +82,18 @@ class MainMenu(Screen):
         self.in_menu = not self.in_menu
 
     def _show(self):
+        global already_updated
         self.title.enable()
         self.version.enable()
         self.play_button.enable()
         self.settings_button.enable()
+        MainMenu.is_guest_menu = False
+        MainMenu.is_login_menu = True
+        already_updated = False
 
     def _hide(self):
-        self.disable_audio(self.music, GameConfiguration.fade_time)
-        self.screen.disable()
+        self.login_screen.disable()
+        self.guest_screen.disable()
         self.menu.disable()
         self.version.disable()
         self.guest_button.disable()
@@ -99,38 +101,40 @@ class MainMenu(Screen):
         self.title.disable()
         self.play_button.disable()
         self.settings_button.disable()
+        self.in_menu = False
 
     def play(self) -> None:
         fade_screen = FadeScreen()
         fade_screen.fade_in(1, GameConfiguration.fade_time)
-        self.disable_audio(Game.intro_music, GameConfiguration.fade_time)
-        self.music.enable()
-        invoke(lambda: self.music.play(), delay=GameConfiguration.fade_time)
-        self.music.fade_in(GameConfiguration.volume, GameConfiguration.fade_time * 2)
+        Game.audio_system.fade_music("Audio/Gentrys_Quest_Ambient_1.mp3", GameConfiguration.fade_time * 2)
         invoke(lambda: self.play_button.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.settings_button.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.title.disable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.guest_button.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.login_button.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.menu.enable(), delay=GameConfiguration.fade_time * 2)
-        invoke(lambda: self.screen.enable(), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time * 2)
         invoke(lambda: self.menu_toggle(), delay=GameConfiguration.fade_time * 2)
         destroy(fade_screen, GameConfiguration.fade_time * 5)
+
+    def input(self, key):
+        if key == 'p':
+            self.guest_screen.update_list()
 
     def update(self):
         global already_updated
         if self.in_menu:
             if MainMenu.is_guest_menu and not already_updated:
+                self.guest_screen.update_list()
                 self.guest_button.color = rgb(117, 117, 117)
                 self.login_button.color = rgb(0, 0, 0)
-                destroy(self.screen)
-                self.screen = GuestUI()
+                self.guest_screen.enable()
+                self.login_screen.disable()
                 already_updated = True
 
             elif MainMenu.is_login_menu and not already_updated:
                 self.guest_button.color = rgb(0, 0, 0)
                 self.login_button.color = rgb(117, 117, 117)
-                destroy(self.screen)
-                self.screen = LoginUI()
+                self.guest_screen.disable()
+                self.login_screen.enable()
                 already_updated = True

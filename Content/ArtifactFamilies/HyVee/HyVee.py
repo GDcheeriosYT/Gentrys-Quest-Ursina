@@ -9,3 +9,7 @@ class HyVee(ArtifactFamily):
                 ElHefe
             ]
         )
+
+    @property
+    def name(self) -> str:
+        return "HyVee"

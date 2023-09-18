@@ -14,6 +14,7 @@ from Entity.Enemy.Enemy import Enemy
 from utils.Event import Event
 from .MoneyUpgradeUI import MoneyUpgradeUI
 from typing import Union
+from User.User import User
 
 
 class Inventory(Entity):
@@ -26,18 +27,19 @@ class Inventory(Entity):
     state = InventoryStates.listing
     state_affected = False
 
-    def __init__(self):
+    def __init__(self, character_swapping: bool = False, parent: Entity = None):
         super().__init__(
             model=Quad(radius=0.06),
-            scale=(1.2, 0.75),
+            scale=(1, 0.75),
             color=rgb(117, 117, 117, 255),
             position=(0, -0.1),
-            parent=camera.ui
+            parent=camera.ui if parent is None else parent
         )
 
-        self.player = Game.user.user_data  # grab the user and set as variable
+        self.player = User("No user", True).user_data  # grab the user and set as variable
         self.selected_entity = None  # tracker for character
         self.selected_index = None  # tracker for artifact index
+        self.character_swapping = character_swapping
 
         self.money = Text(
             "$",
@@ -88,13 +90,17 @@ class Inventory(Entity):
         self.current_focused_entity = None  # keep track of the current entity
 
         self._characters_button = InvButton(
-            "Characters",
+            "Characters" if self.character_swapping else "Character",
             position=(-0.35, 0.65),
             parent=self
         )
         character_event = Event("cEvent", 0)
-        character_event += lambda: self.set_state(InventoryStates.listing)
-        character_event += lambda: self.show_entity_listing("characters", True)
+        if self.character_swapping:
+            character_event += lambda: self.set_state(InventoryStates.listing)
+            character_event += lambda: self.show_entity_listing("characters", True)
+        else:
+            character_event += lambda:  self.show_entity(Game.user.get_equipped_character())
+
         self._characters_button.on_click = character_event
 
         self._artifacts_button = InvButton(
@@ -119,7 +125,15 @@ class Inventory(Entity):
 
         # buttons for managing display of each entity types
 
-        self.show_entity_listing("characters")  # show the default entity type
+        if self.character_swapping:
+            self.show_entity_listing("characters")  # show the default entity type
+        else:
+            self.show_entity(Game.user.get_equipped_character())
+
+
+
+    def update_player(self):  # noqa
+        self.player = Game.user.user_data
 
 
 
@@ -174,7 +188,7 @@ class Inventory(Entity):
             self.page_text.text = str(self.page)
 
         tracker = 0  # column tracker
-        y = 0.4
+        y = 0.38
         category = None
         if entity_type == "characters":
             self._characters_button.color = color.gray
@@ -201,11 +215,11 @@ class Inventory(Entity):
                 def determine_xp(item: Union[Weapon, Artifact]):
                     if isinstance(item, Weapon):
                         self.player.weapons.remove(item)
-                        return int(item.experience.level * (item.star_rating * 100))
+                        return int((item.experience.level * item.star_rating) * 100)
 
                     else:
                         self.player.artifacts.remove(item)
-                        return int((item.star_rating * 10) + (item.star_rating * (item.experience.level * 25)))
+                        return int((item.experience.level * item.star_rating) * 100)
 
                 for item in self.selected_entities:
                     self.selected_entity.add_xp(determine_xp(item))
@@ -283,7 +297,7 @@ class Inventory(Entity):
         else:
             self.page_down_button.disable()
 
-        print((self.page + 1) * 12, len(category), self.page * 12 < len(category))
+        # print((self.page + 1) * 12, len(category), self.page * 12 < len(category))
         if (self.page + 1) * 12 < len(category):
             self.page_up_button.enable()
             self.page_up_button.on_click = lambda: self.page_up(entity_type)

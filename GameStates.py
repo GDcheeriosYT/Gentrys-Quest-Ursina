@@ -7,3 +7,5 @@ class GameStates(Enum):
     tutorial = 2
     settings = 3
     gameplay = 4
+    selection = 5
+    testing = 6

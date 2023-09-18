@@ -2,6 +2,7 @@ from ursina import *
 import Game
 import GameConfiguration
 from Graphics.Containers.TextContainer import TextContainer
+from utils.Event import Event
 
 
 class Register(Entity):
@@ -16,20 +17,23 @@ class Register(Entity):
         )
 
         self.bought = False
+        self.text_container = TextContainer()
+        self.buy_event = Event("BuyEvent", 0)
 
     def buy_sequence(self, entity):
-        text_container = TextContainer()
         if entity == Game.user.get_equipped_character():
             if "Ramen" in Game.user.user_data.items:
                 Game.user.user_data.items.remove("Ramen")
-                text_container.set_text("Thanks for coming by have a good night!", 3)
+                self.text_container.set_text("Thanks for coming by have a good night!", 3)
                 Audio("Audio/buy.mp3", volume=GameConfiguration.volume)
-                self.bought = True
+                self.buy_finish()
 
             else:
-                text_container.set_text("Do you need something sir?", 3)
+                self.text_container.set_text("Do you need something sir?", 3)
 
-        destroy(text_container, 4)
+    def buy_finish(self):
+        self.buy_event()
+        self.bought = True
 
     def update(self):
         if self.intersects().hit and not self.bought:

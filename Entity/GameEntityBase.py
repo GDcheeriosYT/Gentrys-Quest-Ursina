@@ -31,6 +31,10 @@ class GameEntityBase(Entity):
         """
         return self._experience
 
+    @property
+    def description(self) -> str:
+        return None
+
     def add_xp(self, amount):
         while amount > 0:
             difference = self.experience.get_xp_required(self.star_rating) - self.experience.xp

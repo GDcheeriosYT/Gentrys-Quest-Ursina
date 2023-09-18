@@ -7,7 +7,7 @@ from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacte
 
 
 class GuestConfirmBox(Entity):
-    def __init__(self, username, menu, *args, **kwargs):
+    def __init__(self, user: User, menu, *args, **kwargs):
         super().__init__(
             model=Quad(0.15),
             origin=(0, 0),
@@ -19,11 +19,11 @@ class GuestConfirmBox(Entity):
             **kwargs
         )
 
-        self._username = username
+        self._user = user
         self._menu = menu
         menu.disable()
 
-        self._confirm_text = Text(f"You want to play as\n{username}?", position=(0, 0.3), origin=(0, 0),
+        self._confirm_text = Text(f"You want to play as\n{self._user.username}?", position=(0, 0.3), origin=(0, 0),
                                   scale=(2.5, 2.5), parent=self)
         self._confirm_box = Button("Confirm", position=(0, -0.2), scale=(0.2, 0.1), parent=self)
         self._confirm_box.on_click = self.confirm_on_click
@@ -31,12 +31,19 @@ class GuestConfirmBox(Entity):
         self._back_box.on_click = self.back_on_click
 
     def confirm_on_click(self):
-        user = User(self._username, True)
-        user.replace_data(open(f"Data/{self._username}.json", "r").read())
-        Game.user = user
-        Game.user.equip_character(StarterCharacter(user.username))
-        user.add_character(StarterCharacter(user.username))
-        Game.change_state(GameStates.tutorial)
+        Game.user = self._user
+        Game.user.load()
+        if Game.user.user_data.startup_amount == 0:
+            starter_character = StarterCharacter(Game.user.username)
+            Game.user.user_data.increment_startup_amount()
+            Game.user.equip_character(starter_character)
+            Game.user.add_character(starter_character)
+            Game.change_state(GameStates.tutorial)
+            Game.user.add_weapon(Game.content_manager.get_weapon('Knife'))
+        else:
+            Game.user.user_data.increment_startup_amount()
+            Game.change_state(GameStates.selection)
+
         self._menu.enable()
         destroy(self)
 

@@ -5,11 +5,12 @@ from .ExperienceBar import ExperienceBar
 
 
 class StatusBars(Container):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__(
             origin=(-0.5, -0.5),
-            scale=(0.8, 0.2),
-            position=window.bottom_left
+            scale=(parent.scale_x * 0.35, parent.scale_y * 0.2),
+            position=(-0.5, -0.5),
+            parent=parent
         )
         self._health_bar = HealthBar(
             max_value=100,
@@ -37,6 +38,8 @@ class StatusBars(Container):
             position=(0, 0.1),
             parent=self._experience_container
         )
+        self._health_bar.text_entity.scale_x *= 1.5
+        self._experience_bar.text_entity.scale_x *= 1.5
 
     def update_data(self, player):
         self._health_bar.max_value = int(player.stats.health.get_value())

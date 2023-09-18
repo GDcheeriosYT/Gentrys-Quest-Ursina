@@ -2,30 +2,45 @@ from typing import Union
 
 
 class Stat:
-    def __init__(self, name: str, value: Union[int, float] = 1):
+    def __init__(self, name: str, value: Union[int, float] = 1, is_int: bool = True):
         self._name = name
         self._minimum_value = value
         self._default_value = 0
         self._additional_value = 0
-        self.calculate_value()
+        self._value = 0
         self.current_value = self._value
         self.points = 0
+        self._is_int = is_int
+        self.calculate_value()
 
     def calculate_value(self):
         self._value = self._minimum_value + self._default_value + self._additional_value
-        self.current_value = self._value
+        if self._is_int:
+            self.current_value = int(self._value)
+        else:
+            self.current_value = round(self._value, 2)
 
     @property
     def name(self) -> str:
         return self._name
 
+    property
+    def is_int(self) -> bool:
+        return self._is_int
+
     def get_value(self):
+        if self._is_int:
+            return int(self._value)
         return round(self._value, 2)
 
     def get_default_value(self):
+        if self._is_int:
+            return int(self._default_value)
         return round(self._default_value, 2)
 
     def get_additional_value(self):
+        if self._is_int:
+            return int(self._additional_value)
         return round(self._additional_value, 2)
 
     def set_name(self, name):
@@ -48,7 +63,7 @@ class Stat:
             self.calculate_value()
 
     def boost_stat(self, percentage):
-        self._additional_value += self.get_default_value() + (self.get_default_value() * (percentage * 0.01))
+        self._additional_value += self.get_default_value() * (percentage * 0.01)
         if self._name != "Health":
             self.calculate_value()
 
@@ -67,6 +82,6 @@ class Stat:
 
     def __repr__(self):
         if self._additional_value > 0:
-            return f"{self._name}: {round(self._minimum_value + self._default_value, 2)} + {round(self._additional_value, 2)} ({self._value})"
+            return f"{self._name}: {self._minimum_value + self.get_default_value()} + {self.get_additional_value()} ({self.get_value()})"
         else:
-            return f"{self._name}: {round(self._value, 2)}"
+            return f"{self._name}: {self.get_value()}"

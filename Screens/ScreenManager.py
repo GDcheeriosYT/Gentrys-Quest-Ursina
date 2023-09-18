@@ -3,12 +3,13 @@ import Game
 import GameConfiguration
 from .MainMenu.MainMenu import MainMenu
 from .Intro.Intro import Intro
+from .Testing.Testing import Testing
 from .Tutorial.Tutorial import Tutorial
 from .Settings.Settings import Settings
 from .Gameplay.Gameplay import Gameplay
+from .Selection.Selection import Selection
 from Graphics.FadeScreen import FadeScreen
 from Graphics.Overlays.DebugOverlay import DebugOverlay
-from Overlays.Notification import Notification
 
 
 class ScreenManager(Entity):
@@ -29,6 +30,8 @@ class ScreenManager(Entity):
         self.assign_screen(Tutorial)
         self.assign_screen(Settings)
         self.assign_screen(Gameplay)
+        self.assign_screen(Selection)
+        self.assign_screen(Testing)
 
         self.current_screen = None
 
@@ -66,8 +69,9 @@ class ScreenManager(Entity):
             self.change_screen(Game.state.value)
             Game.state_affected = True
 
-        if held_keys["n"]:
-            Game.notification_manager.add_notification(Notification("test notification"))
+        GameConfiguration.window_ratio = window.aspect_ratio
+        GameConfiguration.window_size = window.size
+        GameConfiguration.window_position = window.position
 
     def input(self, key):
         if key == "b":
@@ -75,3 +79,6 @@ class ScreenManager(Entity):
                 self.debug_overlay.disable()
             else:
                 self.debug_overlay.enable()
+
+        if key == "f2":
+            GameConfiguration.save_settings()
