@@ -89,6 +89,7 @@ class Settings(Screen):
 
         Game.notification_manager.add_notification(Notification("Applied settings", color.green))
         GameConfiguration.apply_settings()
+        GameConfiguration.save_settings()
 
 
     @property
