@@ -57,7 +57,9 @@ class Test:
         """
 
         [destroy(button) for button in self.method_buttons]
+        [destroy(variable) for variable in self.variables]
         self.method_buttons.clear()
+        self.variables.clear()
 
         try:
             self.on_unload()
