@@ -22,7 +22,7 @@ class MapSelector(Entity):
     def load_maps(self):
         for location in Game.content_manager.locations:
             location = location()
-            for map in location.areas:\
+            for map in location.areas:
                 self.maps.append(map)
 
     def display_maps(self):
