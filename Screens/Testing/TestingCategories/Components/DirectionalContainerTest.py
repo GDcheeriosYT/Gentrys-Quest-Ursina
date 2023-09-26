@@ -22,37 +22,43 @@ class DirectionalContainerTest(Test):
         spacing = 3
 
         def create_horizontal_container():
-            if not self.directional_container_horizontal:
-                self.directional_container_horizontal = DirectionalContainer(
-                    horizontal=True,
-                    items=[
-                        Entity(model="quad", color=color.black) for i in range(amount)
-                    ],
-                    spacing=spacing,
-                    color=color.white,
-                    parent=Test.screen,
-                    scale=(0.45, 0.45),
-                    position=(-0.25, 0)
-                )
+            if self.directional_container_horizontal:
+                destroy(self.directional_container_horizontal)
+
+            self.directional_container_horizontal = DirectionalContainer(
+                horizontal=True,
+                items=[
+                    Entity(model="quad", color=color.black) for i in range(amount)
+                ],
+                spacing=spacing,
+                color=color.white,
+                parent=Test.screen,
+                scale=(self.get_variable("X Scale"), self.get_variable("Y Scale")),
+                position=(-0.25, 0)
+            )
 
         def create_vertical_container():
-            if not self.directional_container_vertical:
-                self.directional_container_vertical = DirectionalContainer(
-                    horizontal=False,
-                    items=[
-                        Entity(model="quad", color=color.black) for i in range(amount)
-                    ],
-                    spacing=spacing,
-                    color=color.white,
-                    parent=Test.screen,
-                    scale=(0.45, 0.45),
-                    position=(0.25, 0)
-                )
+            if self.directional_container_vertical:
+                destroy(self.directional_container_vertical)
+
+            self.directional_container_vertical = DirectionalContainer(
+                horizontal=False,
+                items=[
+                    Entity(model="quad", color=color.black) for i in range(amount)
+                ],
+                spacing=spacing,
+                color=color.white,
+                parent=Test.screen,
+                scale=(self.get_variable("X Scale"), self.get_variable("Y Scale")),
+                position=(0.25, 0)
+            )
 
         # tests
         # test spawn button
         self.make_button("Create Horizontal Container", create_horizontal_container)
         self.make_button("Create Vertical Container", create_vertical_container)
+        self.make_slider("X Scale", 0.01, 0.45, 0.45)
+        self.make_slider("Y Scale", 0.01, 0.45, 0.45)
         self.get_button(index=0).on_click()
         self.get_button(index=1).on_click()
 
