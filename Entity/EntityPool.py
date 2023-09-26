@@ -28,7 +28,6 @@ class EntityPool:
 
     def get_entity(self):
         for entity in self.pool:
-            print(entity.name, entity.enabled)
             if not entity.enabled:
                 entity.enable()
                 return entity

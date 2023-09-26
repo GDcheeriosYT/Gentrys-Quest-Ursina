@@ -9,6 +9,7 @@ from Content.Enemies.TestEnemy import TestEnemy
 from Content.ArtifactFamilies.TestFamily.TestFamily import TestFamily
 from Entity.EntityPool import EntityPool
 from Overlays.Notification import Notification
+from .MapPreview import MapPreview
 
 
 class Map:
@@ -75,7 +76,7 @@ class Map:
         self.enemy_pool = EntityPool(self.enemy_limit, self.enemies)
         print(self.enemy_pool)
         self.manage_entities(True)
-        self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
+        Game.audio_system.set_music(random.choice(self.music))
         print("finished")
 
     def unload(self):
@@ -139,3 +140,21 @@ class Map:
 
         if self.enemy_pool:
             del self.enemy_pool
+
+    def generate_preview(self):
+        return MapPreview(self)
+
+    def get_metadata(self) -> str:
+        return f"""
+
+name: {self.name}
+description: {self.description}
+entity amount: {len(self.entities)}
+enemies: {[enemy.name for enemy in self.enemies]}
+difficulty: {self.difficulty} scales({self.difficulty_scales})
+enemy_limit: {self.enemy_limit}
+families: {self.artifact_families}
+weapons: {[weapon.name for weapon in self.weapon_list]}
+music: {self.music}
+spawn delay: {self.spawn_delay}
+        """

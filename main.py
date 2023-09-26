@@ -36,6 +36,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument("-s", "--server")
 parser.add_argument("-d", "--debug", action="store_true")
+parser.add_argument("-e", "--editor", action="store_true")
 args = parser.parse_args()
 
 camera.orthographic = True
@@ -56,6 +57,10 @@ server = ServerConnection(server_url if args.server is None else args.server)
 if args.debug:
     Game.state = GameStates.testing
     Game.user = User("Test User", True)
+elif args.editor:
+    Game.state = GameStates.mapEditor
+    Game.user = User("Map Tester", True)
+    Game.user.add_character(Game.content_manager.get_character("Map Tester"))
 else:
     if GameConfiguration.play_intro:
         Game.state = GameStates.intro
