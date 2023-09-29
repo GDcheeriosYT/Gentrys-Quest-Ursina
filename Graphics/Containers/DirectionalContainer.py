@@ -38,7 +38,7 @@ class DirectionalContainer(Container):
                 item.scale = self.child_scale
 
             item.position = (
-                self.position_tracker if self.horizontal else 0,  # x
+                self.position_tracker if self.horizontal else 0,     # x
                 self.position_tracker if not self.horizontal else 0  # y
             )
             self.origin = self.child_origin
@@ -50,6 +50,6 @@ class DirectionalContainer(Container):
         self.width = self.scale[1] * self.ratio
         self.height = self.scale[0] / self.ratio
         self.child_scale = (
-            self.formula / self.spacing, # x
-            self.formula / self.spacing  # y
+            self.formula / self.spacing,  # x
+            self.formula / self.spacing   # y
         )

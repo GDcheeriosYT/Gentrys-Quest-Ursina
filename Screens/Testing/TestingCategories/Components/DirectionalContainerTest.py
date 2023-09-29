@@ -62,7 +62,7 @@ class DirectionalContainerTest(Test):
         self.make_slider("X Scale", 0.01, 0.45, 0.45)
         self.make_slider("Y Scale", 0.01, 0.45, 0.45)
         self.make_slider("Spacing", 1, 5, 3)
-        self.make_slider("Amount", 1, 100, 3)
+        self.make_slider("Amount", 1, 100, 3, 1)
         self.get_button(index=0).on_click()
         self.get_button(index=1).on_click()
 

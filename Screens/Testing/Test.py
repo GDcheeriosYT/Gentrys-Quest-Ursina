@@ -33,8 +33,8 @@ class Test:
 
         return None
 
-    def make_slider(self, name: str, min, max, default):
-        self.variables.append(TestSliderVariable(name, min, max, default))
+    def make_slider(self, name: str, min, max, default, step=0.01):
+        self.variables.append(TestSliderVariable(name, min, max, default, step))
 
     def get_variable(self, name: str):
         for variable in self.variables:
