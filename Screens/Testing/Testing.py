@@ -96,6 +96,10 @@ class Testing(Screen):
     def color(self):
         return color.rgb(35, 35, 35)
 
+    @property
+    def fades(self) -> bool:
+        return False
+
     def change_category(self, category):
         if self.category:
             self.category.selected_test.unload()

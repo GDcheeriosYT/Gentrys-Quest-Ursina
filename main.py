@@ -51,19 +51,18 @@ GameConfiguration.apply_settings()
 
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http://gdcheerios.com"
 
-server = ServerConnection(server_url if args.server is None else args.server)
-
 if args.debug:
     Game.state = GameStates.testing
     Game.user = User("Test User", True)
 else:
+    server = ServerConnection(server_url if args.server is None else args.server)
     if GameConfiguration.play_intro:
         Game.state = GameStates.intro
     else:
         Game.state = GameStates.mainMenu
 
-black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
-destroy(black_thing, 3)
+# black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
+# destroy(black_thing, 3)
 
 ScreenManager(app)
 
