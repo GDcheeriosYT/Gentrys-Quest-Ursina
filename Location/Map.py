@@ -75,7 +75,7 @@ class Map:
         self.enemy_pool = EntityPool(self.enemy_limit, self.enemies)
         print(self.enemy_pool)
         self.manage_entities(True)
-        self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
+        Game.audio_system.set_music(random.choice(self.music))
         print("finished")
 
     def unload(self):
