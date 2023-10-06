@@ -8,6 +8,8 @@ from Changelog import *
 from Audio.AudioSystem import AudioSystem
 from utils.ExceptionHandler import ExceptionHandler
 
+GameConfiguration.apply_settings()
+
 state = GameStates.intro
 presence = GamePresence() if not GameConfiguration.local_dev_branch else None
 rating_program = GPSystem()
@@ -21,6 +23,7 @@ audio_system = AudioSystem(GameConfiguration.music_volume, GameConfiguration.sou
 selected_area = None
 testing_screen = None
 exception_handler = ExceptionHandler(notification_manager)
+language = content_manager.get_language(GameConfiguration.language)
 
 
 def change_state(new_state: GameStates):

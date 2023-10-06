@@ -12,6 +12,7 @@ extra_ui_info = True
 discord_presence = False
 random_pitch_range = (0.7, 1.3)
 local_dev_branch = True
+language = "English"
 fade_time = 0.6
 window_position = 0, 0
 window_ratio = 1.333
@@ -20,6 +21,10 @@ window_size = 500, 500
 
 def update_config(settings: dict):
     try:
+        # language
+        global language
+        language = settings["language"]
+
         # audio
         global music_volume
         global sound_volume
@@ -53,6 +58,7 @@ def update_config(settings: dict):
 
 def save_settings():
     settings = {
+        "language": "English",
         "audio": {
             "music volume": music_volume,
             "sound volume": sound_volume
@@ -82,7 +88,7 @@ def apply_settings():
 
 
 if os.path.isfile("settings.json"):
-    settings = json.load(open("settings.json", "r"))
+    settings = json.load(open("settings.json", "r", encoding="utf-8"))
     update_config(settings)
 
 else:

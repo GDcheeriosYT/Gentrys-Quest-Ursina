@@ -2,7 +2,6 @@
 import GameConfiguration
 import Game
 from GameStates import GameStates
-from Overlays.Notification import Notification
 
 # User
 from User.User import User
@@ -13,13 +12,9 @@ from Screens.ScreenManager import ScreenManager
 # online packages
 from Online.ServerConnection import ServerConnection
 
-# built-in packages
-import os
-
 # external packages
 from ursina import *
 import argparse
-import json
 
 # initialization
 app = Ursina()
@@ -46,8 +41,6 @@ window.title = "Gentry's Quest"
 window.borderless = False
 window.exit_button.disable()
 window.editor_ui.hide()
-
-GameConfiguration.apply_settings()
 
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http://gdcheerios.com"
 
