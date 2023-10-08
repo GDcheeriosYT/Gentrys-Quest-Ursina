@@ -1,9 +1,10 @@
 from ursina import *
 from utils.StringMethods import *
 from Graphics.TextStyles.StarRatingText import StarRatingText
+from Graphics.GameButton import GameButton
 
 
-class EntityIcon(Button):
+class EntityIcon(GameButton):
     """
     EntityIcon acts as an icon for an entity.
     """

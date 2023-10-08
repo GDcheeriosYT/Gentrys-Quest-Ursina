@@ -3,8 +3,10 @@ from ursina import *
 from utils.Event import Event
 from utils.IntMethods import format_seconds
 
+from Graphics.GameButton import GameButton
 
-class TestMethodButton(Button):
+
+class TestMethodButton(GameButton):
     def __init__(self, name: str, event: 'Callable', *args, **kwargs):
         super().__init__(
             name,

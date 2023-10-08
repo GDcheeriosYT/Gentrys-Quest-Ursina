@@ -22,7 +22,7 @@ class MoneyUpgradeUI(Entity):
         self.money_input.scale_y = 0.2
         self.money_input.text_field.scale = (6, 18)
 
-        self.submit_button = Button(
+        self.submit_button = GameButton(
             "Upgrade",
             position=(0, -0.2),
             scale=(1, 0.5),

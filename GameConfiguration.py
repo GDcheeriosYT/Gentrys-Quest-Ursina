@@ -17,13 +17,20 @@ fade_time = 0.6
 window_position = 0, 0
 window_ratio = 1.333
 window_size = 500, 500
+font = "Graphics/fonts/JPfont.ttf"
 
 
 def update_config(settings: dict):
     try:
         # language
         global language
+        global font
         language = settings["language"]
+        if language == "English":
+            pass
+        elif language == "日本語":
+            font = "Graphics/fonts/JPfont.ttf"
+
 
         # audio
         global music_volume
@@ -93,3 +100,5 @@ if os.path.isfile("settings.json"):
 
 else:
     save_settings()
+
+apply_settings()

@@ -2,8 +2,10 @@ from ursina import *
 
 from Gacha.Gacha import Gacha
 
+from Graphics.GameButton import GameButton
 
-class GachaBanner(Button):
+
+class GachaBanner(GameButton):
     def __init__(self, gacha: Gacha, *args, **kwargs):
         super().__init__(
             model="quad",

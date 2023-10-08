@@ -6,8 +6,11 @@ from Graphics.FadeScreen import FadeScreen
 from Graphics.Buttons.TabButton import TabButton
 from .LoginUI import LoginUI
 from .GuestUI import GuestUI
-import Game
 from GameStates import GameStates
+
+from Graphics.GameButton import GameButton
+
+import Game
 
 from ursina import *
 
@@ -36,8 +39,8 @@ class MainMenu(Screen):
         super().__init__()
         self.version = VersionText(Game.version)
         self.title = TitleText("Gentry's Quest", color=color.black)
-        self.play_button = Button(Game.language.play, position=(0, -0.1), scale=(0.2, 0.05))
-        self.settings_button = Button(Game.language.settings, position=(0, -0.3), scale=(0.2, 0.05))
+        self.play_button = GameButton(Game.language.play, position=(0, -0.1), scale=(0.2, 0.05))
+        self.settings_button = GameButton(Game.language.settings, position=(0, -0.3), scale=(0.2, 0.05))
         self.guest_button = TabButton(Game.language.guest, position=(-0.17, 0.45, 0))
         self.guest_button.on_click = _guest_click
         self.login_button = TabButton(Game.language.login, position=(0.17, 0.45, 0))

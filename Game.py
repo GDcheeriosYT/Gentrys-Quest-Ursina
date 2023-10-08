@@ -8,8 +8,6 @@ from Changelog import *
 from Audio.AudioSystem import AudioSystem
 from utils.ExceptionHandler import ExceptionHandler
 
-GameConfiguration.apply_settings()
-
 state = GameStates.intro
 presence = GamePresence() if not GameConfiguration.local_dev_branch else None
 rating_program = GPSystem()

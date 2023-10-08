@@ -1,10 +1,11 @@
 from ursina import *
 from .GuestConfirmBox import GuestConfirmBox
 from Graphics.TextStyles.GPText import GPText
+from Graphics.GameButton import GameButton
 from User.User import User
 
 
-class GuestElement(Button):
+class GuestElement(GameButton):
     def __init__(self, user: User, menu, *args, **kwargs):
         super().__init__(
             model=Quad(0.07),

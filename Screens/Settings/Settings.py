@@ -8,6 +8,7 @@ from Graphics.TextStyles.TitleText import TitleText
 from .Components.Setting import Setting
 from .Components.ToggleButton import ToggleButton
 from Overlays.Notification import Notification
+from Graphics.GameButton import GameButton
 
 
 class Settings(Screen):
@@ -38,7 +39,7 @@ class Settings(Screen):
             setting.position = (0, y)
             y -= 0.1
 
-        self.apply_button = Button(
+        self.apply_button = GameButton(
             "apply",
             position=(0.03, -0.4),
             scale=(0.1, 0.05),

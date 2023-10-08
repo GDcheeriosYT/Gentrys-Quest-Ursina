@@ -6,11 +6,11 @@ from .InvButton import InvButton
 from .EntityIcon import EntityIcon
 from Graphics.Container import Container
 from Graphics.TextStyles.StarRatingText import StarRatingText
+from Graphics.GameButton import GameButton
 from Entity.Character.Character import Character
 from Entity.Weapon.Weapon import Weapon
 from Entity.Artifact.Artifact import Artifact
 from .InventoryStates import InventoryStates
-from Entity.Enemy.Enemy import Enemy
 from utils.Event import Event
 from .MoneyUpgradeUI import MoneyUpgradeUI
 from typing import Union
@@ -60,14 +60,14 @@ class Inventory(Entity):
             parent=self
         )  # Text Entity to display the current page
 
-        self.page_down_button = Button(
+        self.page_down_button = GameButton(
             "back",
             scale=(0.06, 0.06),
             position=(-0.2, -0.4),
             parent=self
         )
         self.page_down_button.disable()
-        self.page_up_button = Button(
+        self.page_up_button = GameButton(
             "next",
             scale=(0.06, 0.06),
             position=(0.2, -0.4),
@@ -77,7 +77,7 @@ class Inventory(Entity):
 
         # Buttons to navigate up and down the pages
 
-        self.done_button = Button(
+        self.done_button = GameButton(
             "done",
             scale=(0.15, 0.1),
             position=(0.4, -0.4, -1),
@@ -263,13 +263,13 @@ class Inventory(Entity):
                     entity_icon.on_click = click_event
 
             elif Inventory.state == InventoryStates.multiSelection:
-                def color_icon(entity: Union[Artifact, Weapon], icon: Button):
+                def color_icon(entity: Union[Artifact, Weapon], icon: GameButton):
                     if entity in self.selected_entities:
                         icon.color = rgb(0, 255, 0, 150)
                     else:
                         icon.color = color.clear
 
-                def assign_click(entity: Union[Artifact, Weapon], icon: Button):
+                def assign_click(entity: Union[Artifact, Weapon], icon: GameButton):
                     def click_handler():
                         if entity not in self.selected_entities:
                             self.selected_entities.append(entity)
@@ -416,7 +416,7 @@ class Inventory(Entity):
                 parent=entity_picture
             )
 
-            entity_equip_button = Button(
+            entity_equip_button = GameButton(
                 "Equip",
                 position=(0, -0.4, -1),
                 scale=(0.2, 0.1),
@@ -470,7 +470,7 @@ class Inventory(Entity):
             artifact_icon_y = 0.15
             artifact_icon_change = -0.14
 
-            def create_on_click(icon: Button, artifact_index: int):
+            def create_on_click(icon: GameButton, artifact_index: int):
                 if not entity.artifacts[artifact_index]:
                     def on_click_handler():
                         self.selected_index = artifact_index
@@ -551,7 +551,7 @@ class Inventory(Entity):
             )
 
             if entity.equipped_entity:
-                swap_button = Button(
+                swap_button = GameButton(
                     "swap",
                     scale=(0.1, 0.05),
                     position=(0, -0.45, -1),
@@ -563,7 +563,7 @@ class Inventory(Entity):
                 swap_event += lambda: self.show_entity_listing("weapons")
                 swap_button.on_click = swap_event
 
-                remove_button = Button(
+                remove_button = GameButton(
                     "remove",
                     scale=(0.1, 0.05),
                     position=(-0.2, -0.45, -1),
@@ -583,7 +583,7 @@ class Inventory(Entity):
                 parent=entity_picture
             )
 
-            upgrade_with_weapon_button = Button(
+            upgrade_with_weapon_button = GameButton(
                 "Upgrade with weapons",
                 position=(-0.25, -0.25),
                 scale=(0.35, 0.17),
@@ -606,7 +606,7 @@ class Inventory(Entity):
                          f"{attribute_texts}"
 
             if entity.equipped_entity:
-                swap_button = Button(
+                swap_button = GameButton(
                     "swap",
                     scale=(0.1, 0.05),
                     position=(0, -0.45, -1),
@@ -618,7 +618,7 @@ class Inventory(Entity):
                 swap_event += lambda: self.show_entity_listing("artifacts")
                 swap_button.on_click = swap_event
 
-                remove_button = Button(
+                remove_button = GameButton(
                     "remove",
                     scale=(0.1, 0.05),
                     position=(-0.2, -0.45, -1),
@@ -639,7 +639,7 @@ class Inventory(Entity):
                 parent=entity_picture
             )
 
-            upgrade_button = Button(
+            upgrade_button = GameButton(
                 "upgrade",
                 scale=(1, 0.5),
                 position=(0, -2, -1),

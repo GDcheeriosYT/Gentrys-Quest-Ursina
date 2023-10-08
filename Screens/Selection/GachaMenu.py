@@ -4,6 +4,7 @@ import Game
 
 from Graphics.Container import Container
 from Graphics.Containers.DirectionalContainer import DirectionalContainer
+from Graphics.GameButton import GameButton
 from Gacha.GachaTypes import GachaTypes
 from Overlays.Notification import Notification
 
@@ -28,7 +29,7 @@ class GachaMenu(Entity):
             scale=(0.1, 0.25),
             parent=self
         )
-        self.amount_down = Button(
+        self.amount_down = GameButton(
             "-",
             scale=(0.25, 0.25),
             position=(-0.5, 0),
@@ -51,7 +52,7 @@ class GachaMenu(Entity):
             color=color.black,
             parent=self.amount_container
         )
-        self.amount_up = Button(
+        self.amount_up = GameButton(
             "+",
             scale=(0.25, 0.25),
             position=(0.5, 0),
@@ -77,7 +78,7 @@ class GachaMenu(Entity):
 
         self.select_banner(self.banners.items[0])
 
-        self.pull_character_button = Button(
+        self.pull_character_button = GameButton(
             "Pull character",
             position=(-0.25, 0),
             scale=(0.25, 0.1),
@@ -86,7 +87,7 @@ class GachaMenu(Entity):
 
         self.pull_character_button.on_click = lambda: self.pull(True)
 
-        self.pull_weapon_button = Button(
+        self.pull_weapon_button = GameButton(
             "Pull weapon",
             position=(-0.25, -0.25),
             scale=(0.25, 0.1),

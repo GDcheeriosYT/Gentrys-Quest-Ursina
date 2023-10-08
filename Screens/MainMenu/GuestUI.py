@@ -7,6 +7,7 @@ from User.User import User
 from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 from .GuestElement import GuestElement
+from Graphics.GameButton import GameButton
 
 
 class GuestUI(Entity):
@@ -32,7 +33,7 @@ class GuestUI(Entity):
             parent=self
         )
 
-        self._add_button = Button(
+        self._add_button = GameButton(
             "Create Guest",
             position=(0.2, -0.45, -1),
             scale=(0.3, 0.15),

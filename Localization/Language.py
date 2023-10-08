@@ -10,6 +10,14 @@ class Language:
         self.username = None
         self.login = None
         self.login_not_available = None
+        self.audio = None
+        self.graphics = None
+        self.music = None
+        self.sound = None
+        self.volume = None
+        self.fullscreen = None
+        self.extra_ui_info = None
+        self.apply = None
 
         for key, value in kwargs.items():
             setattr(self, key, value)

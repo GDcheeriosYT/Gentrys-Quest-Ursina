@@ -1,6 +1,8 @@
 from ursina import *
 from ursina.prefabs.input_field import InputField
 from User.User import User
+from Graphics.GameText import GameText
+import Game
 
 
 class LoginUI(Entity):
@@ -15,10 +17,10 @@ class LoginUI(Entity):
             **kwargs
         )
 
-        self.text = Text("Login Not Available Yet...", position=(0, 0.28), origin=(0, 0), scale=(2.6, 3.2), parent=self)
+        self.text = GameText(Game.language.login_not_available, position=(0, 0.28), origin=(0, 0), scale=(2.6, 3.2), parent=self)
 
         #self.username_box = InputField("Username", position=(0, 0.2), parent=self)
         #self.password_box = InputField("Password", position=(0, -0.1), hide_content=True, parent=self)
         #self.login_status = Text("", position=(0, 0.28), origin=(0, 0), scale=(3, 3.2), parent=self)
-        #self.submit_button = Button("Submit", position=(0, -0.4), scale=(0.2, 0.15), parent=self)
+        #self.submit_button = GameButton("Submit", position=(0, -0.4), scale=(0.2, 0.15), parent=self)
         #self.submit_button.on_click = self.on_submit
