@@ -4,6 +4,8 @@ from ursina.prefabs.input_field import InputField
 import Game
 from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
+from Graphics.GameText import GameText
+from Graphics.GameButton import GameButton
 
 
 class MoneyUpgradeUI(Entity):

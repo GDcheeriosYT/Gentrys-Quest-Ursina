@@ -1,7 +1,9 @@
 from ursina import *
 
+from Graphics.GameText import GameText
 
-class TitleText(Text):
+
+class TitleText(GameText):
     def __init__(self, text: str, *args, **kwargs):
         super().__init__(
             text,

@@ -34,7 +34,7 @@ class GuestUI(Entity):
         )
 
         self._add_button = GameButton(
-            "Create Guest",
+            Game.language.create_guest,
             position=(0.2, -0.45, -1),
             scale=(0.3, 0.15),
             parent=self

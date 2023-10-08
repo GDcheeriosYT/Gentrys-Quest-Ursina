@@ -4,6 +4,8 @@ import Game
 from GameStates import GameStates
 from User.User import User
 from Content.Characters.StarterCharacter.StarterCharacter import StarterCharacter
+from Graphics.GameButton import GameButton
+from Graphics.GameText import GameText
 
 
 class GuestConfirmBox(Entity):
@@ -23,7 +25,7 @@ class GuestConfirmBox(Entity):
         self._menu = menu
         menu.disable()
 
-        self._confirm_text = Text(f"You want to play as\n{self._user.username}?", position=(0, 0.3), origin=(0, 0),
+        self._confirm_text = GameText(f"You want to play as\n{self._user.username}?", position=(0, 0.3), origin=(0, 0),
                                   scale=(2.5, 2.5), parent=self)
         self._confirm_box = GameButton("Confirm", position=(0, -0.2), scale=(0.2, 0.1), parent=self)
         self._confirm_box.on_click = self.confirm_on_click

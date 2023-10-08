@@ -5,16 +5,17 @@ import GameConfiguration
 from GameStates import GameStates
 from ..Screen import Screen
 from Graphics.TextStyles.TitleText import TitleText
+from Graphics.GameButton import GameButton
+from Graphics.GameText import GameText
 from .Components.Setting import Setting
 from .Components.ToggleButton import ToggleButton
 from Overlays.Notification import Notification
-from Graphics.GameButton import GameButton
 
 
 class Settings(Screen):
     def __init__(self):
         super().__init__(True, GameStates.mainMenu)
-        self.menu_text = TitleText("Settings")
+        self.menu_text = TitleText(Game.language.settings)
         self.menu_text.y = 0.35
         self.menu_text.disable()
 
@@ -23,14 +24,14 @@ class Settings(Screen):
 
         self.settings = [
             # audio
-            Text("Audio", parent=self),
-            Setting("music volume", Slider(default=GameConfiguration.music_volume), parent=self),
-            Setting("sound volume", Slider(default=GameConfiguration.sound_volume), parent=self),
+            GameText(Game.language.audio, origin=(0, 0), parent=self),
+            Setting(Game.language.music_volume, Slider(default=GameConfiguration.music_volume, step=0.01), parent=self),
+            Setting(Game.language.sound_volume, Slider(default=GameConfiguration.sound_volume, step=0.01), parent=self),
 
             # graphics
-            Text("graphics", parent=self),
-            Setting("fullscreen", ToggleButton(GameConfiguration.fullscreen, "on", "off"), parent=self),
-            Setting("extra ui info", ToggleButton(GameConfiguration.extra_ui_info, "on", "off"), parent=self)
+            GameText(Game.language.graphics, origin=(0, 0), parent=self),
+            Setting(Game.language.fullscreen, ToggleButton(GameConfiguration.fullscreen, "on", "off"), parent=self),
+            Setting(Game.language.extra_ui_info, ToggleButton(GameConfiguration.extra_ui_info, "on", "off"), parent=self)
         ]
 
         y = 0.2
@@ -40,7 +41,7 @@ class Settings(Screen):
             y -= 0.1
 
         self.apply_button = GameButton(
-            "apply",
+            Game.language.apply,
             position=(0.03, -0.4),
             scale=(0.1, 0.05),
             parent=self
@@ -73,22 +74,22 @@ class Settings(Screen):
             if isinstance(setting, Setting):
                 print(setting.setting_text.text, setting.second_entity)
                 # audio
-                if setting.setting_text.text == "music volume":
+                if setting.setting_text.text == Game.language.music_volume:
                     value = setting.get_setting().value
                     GameConfiguration.music_volume = value
                     Game.audio_system.change_music_volume(value)
-                elif setting.setting_text.text == "sound volume":
+                elif setting.setting_text.text == Game.language.sound_volume:
                     value = setting.get_setting().value
                     GameConfiguration.sound_volume = value
                     Game.audio_system.change_sound_volume(value)
 
                 # graphics
-                elif setting.setting_text.text == "fullscreen":
+                elif setting.setting_text.text == Game.language.fullscreen:
                     GameConfiguration.fullscreen = setting.get_setting().toggled
-                elif setting.setting_text.text == "extra ui info":
+                elif setting.setting_text.text == Game.language.extra_ui_info:
                     GameConfiguration.extra_ui_info = setting.get_setting().toggled
 
-        Game.notification_manager.add_notification(Notification("Applied settings", color.green))
+        Game.notification_manager.add_notification(Notification(Game.language.applied_settings, color.green))
         GameConfiguration.apply_settings()
         GameConfiguration.save_settings()
 
