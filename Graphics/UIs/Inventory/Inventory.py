@@ -7,6 +7,7 @@ from .EntityIcon import EntityIcon
 from Graphics.Container import Container
 from Graphics.TextStyles.StarRatingText import StarRatingText
 from Graphics.GameButton import GameButton
+from Graphics.GameText import GameText
 from Entity.Character.Character import Character
 from Entity.Weapon.Weapon import Weapon
 from Entity.Artifact.Artifact import Artifact
@@ -90,7 +91,7 @@ class Inventory(Entity):
         self.current_focused_entity = None  # keep track of the current entity
 
         self._characters_button = InvButton(
-            "Characters" if self.character_swapping else "Character",
+            Game.language.characters if self.character_swapping else Game.language.character,
             position=(-0.35, 0.65),
             parent=self
         )
@@ -104,7 +105,7 @@ class Inventory(Entity):
         self._characters_button.on_click = character_event
 
         self._artifacts_button = InvButton(
-            "Artifacts",
+            Game.language.artifacts,
             position=(0, 0.65),
             parent=self
         )
@@ -114,7 +115,7 @@ class Inventory(Entity):
         self._artifacts_button.on_click = artifact_event
 
         self._weapons_button = InvButton(
-            "Weapons",
+            Game.language.weapons,
             position=(0.35, 0.65),
             parent=self
         )
@@ -417,7 +418,7 @@ class Inventory(Entity):
             )
 
             entity_equip_button = GameButton(
-                "Equip",
+                Game.language.equip,
                 position=(0, -0.4, -1),
                 scale=(0.2, 0.1),
                 parent=self.current_focused_entity
@@ -584,7 +585,7 @@ class Inventory(Entity):
             )
 
             upgrade_with_weapon_button = GameButton(
-                "Upgrade with weapons",
+                Game.language.upgrade_with_weapons,
                 position=(-0.25, -0.25),
                 scale=(0.35, 0.17),
                 parent=self.current_focused_entity

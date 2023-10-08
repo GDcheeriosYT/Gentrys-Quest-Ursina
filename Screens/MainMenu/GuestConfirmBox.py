@@ -27,7 +27,7 @@ class GuestConfirmBox(Entity):
 
         self._confirm_text = GameText(f"You want to play as\n{self._user.username}?", position=(0, 0.3), origin=(0, 0),
                                   scale=(2.5, 2.5), parent=self)
-        self._confirm_box = GameButton("Confirm", position=(0, -0.2), scale=(0.2, 0.1), parent=self)
+        self._confirm_box = GameButton(Game.language.confirm, position=(0, -0.2), scale=(0.2, 0.1), parent=self)
         self._confirm_box.on_click = self.confirm_on_click
         self._back_box = GameButton("X", position=(0.5, 0.5), scale=(0.05, 0.05), origin=(0.5, 0.5), parent=self)
         self._back_box.on_click = self.back_on_click

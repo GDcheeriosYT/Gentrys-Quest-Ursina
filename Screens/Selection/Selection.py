@@ -46,7 +46,7 @@ class Selection(Screen):
         self.gacha_menu = GachaMenu(self.menu)
 
         self.changelog_button = MenuButton(
-            "Changelog",
+            Game.language.changelog,
             parent=self.menu_buttons_container
         )
 
@@ -55,7 +55,7 @@ class Selection(Screen):
         self.changelog_button.on_click_event += lambda: self.change_status(SelectionStatus.changelog)
 
         self.travel_button = MenuButton(
-            "Travel",
+            Game.language.travel,
             parent=self.menu_buttons_container
         )
 
@@ -68,14 +68,14 @@ class Selection(Screen):
         self.travel_button.on_click_event += check_equipped_character
 
         self.inventory_button = MenuButton(
-            "Inventory",
+            Game.language.inventory,
             parent=self.menu_buttons_container
         )
 
         self.inventory_button.on_click_event += lambda: self.change_status(SelectionStatus.inventory)
 
         self.gacha_button = MenuButton(
-            "Gacha",
+            Game.language.gacha,
             parent=self.menu_buttons_container
         )
 
