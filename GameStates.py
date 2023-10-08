@@ -9,3 +9,4 @@ class GameStates(Enum):
     gameplay = 4
     selection = 5
     testing = 6
+    mapEditor = 7

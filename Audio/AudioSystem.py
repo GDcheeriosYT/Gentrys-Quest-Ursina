@@ -58,7 +58,7 @@ class AudioSystem:
             else:
                 self._background_music.resume()
 
-    def play_sound(self, sound, randomize_pitch: bool = False):
+    def play_sound(self, sound: Audio, randomize_pitch: bool = False):
         """
         Plays a sound.
 
@@ -67,8 +67,10 @@ class AudioSystem:
         """
 
         if randomize_pitch:
-            sound.pitch = random.uniform(GameConfiguration.random_pitch_range[0],
-                                         GameConfiguration.random_pitch_range[1])
+            sound.pitch = random.uniform(
+                GameConfiguration.random_pitch_range[0],
+                GameConfiguration.random_pitch_range[1]
+            )
 
         sound.volume = self._sound_volume
         sound.play()

@@ -18,7 +18,13 @@ class Test:
         self.on_unload = Event("OnUnload")
 
     def make_button(self, name: str, event: 'Callable'):
-        self.method_buttons.append(TestMethodButton(name, event))
+        def run_event():
+            try:
+                event()
+            except Exception as e:
+                Game.exception_handler.handle_exception(e)
+
+        self.method_buttons.append(TestMethodButton(name, run_event))
 
     def get_button(self, name: str = None, index: int = None):
         if name is not None:

@@ -153,6 +153,7 @@ class GameUnit(GameEntityBase):
 
     def heal(self, amount):
         self.stats.health.current_value += amount
+        self.damage_text_pool.get_entity().display(amount, color.green, self)
         self.on_heal()
 
     def recover_health(self):
