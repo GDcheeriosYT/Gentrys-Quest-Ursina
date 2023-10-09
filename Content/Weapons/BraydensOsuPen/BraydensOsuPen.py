@@ -1,7 +1,5 @@
 from Entity.Weapon.SwingWeapon import SwingWeapon
 from Entity.Buff import Buff
-from Graphics.TextStyles.DamageText import DamageText
-from ursina import *
 
 
 class BraydensOsuPen(SwingWeapon):

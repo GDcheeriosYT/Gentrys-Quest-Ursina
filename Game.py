@@ -1,4 +1,5 @@
 import GameConfiguration
+from Rules import Rules
 from Overlays.NotificationsManager import NotificationManager
 from GameStates import GameStates
 from Online.Presence.Presence import GamePresence
@@ -21,6 +22,7 @@ audio_system = AudioSystem(GameConfiguration.music_volume, GameConfiguration.sou
 selected_area = None
 testing_screen = None
 exception_handler = ExceptionHandler(notification_manager)
+rules = Rules()
 
 
 def change_state(new_state: GameStates):

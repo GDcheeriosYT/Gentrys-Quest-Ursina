@@ -12,6 +12,7 @@ from Entity.AudioMapping import AudioMapping
 from Entity.Loot import Loot
 from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
+from Entity.Affiliation import Affiliation
 from Graphics.TextStyles.TitleText import TitleText
 from Graphics.FadeScreen import FadeScreen
 from Content.Effects.Burn.Burn import Burn
@@ -25,6 +26,8 @@ class Character(GameUnit):
             *args,
             **kwargs
         )
+
+        self.affiliation = Affiliation.Player
 
         self.texture = self.texture_mapping.get_idle_texture()
 

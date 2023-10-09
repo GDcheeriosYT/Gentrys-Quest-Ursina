@@ -7,6 +7,7 @@ from ..EntityOverHead import EntityOverhead
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Loot import Loot
+from Entity.Affiliation import Affiliation
 
 
 class Enemy(GameUnit):
@@ -18,6 +19,7 @@ class Enemy(GameUnit):
             **kwargs
         )
         self.set_idle_texture()
+        self.affiliation = Affiliation.Enemy
 
         self._follow_entity = None
         self.not_attacking = True

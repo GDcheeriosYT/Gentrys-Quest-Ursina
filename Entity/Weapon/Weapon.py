@@ -1,3 +1,4 @@
+import Game
 from ..GameEntityBase import GameEntityBase
 from ursina import *
 from utils.Event import Event
@@ -108,13 +109,10 @@ class Weapon(GameEntityBase):
             distance=self.range,
             debug=True
            )
-        print(hit_info.hit)
         if hit_info.hit:
             try:
                 hit_entity = hit_info.entity
-                print(hit_entity)
-                if hit_entity not in self.hit_list:
-                    print("list stat", hit_entity in self.hit_list)
+                if hit_entity not in self.hit_list and self.matches_condition(hit_entity):
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (
                                 self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
@@ -124,6 +122,22 @@ class Weapon(GameEntityBase):
                     self.hit_list.append(hit_entity)
             except AttributeError as e:
                 print(e)
+
+    def matches_condition(self, entity) -> bool:
+        print(type(self._equipped_entity))
+        print(type(entity))
+        print(entity.affiliation, self._equipped_entity.affiliation)
+        print(entity == self._equipped_entity)
+        print(entity.check_affiliation(self._equipped_entity), Game.rules.friendly_fire)
+        print(id(self._equipped_entity), id(entity))
+
+        if entity == self._equipped_entity:
+            return False
+
+        if entity.check_affiliation(self._equipped_entity) and not Game.rules.friendly_fire:
+            return False
+
+        return True
 
     def jsonify(self):
         return {

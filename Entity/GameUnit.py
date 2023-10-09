@@ -13,6 +13,7 @@ from .EntityOverHead import EntityOverhead
 from ursina import *
 from .Loot import Loot
 from .Effect import Effect
+from .Affiliation import Affiliation
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -39,6 +40,7 @@ class GameUnit(GameEntityBase):
         self.range = 1
         self.damage_text_pool = EntityPool(20, DamageText)
         self.effects = []
+        self.affiliation = Affiliation.Neutral
 
         # audio
 
@@ -160,6 +162,7 @@ class GameUnit(GameEntityBase):
         self.on_heal()
 
     def die(self):
+        print(self.name, "died T_T")
         self.despawn()
         self.on_death()
 
@@ -212,3 +215,6 @@ class GameUnit(GameEntityBase):
         print(self.name, self._difficulty)
         print(self._experience)
         print(self._stats)
+
+    def check_affiliation(self, entity) -> bool:
+        return entity.affiliation == self.affiliation
