@@ -40,7 +40,7 @@ class GuestUI(Entity):
             parent=self
         )
 
-        self._username_entry = InputField("username", position=(-0.165, -0.45, -1), parent=self)
+        self._username_entry = InputField(Game.language.username, position=(-0.165, -0.45, -1), parent=self)
         self._username_entry.scale_x = 0.4
         self._username_entry.scale_y = 0.04
 

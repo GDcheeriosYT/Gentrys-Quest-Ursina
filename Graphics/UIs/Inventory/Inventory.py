@@ -400,7 +400,7 @@ class Inventory(Entity):
         entity_experience = ExperienceOverview(entity, parent=entity_picture)
 
         if isinstance(entity, Character):
-            entity_description = Text(
+            entity_description = GameText(
                 entity.description,
                 origin=(0.5, 0.5),
                 position=(0.5, -0.9, -1),
@@ -409,7 +409,7 @@ class Inventory(Entity):
             )
             entity_description.wordwrap = 30
 
-            entity_stats = Text(
+            entity_stats = GameText(
                 entity.stats,
                 position=(-0.6, 0, -1),
                 origin=(0.5, 0),
@@ -531,19 +531,19 @@ class Inventory(Entity):
             create_on_click(icon=artifact_5_icon, artifact_index=4)
 
         if isinstance(entity, Weapon):
-            stats_text = f"damage: {entity.damage}\n" \
-                         f"buff: {entity.buff}\n" \
-                         f"attack speed: {entity.base_speed} seconds\n" \
-                         f"range: {entity.range}\n"
+            stats_text = f"{Game.language.get_localized_text(Game.language.damage, entity.damage)}\n" \
+                         f"{Game.language.get_localized_text(Game.language.buff, entity.buff)}\n" \
+                         f"{Game.language.get_localized_text(Game.language.attack_speed, entity.base_speed)} {Game.language.seconds}\n" \
+                         f"{Game.language.get_localized_text(Game.language.range, entity.range)}\n"
 
             def update_data():
                 entity_experience.text = f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''} {int(entity.experience.xp)}/{entity.experience.get_xp_required(entity.star_rating)}xp"
-                entity_stats.text = f"damage: {entity.damage}\n" \
-                                    f"buff: {entity.buff}\n" \
-                                    f"attack speed: {entity.base_speed} seconds\n" \
-                                    f"range: {entity.range}\n"
+                entity_stats.text = f"{Game.language.get_localized_text(Game.language.damage, entity.damage)}\n" \
+                                    f"{Game.language.get_localized_text(Game.language.buff, entity.buff)}\n" \
+                                    f"{Game.language.get_localized_text(Game.language.attack_speed, entity.speed)} {Game.language.seconds}\n" \
+                                    f"{Game.language.get_localized_text(Game.language.range, entity.range)}\n"
 
-            entity_stats = Text(
+            entity_stats = GameText(
                 stats_text,
                 position=(-0.6, 0, -1),
                 origin=(0.5, 0),

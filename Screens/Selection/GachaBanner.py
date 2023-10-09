@@ -1,8 +1,10 @@
 from ursina import *
 
+import Game
 from Gacha.Gacha import Gacha
 
 from Graphics.GameButton import GameButton
+from Graphics.GameText import GameText
 
 
 class GachaBanner(GameButton):
@@ -54,7 +56,7 @@ class GachaBanner(GameButton):
             parent=self.outline,
         )
 
-        self.money_text = Text(
+        self.money_text = GameText(
             f"${self.cost}",
             position=(0, 0.45, -1),
             origin=(0, 0),
@@ -63,8 +65,8 @@ class GachaBanner(GameButton):
             parent=self.background
         )
 
-        self.amount_text = Text(
-            f"{self.character_amount} characters\n{self.weapon_amount} weapons",
+        self.amount_text = GameText(
+            f"{Game.language.get_localized_text(Game.language.character_amount, self.character_amount)}\n{Game.language.get_localized_text(Game.language.weapon_amount, self.weapon_amount)}",
             position=(0, -0.45, -1),
             origin=(0, 0),
             scale=(4, 1.5),

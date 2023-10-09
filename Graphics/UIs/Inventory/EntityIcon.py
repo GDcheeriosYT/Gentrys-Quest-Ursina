@@ -1,7 +1,10 @@
 from ursina import *
+
+import Game
 from utils.StringMethods import *
 from Graphics.TextStyles.StarRatingText import StarRatingText
 from Graphics.GameButton import GameButton
+from Graphics.GameText import GameText
 
 
 class EntityIcon(GameButton):
@@ -41,7 +44,7 @@ class EntityIcon(GameButton):
                 parent=self
             )
 
-            self._text = Text(
+            self._text = GameText(
                 f"level {entity.experience.level}{f'/{entity.experience.limit}' if entity.experience.limit else ''}",
                 position=(0, -0.45, -2),
                 scale=(5, 5),
@@ -59,8 +62,8 @@ class EntityIcon(GameButton):
 
             self.stars = StarRatingText(0)
 
-            self._text = Text(
-                "empty",
+            self._text = GameText(
+                Game.language.empty,
                 position=(0, 0, -1),
                 scale=(5, 5),
                 origin=(0, 0),
