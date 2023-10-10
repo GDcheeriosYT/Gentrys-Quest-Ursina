@@ -1,6 +1,11 @@
+from ursina import Button
+from ursina.prefabs.dropdown_menu import DropdownMenuButton
+
+
 class Language:
-    def __init__(self, name: str, **kwargs):
+    def __init__(self, name: str, font: str, **kwargs):
         self.name = name
+        self.font = font
 
         # langauge data
         self.play = "Play"
@@ -15,6 +20,7 @@ class Language:
         self.confirm_guest = "Would you like to play as ::player_name::?"
         self.login = "Login"
         self.login_not_available = "Login not available yet..."
+        self.language = "Language"
         self.audio = "Audio"
         self.graphics = "Graphics"
         self.music = "Music"
@@ -58,10 +64,16 @@ class Language:
         self.critrate = "CritRate: ::critrate::"
         self.critdamage = "CritDamage: ::critdamage::"
         self.speed = "Speed: ::speed::"
-
+        self.reloading_screen = "Reloading Screen..."
 
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    def get_button(self) -> DropdownMenuButton:
+        cool_button = DropdownMenuButton(self.name)
+        cool_button.text_entity.font = self.font
+
+        return cool_button
 
     @staticmethod
     def get_localized_text(text: str, *args) -> str:

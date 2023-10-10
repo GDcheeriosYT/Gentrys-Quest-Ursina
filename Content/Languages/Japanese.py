@@ -5,6 +5,7 @@ class Japanese(Language):
     def __init__(self):
         super().__init__(
             "日本語",
+            font="Graphics/fonts/JPfont.ttf",
             play="あそぶ",
             settings="設定",
             back="返す",
@@ -17,6 +18,7 @@ class Japanese(Language):
             confirm_guest="::player_name::を遊びますか",
             login="ログイン",
             login_not_available="ログインを出来ません。。。",
+            language="語",
             audio="音響",
             graphics="グラフィックス",
             music="歌",

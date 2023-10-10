@@ -1,4 +1,5 @@
 from ursina import *
+from ursina.prefabs.dropdown_menu import DropdownMenu
 
 import Game
 import GameConfiguration
@@ -22,7 +23,26 @@ class Settings(Screen):
         self.on_show += self._show
         self.on_hide += self._hide
 
+        language_menu = DropdownMenu(
+            Game.language.name,
+            [language().get_button() for language in Game.content_manager.languages]
+        )
+
+        def assign_clicky(button):
+            def clicky():
+                language_menu.text_entity.text = button.text_entity.text
+
+            button.on_click = clicky
+
+        for button in language_menu.buttons:
+            assign_clicky(button)
+
+        language_menu.text_entity.font = Game.language.font
+
         self.settings = [
+            # language
+            Setting(Game.language.language, language_menu, parent=self),
+
             # audio
             GameText(Game.language.audio, origin=(0, 0), parent=self),
             Setting(Game.language.music_volume, Slider(default=GameConfiguration.music_volume, step=0.01), parent=self),
@@ -42,7 +62,7 @@ class Settings(Screen):
 
         self.apply_button = GameButton(
             Game.language.apply,
-            position=(0.03, -0.4),
+            position=(0.03, -0.45),
             scale=(0.1, 0.05),
             parent=self
         )
@@ -73,6 +93,13 @@ class Settings(Screen):
         for setting in self.settings:
             if isinstance(setting, Setting):
                 print(setting.setting_text.text, setting.second_entity)
+                # language
+                if setting.setting_text.text == Game.language.language:
+                    value = setting.get_setting().text_entity.text
+                    print("language", value)
+                    GameConfiguration.language = value
+                    Game.language = Game.content_manager.get_language(value)
+
                 # audio
                 if setting.setting_text.text == Game.language.music_volume:
                     value = setting.get_setting().value
@@ -92,6 +119,8 @@ class Settings(Screen):
         Game.notification_manager.add_notification(Notification(Game.language.applied_settings, color.green))
         GameConfiguration.apply_settings()
         GameConfiguration.save_settings()
+
+        Game.reload_screen()
 
 
     @property

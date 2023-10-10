@@ -29,7 +29,7 @@ def update_config(settings: dict):
         if language == "English":
             pass
         elif language == "日本語":
-            font = "Graphics/fonts/JPfont.ttf"
+            pass
 
 
         # audio
@@ -65,7 +65,7 @@ def update_config(settings: dict):
 
 def save_settings():
     settings = {
-        "language": "English",
+        "language": language,
         "audio": {
             "music volume": music_volume,
             "sound volume": sound_volume
@@ -82,7 +82,7 @@ def save_settings():
             "window size": [window_size[0], window_size[1]]
         }
     }
-    json.dump(settings, open("settings.json", "w+"), indent=4)
+    json.dump(settings, open("settings.json", "w+", encoding="utf-8"), indent=4)
     print("Saved Settings!")
 
 

@@ -1,5 +1,8 @@
+from ursina import *
+
 import GameConfiguration
 from Overlays.NotificationsManager import NotificationManager
+from Overlays.Notification import Notification
 from GameStates import GameStates
 from Online.Presence.Presence import GamePresence
 from Content.ContentManager import ContentManager
@@ -7,6 +10,7 @@ from GPSystem.GPmain import GPSystem
 from Changelog import *
 from Audio.AudioSystem import AudioSystem
 from utils.ExceptionHandler import ExceptionHandler
+from Screens.ScreenManager import ScreenManager
 
 state = GameStates.intro
 presence = GamePresence() if not GameConfiguration.local_dev_branch else None
@@ -22,6 +26,8 @@ selected_area = None
 testing_screen = None
 exception_handler = ExceptionHandler(notification_manager)
 language = content_manager.get_language(GameConfiguration.language)
+app = None
+screen_manager = None
 
 
 def change_state(new_state: GameStates):
@@ -31,6 +37,16 @@ def change_state(new_state: GameStates):
         presence.update_status(f"Currently in {new_state.name}")
     state = new_state
     state_affected = False
+
+
+def reload_screen():
+    global notification_manager
+    global screen_manager
+
+    notification_manager.add_notification(Notification(language.reloading_screen, color.yellow))
+    screen_manager.kill()
+    screen_manager = ScreenManager(app)
+    invoke(lambda: change_state(GameStates.mainMenu), delay=GameConfiguration.fade_time)
 
 
 # changelog

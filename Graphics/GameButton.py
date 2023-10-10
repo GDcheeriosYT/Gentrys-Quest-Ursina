@@ -1,5 +1,6 @@
-from ursina import Button
+from ursina import Button, Text
 
+import Game
 import GameConfiguration
 
 
@@ -10,4 +11,8 @@ class GameButton(Button):
             **kwargs
         )
 
-        self.text_entity.font = GameConfiguration.font
+        try:
+            self.text_entity.font = GameConfiguration.font
+        except AttributeError as e:
+            self.text_entity = Text()
+            Game.exception_handler.handle_exception(e)
