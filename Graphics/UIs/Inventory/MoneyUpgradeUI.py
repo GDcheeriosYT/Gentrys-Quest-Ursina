@@ -4,6 +4,8 @@ from ursina.prefabs.input_field import InputField
 import Game
 from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
+from Graphics.GameText import GameText
+from Graphics.GameButton import GameButton
 
 
 class MoneyUpgradeUI(Entity):
@@ -22,8 +24,8 @@ class MoneyUpgradeUI(Entity):
         self.money_input.scale_y = 0.2
         self.money_input.text_field.scale = (6, 18)
 
-        self.submit_button = Button(
-            "Upgrade",
+        self.submit_button = GameButton(
+            Game.language.upgrade,
             position=(0, -0.2),
             scale=(1, 0.5),
             parent=self
@@ -35,11 +37,11 @@ class MoneyUpgradeUI(Entity):
         try:
             amount = int(self.money_input.text)
             if amount > Game.user.user_data.money:
-                Game.notification_manager.add_notification(Notification("Can't afford", color=color.red))
+                Game.notification_manager.add_notification(Notification(Game.language.cant_afford, color=color.red))
             else:
                 Game.user.user_data.remove_money(amount)
                 entity.add_xp(amount * 10)
                 update_method()
 
         except ValueError:
-            Game.notification_manager.add_notification(Notification("This isn't a number", color=color.red))
+            Game.notification_manager.add_notification(Notification(Game.language.not_number_error, color=color.red))

@@ -1,6 +1,7 @@
 from ursina import *
 
 import Game
+from Graphics.GameText import GameText
 
 
 class ChangelogMenu(Entity):
@@ -11,8 +12,8 @@ class ChangelogMenu(Entity):
             parent=parent
         )
 
-        self.heading_text = Text(
-            f"Changelog for {Game.version}",
+        self.heading_text = GameText(
+            Game.language.get_localized_text(Game.language.changelog_title, Game.version),
             origin=(0, 0),
             scale=(self.parent.scale_x, self.parent.scale_x + 0.5),
             position=(0, 0.45),
@@ -23,7 +24,7 @@ class ChangelogMenu(Entity):
         position_y = 0.42
         wordwrap = 52
         for change_category in Game.changelog.categories:
-            category_text = Text(
+            category_text = GameText(
                 change_category.category_name,
                 color=color.white,
                 scale=(self.parent.scale_x * 1, self.parent.scale_x * 1.5),
@@ -34,7 +35,7 @@ class ChangelogMenu(Entity):
             self.changes.append(category_text)
             for change in change_category.changes:
                 position_y -= 0.05 * self.parent.scale_x
-                change_text = Text(
+                change_text = GameText(
                     change.get_string(),
                     color=color.black,
                     scale=(self.parent.scale_x, self.parent.scale_x + 0.5),
