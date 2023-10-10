@@ -65,6 +65,9 @@ class Language:
         self.critdamage = "CritDamage: ::critdamage::"
         self.speed = "Speed: ::speed::"
         self.reloading_screen = "Reloading Screen..."
+        self.connect_server_error = "Unable to connect to server"
+        self.connected_server = "Connected to server"
+        self.exception_occured = "A ::exception:: has ocurred..."
 
         for key, value in kwargs.items():
             setattr(self, key, value)

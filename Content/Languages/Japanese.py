@@ -57,4 +57,8 @@ class Japanese(Language):
             range="距離: ::range::",
             seconds="秒",
             health="HP",
+            reloading_screen="スクリーンをリロりています",
+            connect_server_error="サーバを取り出しません",
+            connected_server="サーバを取り出しました",
+            exception_occured="::exception::を起こりました"
         )
