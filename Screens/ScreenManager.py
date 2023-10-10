@@ -78,9 +78,9 @@ class ScreenManager(Entity):
         fade_screen.alpha = 0
 
         fade_screen.fade_in(1, GameConfiguration.fade_time)
-        destroy(self, GameConfiguration.fade_time)
         [destroy(screen, GameConfiguration.fade_time) for screen in self.screens]
-        invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time + 0.2)
+        destroy(self, GameConfiguration.fade_time*1.1)
+        invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time*1.2)
         destroy(fade_screen, GameConfiguration.fade_time * 5)
 
     def input(self, key):

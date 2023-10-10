@@ -54,9 +54,6 @@ else:
     else:
         Game.state = GameStates.mainMenu
 
-# black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
-# destroy(black_thing, 3)
-
 Game.app = app
 
 Game.screen_manager = ScreenManager(app)

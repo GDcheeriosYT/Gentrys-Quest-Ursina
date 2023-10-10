@@ -16,7 +16,7 @@ from Overlays.Notification import Notification
 class Settings(Screen):
     def __init__(self):
         super().__init__(True, GameStates.mainMenu)
-        self.menu_text = TitleText(Game.language.settings)
+        self.menu_text = TitleText(Game.language.settings, parent=self)
         self.menu_text.y = 0.35
         self.menu_text.disable()
 

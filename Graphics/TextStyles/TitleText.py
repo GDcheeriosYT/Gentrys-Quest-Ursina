@@ -14,5 +14,3 @@ class TitleText(GameText):
             *args,
             **kwargs
         )
-
-        self.always_on_top = True
