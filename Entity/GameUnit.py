@@ -100,6 +100,7 @@ class GameUnit(GameEntityBase):
         self.texture = self._texture_mapping.get_damage_texture()
 
     def damage(self, amount: int, color: Vec4 = color.white):
+        Game.score_manager.add_damage(amount)
         self._stats.health.current_value -= amount if amount > 0 else 0
         # self.set_damage_texture()
         self.damage_text_pool.get_entity().display(amount if amount > 0 else "miss", color, self)
@@ -165,6 +166,7 @@ class GameUnit(GameEntityBase):
                 self.weapon.attack(direction)
 
     def heal(self, amount):
+        Game.score_manager.add_heal(amount)
         self.stats.health.current_value += amount
         self.on_heal()
 
@@ -174,7 +176,8 @@ class GameUnit(GameEntityBase):
 
     def die(self):
         print(self.name, "died T_T")
-        self.despawn()
+        self.disable()
+        self.dead = True
         self.on_death()
 
     def move_left(self):
@@ -196,10 +199,10 @@ class GameUnit(GameEntityBase):
     def spawn(self) -> None:
         self.enable()
         self.on_spawn()
-        self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Game.audio_system.play_sound(self._audio_mapping.get_spawn_sound(), True)
         self.update_stats()
         self.stats.health.calculate_value()
+        self._overhead.update_data()
         self.dead = False
         self.spawned = True
 

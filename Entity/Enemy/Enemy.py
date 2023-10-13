@@ -24,8 +24,6 @@ class Enemy(GameUnit):
         self._follow_entity = None
         self.not_attacking = True
 
-        self.on_death += lambda: destroy(self)
-        self.on_death += lambda: destroy(self.weapon)
         self.on_level_up += lambda: self._overhead.change_name(self.name + f"\nlevel {self.experience.level}")
 
     @property

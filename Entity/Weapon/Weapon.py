@@ -61,7 +61,7 @@ class Weapon(GameEntityBase):
 
     @property
     def drop_chance(self) -> int:
-        raise NotImplementedError
+        return 0
 
     @property
     def equipped_entity(self):
@@ -116,10 +116,13 @@ class Weapon(GameEntityBase):
             try:
                 hit_entity = hit_info.entity
                 if hit_entity not in self.hit_list and self.matches_condition(hit_entity):
-                    if hit_entity != Game.user.get_equipped_character():
-                        Game.score_manager.add_hit()
-
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
+                    if hit_entity != Game.user.get_equipped_character():
+                         Game.score_manager.add_hit()
+
+                    if is_crit:
+                        Game.score_manager.add_crit()
+
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (
                                 self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
                     damage = self.damage + self._equipped_entity.stats.attack.get_value() + crit_damage
@@ -130,7 +133,7 @@ class Weapon(GameEntityBase):
                         loot = hit_entity.get_loot()
                         self._equipped_entity.add_xp(loot.xp)
 
-                        if random.randint(0, 10000) <= hit_entity.weapon.drop_chance:
+                        if random.randint(1, 10000) <= hit_entity.weapon.drop_chance:
                             Game.user.add_weapon(Game.content_manager.get_weapon(hit_entity.weapon.name))
 
                         if hit_entity != Game.user.get_equipped_character():

@@ -5,7 +5,6 @@ import Game
 from Screens.Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 from Graphics.UIs.Inventory.Inventory import Inventory
-from Graphics.TextStyles.ScoreText import ScoreText
 
 
 class Gameplay(Screen):
@@ -17,7 +16,6 @@ class Gameplay(Screen):
         self.in_inventory = False
         self.map = None
         self.time_tracker = time.time()
-        self.score_display = None
         self.test = test
 
         self.on_show += self._on_show
@@ -31,14 +29,14 @@ class Gameplay(Screen):
     def color(self):
         return color.gray
 
+    def levelup_score_manager(self):
+        Game.score_manager.add_level(self.player.experience.level)
+
     def _on_show(self):
         Game.score_manager.reset_score()
-        self.score_display = ScoreText()
-        if self.test:
-            self.score_display.position = (0, 0.3)
-
         self.map = Game.selected_area
         self.player = Game.user.get_equipped_character()
+        self.player.on_level_up += self.levelup_score_manager
         self.hud = HUD(self.player)
         if self.test:
             self.hud.scale = (self.hud.scale[0]*0.8, self.hud.scale[1]*0.8)
@@ -64,12 +62,10 @@ class Gameplay(Screen):
 
         if self.player:
             self.player.disable()
+            self.player.on_level_up -= self.levelup_score_manager
 
         if self.inventory:
             destroy(self.inventory)
-
-        if self.score_display:
-            destroy(self.score_display)
 
         camera.position = (0, 0)
 
@@ -94,7 +90,8 @@ class Gameplay(Screen):
 
         if self.spawn_ready() and self.map.can_spawn and not self.test:
             self.map.spawn_sequence()
-            self.map.artifact_check()
+
+        self.map.artifact_check()
 
     def input(self, key):
         if key == "c":

@@ -27,7 +27,7 @@ collision_entities = [duplicate(collision_entity, position=(random.randint(-40, 
                                 scale=(random.randint(-10, 10), random.randint(-10, 10))) for i in range(20)]
 
 entities = [
-    grass
+    # grass
 ]
 
 [entities.append(new_entity) for new_entity in collision_entities]

@@ -1,5 +1,6 @@
 from ursina import *
 
+import Game
 from ...Test import Test
 from Entity.EntityPool import EntityPool
 
@@ -32,7 +33,7 @@ class EntityPoolTest(Test):
             if self.enemy_pool:
                 self.enemy_pool.destroy()
 
-            self.enemy_pool = EntityPool(10, [AngryPedestrian, AngryChineseMan])
+            self.enemy_pool = EntityPool(10, Game.content_manager.enemies)
 
         self.make_button("Create Object Pool", create_object_pool)
         self.make_button("Create Enemy Pool", create_enemy_pool)

@@ -1,14 +1,13 @@
-import ursina.scene
 from ursina import *
+
 from typing import Union
 import random
+
 import Game
-import copy
-import GameConfiguration
+
 from Content.Enemies.TestEnemy import TestEnemy
 from Content.ArtifactFamilies.TestFamily.TestFamily import TestFamily
 from Entity.EntityPool import EntityPool
-from Overlays.Notification import Notification
 
 
 class Map:
@@ -68,9 +67,8 @@ class Map:
     def load(self):
         start_time = time.time()
         Game.notification_manager.add_notification(Game.Notification(f"loading {self.name}", color.yellow))
-        # self.destroy_enemies()
         self.calculate_difficulty(Game.user.get_equipped_character())
-        self.enemy_pool = EntityPool(self.enemy_limit, self.enemies)
+        self.enemy_pool = EntityPool(self.enemy_limit, self.enemies, True)
         [entity.enable() for entity in self.entities]
         Game.audio_system.set_music(random.choice(self.music))
         Game.notification_manager.add_notification(Game.Notification(f"Finished in {round(time.time() - start_time, 2)} seconds", color.yellow))
@@ -94,11 +92,11 @@ class Map:
 
     def spawn(self):
         if self.can_spawn:
-            enemy = self.enemy_pool.get_entity()
+            enemy = self.enemy_pool.get_entity(False)
             if enemy:
-                enemy.follow_entity(Game.user.get_equipped_character())
                 enemy.position = (Game.user.get_equipped_character().position[0]+random.randint(-6, 6), Game.user.get_equipped_character().position[1]+random.randint(-6, 6))
                 enemy.spawn()
+                invoke(lambda: enemy.follow_entity(Game.user.get_equipped_character()), delay=1)
 
     def artifact_check(self):
         if Game.score_manager.spend_points(2500):
@@ -110,7 +108,8 @@ class Map:
                 enemy.die()
 
     def spawn_sequence(self):
-        for i in range(self.generate_enemy_spawn_number()):
+        number = self.generate_enemy_spawn_number()
+        for i in range(number):
             self.spawn()
 
     def generate_enemy_spawn_number(self):
