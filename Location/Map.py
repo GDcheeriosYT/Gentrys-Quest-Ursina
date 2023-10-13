@@ -68,21 +68,25 @@ class Map:
 
         self.enemy_tracker = []
 
+        # state
+        self.loaded = False
+
     def load(self):
-        print("started loading")
-        self.destroy_enemies()
+        start_time = time.time()
+        Game.notification_manager.add_notification(Game.Notification(f"loading {self.name}", color.yellow))
+        # self.destroy_enemies()
         self.calculate_difficulty(Game.user.get_equipped_character())
         self.enemy_pool = EntityPool(self.enemy_limit, self.enemies)
-        print(self.enemy_pool)
-        self.manage_entities(True)
+        [entity.enable() for entity in self.entities]
         Game.audio_system.set_music(random.choice(self.music))
-        print("finished")
+        Game.notification_manager.add_notification(Game.Notification(f"Finished in {round(time.time() - start_time, 2)} seconds", color.yellow))
+        self.loaded = True
 
     def unload(self):
-        self.manage_entities(False)
-        self.destroy_enemies()
         self.enemy_pool.destroy()
+        [entity.disable() for entity in self.entities]
         destroy(self.music_player)
+        self.loaded = False
 
     def destroy_enemies(self):
         for enemy in self.enemy_tracker:
@@ -94,16 +98,18 @@ class Map:
         for enemy in self.enemy_tracker:
             enemy.disable() if enemy.enabled else enemy.enable()
 
-    def manage_entities(self, enable: bool = True):
-        for entity in self.entities:
-            entity.enable() if enable else entity.disable()
-
     def spawn(self):
         if self.can_spawn:
             enemy = self.enemy_pool.get_entity()
             if enemy:
                 enemy.follow_entity(Game.user.get_equipped_character())
+                enemy.position = (Game.user.get_equipped_character().position[0]+random.randint(-6, 6), Game.user.get_equipped_character().position[1]+random.randint(-6, 6))
                 enemy.spawn()
+
+    def kill_all_enemies(self):
+        for enemy in self.enemy_pool.pool:
+            if enemy.enabled:
+                enemy.die()
 
     def spawn_sequence(self):
         for i in range(self.generate_enemy_spawn_number()):
