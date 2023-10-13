@@ -9,6 +9,8 @@ from GPSystem.GPmain import GPSystem
 from Changelog import *
 from Audio.AudioSystem import AudioSystem
 from utils.ExceptionHandler import ExceptionHandler
+from ScoreManager import ScoreManager
+
 
 state = GameStates.intro
 presence = GamePresence() if not GameConfiguration.local_dev_branch else None
@@ -24,6 +26,7 @@ selected_area = None
 testing_screen = None
 exception_handler = ExceptionHandler(notification_manager)
 rules = Rules()
+score_manager = ScoreManager()
 
 
 def change_state(new_state: GameStates):

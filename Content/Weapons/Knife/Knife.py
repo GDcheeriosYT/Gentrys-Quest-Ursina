@@ -37,3 +37,7 @@ class Knife(PokeWeapon):
     @property
     def texture(self) -> str:
         return "Textures/knife.png"
+
+    @property
+    def drop_chance(self) -> int:
+        return 30

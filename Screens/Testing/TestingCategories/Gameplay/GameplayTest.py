@@ -5,7 +5,6 @@ import Game
 from ...Test import Test
 from ...TestTypes import TestTypes
 
-from Location.Map import Map
 from Screens.Gameplay.Gameplay import Gameplay
 
 
@@ -15,15 +14,13 @@ class GameplayTest(Test):
         self.on_load += self._load
         self.on_unload += self._unload
 
-        Game.selected_area = Game.content_manager.get_location("Test Location").areas[0]
-        Game.user.get_equipped_character().swap_weapon(Game.content_manager.get_weapon("Brayden's Osu Pen"))
-
         self.gameplay = None
         self.gameplay: Gameplay
 
-        print("selected area\n\n\n\n\n\n\n\n\n",Game.selected_area)
-
     def _load(self):
+        Game.selected_area = Game.content_manager.get_location("Test Location").areas[0]
+        Game.user.get_equipped_character().swap_weapon(Game.content_manager.get_weapon("Brayden's Osu Pen"))
+
         def initialize_gameplay():
             if not self.gameplay:
                 self.gameplay = Gameplay(test=True)
@@ -47,7 +44,6 @@ class GameplayTest(Test):
         self.make_slider("Difficulty", 0, 5, 0, 1)
         self.make_slider("Enemy Limit", 1, 50, 5, 1)
         self.make_button("Apply Variables", apply_variables)
-
 
     def _unload(self):
         self.gameplay.hide()

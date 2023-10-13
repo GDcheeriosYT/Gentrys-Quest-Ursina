@@ -205,8 +205,8 @@ class GameUnit(GameEntityBase):
 
     def hits(self, direction):
         origin = self.world_position
-        hit_info = raycast(origin, direction, ignore=[self], distance=.1)
-        return hit_info.hits
+        hit_info = raycast(origin, direction, ignore=[self], distance=.1, debug=False)
+        return hit_info.hit
 
     def despawn(self):
         self.disable()

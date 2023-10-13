@@ -14,13 +14,26 @@ grass = Entity(
     enabled=False
 )
 
+collision_entity = Entity(
+    model='quad',
+    color=color.black,
+    collider='box',
+    position=(0, 0, 0),
+    enabled=False
+)
+
+collision_entities = [duplicate(collision_entity, position=(random.randint(-40, 40), random.randint(-40, 40)), scale=(random.randint(-10, 10), random.randint(-10, 10))) for i in range(20)]
+
+entities = [
+    grass
+]
+
+[entities.append(new_entity) for new_entity in collision_entities]
 
 class TestMap(Map):
     def __init__(self):
         super().__init__(
-            entities=[
-                grass
-            ],
+            entities=entities,
             enemies=[
                 AngryPedestrian,
                 AngryChineseMan

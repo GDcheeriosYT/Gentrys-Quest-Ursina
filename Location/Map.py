@@ -22,7 +22,6 @@ class Map:
             difficulty_scales: bool = True,
             enemy_limit: int = 5,
             artifact_families: list = None,
-            weapon_list: list = None,
             music: list = None,
             spawn_delay: Union[int, float] = 7
     ):
@@ -44,11 +43,6 @@ class Map:
             self.artifact_families = artifact_families
         else:
             self.artifact_families = [TestFamily()]
-
-        if weapon_list:
-            self.weapon_list = weapon_list
-        else:
-            self.weapon_list = [Game.content_manager.get_weapon("Knife")]
 
         if music:
             self.music = music
@@ -106,6 +100,10 @@ class Map:
                 enemy.position = (Game.user.get_equipped_character().position[0]+random.randint(-6, 6), Game.user.get_equipped_character().position[1]+random.randint(-6, 6))
                 enemy.spawn()
 
+    def artifact_check(self):
+        if Game.score_manager.spend_points(2500):
+            Game.user.add_artifact(self.generate_artifact())
+
     def kill_all_enemies(self):
         for enemy in self.enemy_pool.pool:
             if enemy.enabled:
@@ -132,10 +130,6 @@ class Map:
 
         artifact = random.choice(self.artifact_families).get_random_artifact()(star_rating)
         return artifact
-
-    def generate_weapon(self):
-        weapon = type(random.choice(self.weapon_list))
-        return weapon()
 
     def calculate_difficulty(self, player):
         if self.difficulty_scales:
