@@ -1,5 +1,6 @@
 from ursina import *
 
+import Game
 from utils.Event import Event
 from utils.IntMethods import format_seconds
 
@@ -21,7 +22,10 @@ class TestMethodButton(Button):
         self.disable()
 
     def on_click(self):
-        start_time = time.time()
-        self.call_event()
-        self.time = time.time() - start_time
-        self.time_text.text = format_seconds(self.time)
+        try:
+            start_time = time.time()
+            self.call_event()
+            self.time = time.time() - start_time
+            self.time_text.text = format_seconds(self.time)
+        except Exception as e:
+            Game.exception_handler.handle_exception(e)

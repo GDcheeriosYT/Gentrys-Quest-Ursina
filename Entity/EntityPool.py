@@ -35,6 +35,22 @@ class EntityPool:
 
         return None
 
+    def get_ready_percent(self):
+        counter = 0
+        for entity in self.pool:
+            if not entity.enabled:
+                counter += 1
+
+        return counter/self.size
+
+    def get_ready_ratio(self):
+        counter = 0
+        for entity in self.pool:
+            if not entity.enabled:
+                counter += 1
+
+        return f"{counter}|{self.size}"
+
     def destroy(self):
         [destroy(entity) for entity in self.pool]
 

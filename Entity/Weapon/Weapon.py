@@ -105,9 +105,8 @@ class Weapon(GameEntityBase):
             self._instance.world_position,
             self._instance.down,
             ignore=[self],
-            # traverse_target=self.entity_hit_type,
             distance=self.range,
-            debug=True
+            debug=True,
            )
         if hit_info.hit:
             try:

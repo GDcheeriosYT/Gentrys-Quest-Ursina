@@ -1,18 +1,19 @@
-import traceback
-
 from ursina import *
 
 import Game
 from utils.Event import Event
 
 from .TestMethodButton import TestMethodButton
+from .TestTypes import TestTypes
 
 
 class Test:
     screen = None
 
-    def __init__(self, class_type):
+    def __init__(self, class_type, type: TestTypes = TestTypes.ScreenTest):
         self.name = class_type.__name__
+        self.type = type
+        self.info = ""
         self.method_buttons = []
         self.on_load = Event("OnLoad")
         self.on_unload = Event("OnUnload")

@@ -1,6 +1,7 @@
 import GameConfiguration
 from Rules import Rules
 from Overlays.NotificationsManager import NotificationManager
+from Overlays.Notification import Notification
 from GameStates import GameStates
 from Online.Presence.Presence import GamePresence
 from Content.ContentManager import ContentManager

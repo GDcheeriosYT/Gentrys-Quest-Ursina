@@ -96,11 +96,11 @@ class Enemy(GameUnit):
                 self.weapon.attack(direction)
 
     def update(self):
-        if self.not_attacking:
+        if self.not_attacking and self._follow_entity:
             self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
             if sqrt((self._follow_entity.position[0] - self.position[0]) ** 2 + (self._follow_entity.position[1] - self.position[1]) ** 2) <= self.range:
                 self.attack(self.direction)
 
-            if self.can_move and not self.hits(self.direction):
+            if not self.is_effected_by("Stun") and not self.hits(self.direction):
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()

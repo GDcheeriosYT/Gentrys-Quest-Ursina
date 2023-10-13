@@ -1,5 +1,7 @@
 from ursina import *
 
+import GameConfiguration
+
 from Screens.Screen import Screen
 from Graphics.Container import Container
 from utils.Event import Event
@@ -7,9 +9,11 @@ from utils.Event import Event
 from .TestingCategories.Entity.Entity import Entity
 from .TestingCategories.UI.UI import UI
 from .TestingCategories.Components.Components import Components
+from .TestingCategories.Gameplay.Gameplay import Gameplay
 
 from .TestingScreen import TestingScreen
 from .Test import Test
+from .TestTypes import TestTypes
 
 
 class Testing(Screen):
@@ -47,7 +51,7 @@ class Testing(Screen):
             parent=self
         )
 
-        self.categories = [Entity(), UI(), Components()]
+        self.categories = [Entity(), UI(), Components(), Gameplay()]
 
         self.tests = []
 
@@ -55,6 +59,13 @@ class Testing(Screen):
             "",
             position=(-0.5, 0.5, -1),
             origin=(-0.52, 0.55),
+            parent=self.screen
+        )
+
+        self.testing_info_text = Text(
+            "",
+            position=(0.5, 0.5, -1),
+            origin=(0.52, 0.55),
             parent=self.screen
         )
 
@@ -149,11 +160,23 @@ class Testing(Screen):
             button.position = (0, y)
             y -= 0.06
 
+        if self.category.selected_test.type == TestTypes.ScreenTest:
+            self.tests_option_container.animate_position((-0.22, -0.3), duration=GameConfiguration.fade_time)
+            self.screen.fade_in(1, GameConfiguration.fade_time)
+            self.screen_info_text.animate_position((-0.5, 0.5, -1))
+            self.screen_info_text.animate_scale((1, 1), GameConfiguration.fade_time)
+        else:
+            self.tests_option_container.animate_position((0.65, -0.3), duration=GameConfiguration.fade_time)
+            self.screen.fade_out(0, GameConfiguration.fade_time)
+            self.screen_info_text.animate_scale((3, 3), GameConfiguration.fade_time)
+            self.screen_info_text.animate_position((-1, 0.5, -1), GameConfiguration.fade_time)
+
     def clear_tests(self):
         [destroy(test) for test in self.tests]
 
     def update_screen_text(self):
         self.screen_info_text.text = f"Testing {self.category.name}.{self.category.selected_test.name}"
+        self.testing_info_text.text = f"Testing Info:\n{self.category.selected_test.info}"
 
     def reload_test(self):
         self.category.selected_test.reload()

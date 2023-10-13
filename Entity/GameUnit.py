@@ -35,7 +35,6 @@ class GameUnit(GameEntityBase):
         self._audio_mapping = audio_mapping
         self.direction = Vec3(0, 0, 0).normalized()
         self.dead = False
-        self.can_move = True
         self.spawned = False
         self.range = 1
         self.damage_text_pool = EntityPool(20, DamageText)
@@ -137,6 +136,18 @@ class GameUnit(GameEntityBase):
 
         self.on_affected()
 
+    def is_effected_by(self, name: str):
+        for effect in self.effects:
+            if effect.name == name:
+                return True
+
+        return False
+
+    def remove_effect(self, name: str):
+        for effect in self.effects:
+            if effect.name == name:
+                self.effects.remove(effect)
+
     def handle_buffs(self):
         for effect in self.effects:
             effect.effect()
@@ -207,9 +218,6 @@ class GameUnit(GameEntityBase):
 
     def on_destroy(self):
         self.dead = True
-
-    def toggle_movement(self):
-        self.can_move = not self.can_move
 
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)
