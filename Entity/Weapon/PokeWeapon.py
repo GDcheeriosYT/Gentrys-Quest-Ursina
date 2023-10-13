@@ -76,4 +76,4 @@ class PokeWeapon(Weapon):
                 y_offset = math.sin(angle_radians) * distance
 
             self._instance.position = Vec3(x_offset, y_offset, 0)
-            self.manage_collision()
+            self.manage_collision(False)

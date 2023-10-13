@@ -10,9 +10,9 @@ grass = Entity(
     model='quad',
     position=(0, 0, 1),
     scale=(40, 40),
-    color=color.green
+    color=rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+    enabled=False
 )
-grass.disable()
 
 
 class TestMap(Map):

@@ -56,6 +56,8 @@ class Gameplay(Screen):
         if self.inventory:
             destroy(self.inventory)
 
+        camera.position = (0, 0)
+
     def toggle_spawned(self):
         self.spawned = False
 

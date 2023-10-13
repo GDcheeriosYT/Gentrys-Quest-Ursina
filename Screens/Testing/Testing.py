@@ -69,6 +69,8 @@ class Testing(Screen):
             parent=self.screen
         )
 
+        self.testing_info_text.disable()
+
         self.category = None
 
         self.change_category(Entity())

@@ -6,7 +6,7 @@ from utils.IntMethods import format_seconds
 
 
 class TestMethodButton(Button):
-    def __init__(self, name: str, event: 'Callable', *args, **kwargs):
+    def __init__(self, name: str, event: 'Callable', update_event: 'Callable', *args, **kwargs):
         super().__init__(
             name,
             scale=(1, 0.05),
@@ -15,6 +15,7 @@ class TestMethodButton(Button):
         )
         self.name = name
         self.call_event = event
+        self.update_event = update_event
         self.time_text = Text("", origin=(0.5, 0), scale=(3, 20), position=(0.5, 0, -1), parent=self)
         self.time = 0
         self.activated = False

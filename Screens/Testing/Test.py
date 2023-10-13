@@ -15,13 +15,14 @@ class Test:
         self.name = class_type.__name__
         self.type = type
         self.info = ""
+        self.info_update_function = None
         self.method_buttons = []
         self.variables = []
         self.on_load = Event("OnLoad")
         self.on_unload = Event("OnUnload")
 
     def make_button(self, name: str, event: 'Callable'):
-        self.method_buttons.append(TestMethodButton(name, event))
+        self.method_buttons.append(TestMethodButton(name, event, self.info_update_function))
 
     def get_button(self, name: str = None, index: int = None):
         if name is not None:

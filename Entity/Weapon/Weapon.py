@@ -100,13 +100,13 @@ class Weapon(GameEntityBase):
     def attack_process(self, direction):
         pass
 
-    def manage_collision(self):
+    def manage_collision(self, is_down: bool = True):
         hit_info = raycast(
             self._instance.world_position,
-            self._instance.down,
+            self._instance.down if is_down else self._instance.up,
             ignore=[self],
             distance=self.range,
-            debug=True,
+            debug=False
            )
         if hit_info.hit:
             try:
@@ -115,8 +115,8 @@ class Weapon(GameEntityBase):
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (
                                 self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
-                    damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
-                    amount = damage - hit_entity.stats.defense.get_value()
+                    damage = self.damage + self._equipped_entity.stats.attack.get_value() + crit_damage
+                    amount = int(round((damage * self.base_speed) - hit_entity.stats.defense.get_value()))
                     hit_entity.damage(amount, color.red if is_crit else color.white)
                     self.hit_list.append(hit_entity)
             except AttributeError as e:

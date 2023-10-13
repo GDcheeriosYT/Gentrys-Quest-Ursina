@@ -20,7 +20,7 @@ class Knife(PokeWeapon):
 
     @property
     def base_attack(self) -> int:
-        return 10
+        return 20
 
     @property
     def base_speed(self):
@@ -28,7 +28,7 @@ class Knife(PokeWeapon):
 
     @property
     def range(self):
-        return 1
+        return 1.1
 
     @property
     def weapon_type(self) -> str:
