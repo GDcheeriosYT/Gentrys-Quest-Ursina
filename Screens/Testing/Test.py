@@ -3,6 +3,7 @@ from ursina import *
 import Game
 from utils.Event import Event
 
+from .TestSliderVariable import TestSliderVariable
 from .TestMethodButton import TestMethodButton
 from .TestTypes import TestTypes
 
@@ -15,6 +16,7 @@ class Test:
         self.type = type
         self.info = ""
         self.method_buttons = []
+        self.variables = []
         self.on_load = Event("OnLoad")
         self.on_unload = Event("OnUnload")
 
@@ -32,6 +34,14 @@ class Test:
 
         return None
 
+    def make_slider(self, name: str, min, max, default, step=0.01):
+        self.variables.append(TestSliderVariable(name, min, max, default, step))
+
+    def get_variable(self, name: str):
+        for variable in self.variables:
+            if variable.name == name:
+                return variable.value
+
     def load(self):
         """
         Load the test
@@ -48,7 +58,9 @@ class Test:
         """
 
         [destroy(button) for button in self.method_buttons]
+        [destroy(variable) for variable in self.variables]
         self.method_buttons.clear()
+        self.variables.clear()
 
         try:
             self.on_unload()
