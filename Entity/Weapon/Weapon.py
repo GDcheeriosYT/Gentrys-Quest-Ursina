@@ -118,6 +118,12 @@ class Weapon(GameEntityBase):
                     damage = self.damage + self._equipped_entity.stats.attack.get_value() + crit_damage
                     amount = int(round((damage * self.base_speed) - hit_entity.stats.defense.get_value()))
                     hit_entity.damage(amount, color.red if is_crit else color.white)
+
+                    if hit_entity.dead:
+                        loot = hit_entity.get_loot()
+                        self._equipped_entity.add_xp(loot.xp)
+                        Game.user.add_money(loot.money)
+
                     self.hit_list.append(hit_entity)
             except AttributeError as e:
                 print(e)

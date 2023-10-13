@@ -36,6 +36,9 @@ class Gameplay(Screen):
             self.hud.position = (0, -0.1)
 
         self.inventory = Inventory()
+        if self.test:
+            self.inventory.scale = (self.hud.scale[0]*0.75, self.hud.scale[1]*0.75)
+
         self.inventory.update_player()
         self.inventory.disable()
         self.map.load()
