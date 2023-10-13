@@ -1,10 +1,11 @@
 from ursina import *
+
+import Game
 from Location.Map import Map
 from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
 from Content.Enemies.AngryChineseMan.AngryChineseMan import AngryChineseMan
 from Content.ArtifactFamilies.BraydenMesserschmidt.BraydenMesserschmidtFamily import BraydenMesserschmidtFamily
 from Content.ArtifactFamilies.HyVee.HyVee import HyVee
-
 
 grass = Entity(
     model='quad',
@@ -22,7 +23,8 @@ collision_entity = Entity(
     enabled=False
 )
 
-collision_entities = [duplicate(collision_entity, position=(random.randint(-40, 40), random.randint(-40, 40)), scale=(random.randint(-10, 10), random.randint(-10, 10))) for i in range(20)]
+collision_entities = [duplicate(collision_entity, position=(random.randint(-40, 40), random.randint(-40, 40)),
+                                scale=(random.randint(-10, 10), random.randint(-10, 10))) for i in range(20)]
 
 entities = [
     grass
@@ -30,16 +32,11 @@ entities = [
 
 [entities.append(new_entity) for new_entity in collision_entities]
 
+
 class TestMap(Map):
     def __init__(self):
         super().__init__(
             entities=entities,
-            enemies=[
-                AngryPedestrian,
-                AngryChineseMan
-            ],
-            artifact_families=[
-                BraydenMesserschmidtFamily(),
-                HyVee()
-            ]
+            enemies=Game.content_manager.enemies,
+            artifact_families=[family() for family in Game.content_manager.artifact_families]
         )
