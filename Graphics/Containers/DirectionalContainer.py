@@ -25,24 +25,39 @@ class DirectionalContainer(Container):
         self.child_origin = child_origin
         self.formula = 0
         self.child_scale = 1
+        self.ratio = 1
 
         self.define_scale()
-        self.position_tracker = -0.5 + self.formula/2 if self.horizontal else 0.5 - self.formula/2
+        self.position_tracker = -0.5 + self.formula / 2 if self.horizontal else 0.5 - self.formula / 2
 
         for item in self.items:
-            print(self.position_tracker)
             item.parent = self
-            item.scale = self.child_scale
+            if self.ratio >= 1:
+                item.scale = self.child_scale[0], self.child_scale[0] * self.ratio
+            else:
+                item.scale = self.child_scale[1] / self.ratio, self.child_scale[1]
+
             item.position = (
-                self.position_tracker if self.horizontal else 0,      # x
-                self.position_tracker if not self.horizontal else 0   # y
+                self.position_tracker if self.horizontal else 0,     # x
+                self.position_tracker if not self.horizontal else 0  # y
             )
             self.origin = self.child_origin
             self.position_tracker += self.formula if self.horizontal else -self.formula
 
     def define_scale(self):
-        self.formula = (1/len(self.items))
-        self.child_scale = (
-            self.formula/self.spacing,  # x
-            self.formula/self.spacing   # y
-        )
+        self.formula = (1 / len(self.items))
+        self.ratio = self.scale[0] / self.scale[1]
+        self.width = self.scale[1] * self.ratio
+        self.height = self.scale[0] / self.ratio
+        if self.ratio >= 1:
+            self.child_scale = (
+                self.scale[1]/self.scale[0],  # x
+                0                             # y
+            )
+            self.child_scale = self.child_scale[0] * (self.formula / self.spacing), 0
+        else:
+            self.child_scale = (
+                0,                             # x
+                self.scale[0] / self.scale[1]  # y
+            )
+            self.child_scale = 0, self.child_scale[1] * (self.formula / self.spacing)
