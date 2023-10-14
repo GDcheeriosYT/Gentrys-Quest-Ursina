@@ -5,6 +5,7 @@ from .LocationButton import LocationButton
 from .AreaInfoContainer import AreaInfoContainer
 from .AreaButton import AreaButton
 from utils.Event import Event
+from Graphics.GameButton import GameButton
 
 
 class TravelMenu(Entity):
@@ -23,7 +24,7 @@ class TravelMenu(Entity):
 
         self.area_info_container = AreaInfoContainer(self)
 
-        self.back_button = Button(
+        self.back_button = GameButton(
             "locations",
             position=(-0.5, -0.45),
             scale=(0.1, 0.1),

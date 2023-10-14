@@ -2,6 +2,7 @@ from ursina import *
 
 from Screens.Screen import Screen
 from Graphics.Container import Container
+from Graphics.GameButton import GameButton
 from utils.Event import Event
 
 from .TestingCategories.Entity.Entity import Entity
@@ -62,7 +63,7 @@ class Testing(Screen):
 
         self.change_category(Entity())
 
-        reload_button = Button(
+        reload_button = GameButton(
             "Reload",
             parent=self.tests_option_container,
             position=(0, 0.57),
@@ -80,7 +81,7 @@ class Testing(Screen):
             button.on_click = lambda: self.change_category(category)
 
         for category in self.categories:
-            button = Button(
+            button = GameButton(
                 category.name,
                 model='quad',
                 parent=self.category_container
@@ -95,6 +96,10 @@ class Testing(Screen):
     @property
     def color(self):
         return color.rgb(35, 35, 35)
+
+    @property
+    def fades(self) -> bool:
+        return False
 
     def change_category(self, category):
         if self.category:
@@ -120,7 +125,7 @@ class Testing(Screen):
 
             index = self.category.tests.index(test)
 
-            button = Button(
+            button = GameButton(
                 test.name,
                 position=(0.53, 0.5 - (index * 0.12)),
                 scale=(1, 0.1),

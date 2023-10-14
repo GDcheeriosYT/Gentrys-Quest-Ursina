@@ -2,7 +2,6 @@
 import GameConfiguration
 import Game
 from GameStates import GameStates
-from Overlays.Notification import Notification
 
 # User
 from User.User import User
@@ -13,13 +12,9 @@ from Screens.ScreenManager import ScreenManager
 # online packages
 from Online.ServerConnection import ServerConnection
 
-# built-in packages
-import os
-
 # external packages
 from ursina import *
 import argparse
-import json
 
 # initialization
 app = Ursina()
@@ -47,24 +42,20 @@ window.borderless = False
 window.exit_button.disable()
 window.editor_ui.hide()
 
-GameConfiguration.apply_settings()
-
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http://gdcheerios.com"
-
-server = ServerConnection(server_url if args.server is None else args.server)
 
 if args.debug:
     Game.state = GameStates.testing
     Game.user = User("Test User", True)
 else:
+    server = ServerConnection(server_url if args.server is None else args.server)
     if GameConfiguration.play_intro:
         Game.state = GameStates.intro
     else:
         Game.state = GameStates.mainMenu
 
-black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
-destroy(black_thing, 3)
+Game.app = app
 
-ScreenManager(app)
+Game.screen_manager = ScreenManager(app)
 
 app.run()

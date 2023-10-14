@@ -1,8 +1,10 @@
 from ursina import *
 from utils.Event import Event
 
+from Graphics.GameButton import GameButton
 
-class MenuButton(Button):
+
+class MenuButton(GameButton):
     def __init__(self, text: str = "menu button", *args, **kwargs):
         super().__init__(
             text,
