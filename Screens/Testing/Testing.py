@@ -150,6 +150,12 @@ class Testing(Screen):
             button.position = (0, y)
             y -= 0.06
 
+        for variable_handler in self.category.selected_test.variables:
+            variable_handler.parent = self.tests_option_container
+            variable_handler.enable()
+            variable_handler.position = (0, y)
+            y -= 0.06
+
     def clear_tests(self):
         [destroy(test) for test in self.tests]
 
