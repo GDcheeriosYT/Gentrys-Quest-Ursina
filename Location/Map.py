@@ -146,15 +146,9 @@ class Map:
 
     def get_metadata(self) -> str:
         return f"""
-
-name: {self.name}
-description: {self.description}
-entity amount: {len(self.entities)}
-enemies: {[enemy.name for enemy in self.enemies]}
+{self.name}
+{self.description}
+{len(self.entities)} entities
 difficulty: {self.difficulty} scales({self.difficulty_scales})
 enemy_limit: {self.enemy_limit}
-families: {self.artifact_families}
-weapons: {[weapon.name for weapon in self.weapon_list]}
-music: {self.music}
-spawn delay: {self.spawn_delay}
         """
