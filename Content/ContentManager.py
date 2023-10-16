@@ -29,6 +29,10 @@ from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
 # Gachas
 from Content.Gachas.TestGacha import TestGacha
 
+# Languages
+from Content.Languages.English import English
+from Content.Languages.Japanese import Japanese
+
 
 class ContentManager:
     def __init__(self):
@@ -68,6 +72,11 @@ class ContentManager:
 
         self.gachas = [
             TestGacha
+        ]
+
+        self.languages = [
+            English,
+            Japanese
         ]
 
     def get_family(self, name: str):
@@ -115,3 +124,12 @@ class ContentManager:
         for weapon in self.weapons:
             if name == weapon().name:
                 return weapon()
+
+    def get_language(self, name: str):
+        for language in self.languages:
+            language = language()
+            print(name, language.name)
+            if language.name == name:
+                return language
+
+        return English()

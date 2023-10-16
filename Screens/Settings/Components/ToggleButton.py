@@ -1,7 +1,9 @@
 from ursina import *
 
+from Graphics.GameButton import GameButton
 
-class ToggleButton(Button):
+
+class ToggleButton(GameButton):
     def __init__(self, toggled: bool, on_text: str, off_text: str, *args, **kwargs):
         super().__init__(
             on_text if toggled else off_text,

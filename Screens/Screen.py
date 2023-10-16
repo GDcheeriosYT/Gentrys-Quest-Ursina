@@ -16,8 +16,8 @@ class Screen(Entity):
         if self.allow_back:
             self.back_button.enable()
 
-        self.on_show = Event('OnShow', 0)
-        self.on_hide = Event('OnHide', 0)
+        self.on_show = Event('OnShow')
+        self.on_hide = Event('OnHide')
 
     @property
     def name(self) -> str:
@@ -53,3 +53,6 @@ class Screen(Entity):
         self.on_hide()
         if self.allow_back:
             self.back_button.disable()
+
+    def on_destroy(self):
+        destroy(self.back_button)

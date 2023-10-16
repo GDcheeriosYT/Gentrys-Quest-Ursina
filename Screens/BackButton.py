@@ -4,11 +4,13 @@ import Game
 from GameStates import GameStates
 from utils.Event import Event
 
+from Graphics.GameButton import GameButton
 
-class BackButton(Button):
+
+class BackButton(GameButton):
     def __init__(self, game_state: GameStates):
         super().__init__(
-            "back",
+            Game.language.back,
             position=(-0.75, -0.4),
             scale=(0.2, 0.05),
             parent=camera.ui

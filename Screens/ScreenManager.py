@@ -73,6 +73,16 @@ class ScreenManager(Entity):
         GameConfiguration.window_size = window.size
         GameConfiguration.window_position = window.position
 
+    def kill(self):
+        fade_screen = FadeScreen()
+        fade_screen.alpha = 0
+
+        fade_screen.fade_in(1, GameConfiguration.fade_time)
+        [destroy(screen, GameConfiguration.fade_time) for screen in self.screens]
+        destroy(self, GameConfiguration.fade_time*1.1)
+        invoke(lambda: fade_screen.fade_out(0, GameConfiguration.fade_time), delay=GameConfiguration.fade_time*1.2)
+        destroy(fade_screen, GameConfiguration.fade_time * 5)
+
     def input(self, key):
         if key == "b":
             if self.debug_overlay.enabled:

@@ -3,6 +3,7 @@ from ursina import *
 import Game
 from Location.Map import Map
 from GameStates import GameStates
+from Graphics.GameButton import GameButton
 
 
 class AreaInfoContainer(Entity):
@@ -31,7 +32,7 @@ class AreaInfoContainer(Entity):
         )
         self.area_difficulty = 0
 
-        self.play_button = Button(
+        self.play_button = GameButton(
             "play",
             color=color.green,
             position=(0, -0.35),

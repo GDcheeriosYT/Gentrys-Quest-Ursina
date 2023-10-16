@@ -15,6 +15,6 @@ class ServerConnection:
             if response.status_code < 400:
                 self.token = GenerateToken(self.url).create_request()
                 self.connected = True
-                Game.notification_manager.add_notification(Notification("Connected to server", color.green))
+                Game.notification_manager.add_notification(Notification(Game.language.connected_server, color.green))
         except requests.exceptions.RequestException:
-            Game.notification_manager.add_notification(Notification("Unable to connect to server", color.red))
+            Game.notification_manager.add_notification(Notification(Game.language.connect_server_error, color.red))

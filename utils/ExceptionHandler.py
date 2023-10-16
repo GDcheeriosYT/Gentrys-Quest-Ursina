@@ -1,5 +1,6 @@
 from ursina import *
 
+import Game
 from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 
@@ -9,7 +10,7 @@ class ExceptionHandler:
         self._notification_manager = notification_manager
 
     def handle_exception(self, exception: Exception):
-        self._notification_manager.add_notification(Notification(f"A {exception.__class__.__name__} has occurred...", color.red))
+        self._notification_manager.add_notification(Notification(Game.language.get_localized_text(Game.language.exception_occured, exception.__class__.__name__), color.red))
         print(exception)
         traceback.print_exc()
 

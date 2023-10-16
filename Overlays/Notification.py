@@ -1,7 +1,9 @@
 from ursina import *
 
+from Graphics.GameText import GameText
 
-class Notification(Text):
+
+class Notification(GameText):
     def __init__(self, text: str, color: Color = rgb(17, 17, 17)):
         super().__init__(
             text,

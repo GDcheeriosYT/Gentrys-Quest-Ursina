@@ -1,9 +1,10 @@
 from ursina import *
 
 from utils.Event import Event
+from Graphics.GameButton import GameButton
 
 
-class AreaButton(Button):
+class AreaButton(GameButton):
     def __init__(self, area_name: str, parent: Entity):
         super().__init__(
             area_name,

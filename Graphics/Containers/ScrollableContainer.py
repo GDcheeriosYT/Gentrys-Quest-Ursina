@@ -11,7 +11,7 @@ class ScrollableContainer(Container):
         self.is_down = is_down
         self.distance = 0
         self.container_children = []
-        self.moving_container = Button(  # I guess it only works with buttons ＼（〇_ｏ）／
+        self.moving_container = GameButton(  # I guess it only works with buttons ＼（〇_ｏ）／
             "",
             parent=self,
             scale=(

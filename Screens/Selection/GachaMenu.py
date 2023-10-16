@@ -4,6 +4,8 @@ import Game
 
 from Graphics.Container import Container
 from Graphics.Containers.DirectionalContainer import DirectionalContainer
+from Graphics.GameButton import GameButton
+from Graphics.GameText import GameText
 from Gacha.GachaTypes import GachaTypes
 from Overlays.Notification import Notification
 
@@ -28,14 +30,14 @@ class GachaMenu(Entity):
             scale=(0.1, 0.25),
             parent=self
         )
-        self.amount_down = Button(
+        self.amount_down = GameButton(
             "-",
             scale=(0.25, 0.25),
             position=(-0.5, 0),
             parent=self.amount_container
         )
         self.amount_down.on_click = lambda: self.increase_amount(False)
-        self.amount_text = Text(
+        self.amount_text = GameText(
             str(self.amount),
             scale=(7, 7),
             position=(0, 0),
@@ -43,15 +45,15 @@ class GachaMenu(Entity):
             color=color.black,
             parent=self.amount_container
         )
-        self.amount_text_text = Text(
-            "Amount",
+        self.amount_text_text = GameText(
+            Game.language.amount,
             position=(0, 0.25),
             scale=(5, 5),
             origin=(0, 0),
             color=color.black,
             parent=self.amount_container
         )
-        self.amount_up = Button(
+        self.amount_up = GameButton(
             "+",
             scale=(0.25, 0.25),
             position=(0.5, 0),
@@ -77,8 +79,8 @@ class GachaMenu(Entity):
 
         self.select_banner(self.banners.items[0])
 
-        self.pull_character_button = Button(
-            "Pull character",
+        self.pull_character_button = GameButton(
+            Game.language.pull_character,
             position=(-0.25, 0),
             scale=(0.25, 0.1),
             parent=self
@@ -86,8 +88,8 @@ class GachaMenu(Entity):
 
         self.pull_character_button.on_click = lambda: self.pull(True)
 
-        self.pull_weapon_button = Button(
-            "Pull weapon",
+        self.pull_weapon_button = GameButton(
+            Game.language.pull_weapon,
             position=(-0.25, -0.25),
             scale=(0.25, 0.1),
             parent=self
@@ -127,4 +129,4 @@ class GachaMenu(Entity):
             else:
                 [Game.user.add_weapon(weapon) for weapon in self.selected_gacha.pull(self.amount, GachaTypes.Weapon)]
         else:
-            Game.notification_manager.add_notification(Notification("Can't afford...", color.red))
+            Game.notification_manager.add_notification(Notification(Game.language.cant_afford, color.red))

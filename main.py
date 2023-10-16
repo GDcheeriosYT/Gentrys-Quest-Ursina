@@ -45,8 +45,6 @@ window.borderless = False
 window.exit_button.disable()
 window.editor_ui.hide()
 
-GameConfiguration.apply_settings()
-
 server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http://gdcheerios.com"
 
 if args.debug:
@@ -64,7 +62,8 @@ else:
 
 # black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
 # destroy(black_thing, 3)
+Game.app = app
 
-ScreenManager(app)
+Game.screen_manager = ScreenManager(app)
 
 app.run()
