@@ -1,14 +1,13 @@
-import ursina.scene
 from ursina import *
+
 from typing import Union
 import random
+
 import Game
-import copy
-import GameConfiguration
+
 from Content.Enemies.TestEnemy import TestEnemy
 from Content.ArtifactFamilies.TestFamily.TestFamily import TestFamily
 from Entity.EntityPool import EntityPool
-from Overlays.Notification import Notification
 
 
 class Map:
@@ -22,7 +21,6 @@ class Map:
             difficulty_scales: bool = True,
             enemy_limit: int = 5,
             artifact_families: list = None,
-            weapon_list: list = None,
             music: list = None,
             spawn_delay: Union[int, float] = 7
     ):
@@ -45,11 +43,6 @@ class Map:
         else:
             self.artifact_families = [TestFamily()]
 
-        if weapon_list:
-            self.weapon_list = weapon_list
-        else:
-            self.weapon_list = [Game.content_manager.get_weapon("Knife")]
-
         if music:
             self.music = music
         else:
@@ -68,21 +61,24 @@ class Map:
 
         self.enemy_tracker = []
 
+        # state
+        self.loaded = False
+
     def load(self):
-        print("started loading")
-        self.destroy_enemies()
+        start_time = time.time()
+        Game.notification_manager.add_notification(Game.Notification(f"loading {self.name}", color.yellow))
         self.calculate_difficulty(Game.user.get_equipped_character())
-        self.enemy_pool = EntityPool(self.enemy_limit, self.enemies)
-        print(self.enemy_pool)
-        self.manage_entities(True)
-        self.music_player = Audio(random.choice(self.music), volume=GameConfiguration.volume, loop=True)
-        print("finished")
+        self.enemy_pool = EntityPool(self.enemy_limit, self.enemies, True)
+        [entity.enable() for entity in self.entities]
+        Game.audio_system.set_music(random.choice(self.music))
+        Game.notification_manager.add_notification(Game.Notification(f"Finished in {round(time.time() - start_time, 2)} seconds", color.yellow))
+        self.loaded = True
 
     def unload(self):
-        self.manage_entities(False)
-        self.destroy_enemies()
         self.enemy_pool.destroy()
+        [entity.disable() for entity in self.entities]
         destroy(self.music_player)
+        self.loaded = False
 
     def destroy_enemies(self):
         for enemy in self.enemy_tracker:
@@ -94,19 +90,26 @@ class Map:
         for enemy in self.enemy_tracker:
             enemy.disable() if enemy.enabled else enemy.enable()
 
-    def manage_entities(self, enable: bool = True):
-        for entity in self.entities:
-            entity.enable() if enable else entity.disable()
-
     def spawn(self):
         if self.can_spawn:
-            enemy = self.enemy_pool.get_entity()
+            enemy = self.enemy_pool.get_entity(False)
             if enemy:
-                enemy.follow_entity(Game.user.get_equipped_character())
+                enemy.position = (Game.user.get_equipped_character().position[0]+random.randint(-6, 6), Game.user.get_equipped_character().position[1]+random.randint(-6, 6))
                 enemy.spawn()
+                invoke(lambda: enemy.follow_entity(Game.user.get_equipped_character()), delay=1)
+
+    def artifact_check(self):
+        if Game.score_manager.spend_points(2500):
+            Game.user.add_artifact(self.generate_artifact())
+
+    def kill_all_enemies(self):
+        for enemy in self.enemy_pool.pool:
+            if enemy.enabled:
+                enemy.die()
 
     def spawn_sequence(self):
-        for i in range(self.generate_enemy_spawn_number()):
+        number = self.generate_enemy_spawn_number()
+        for i in range(number):
             self.spawn()
 
     def generate_enemy_spawn_number(self):
@@ -126,10 +129,6 @@ class Map:
 
         artifact = random.choice(self.artifact_families).get_random_artifact()(star_rating)
         return artifact
-
-    def generate_weapon(self):
-        weapon = type(random.choice(self.weapon_list))
-        return weapon()
 
     def calculate_difficulty(self, player):
         if self.difficulty_scales:

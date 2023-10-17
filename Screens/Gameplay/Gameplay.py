@@ -1,12 +1,14 @@
+from ursina import *
+
 import Game
+
 from Screens.Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 from Graphics.UIs.Inventory.Inventory import Inventory
-from ursina import *
 
 
 class Gameplay(Screen):
-    def __init__(self):
+    def __init__(self, test: bool = False):
         super().__init__()
         self.player = None
         self.hud = None
@@ -14,7 +16,7 @@ class Gameplay(Screen):
         self.in_inventory = False
         self.map = None
         self.time_tracker = time.time()
-
+        self.test = test
 
         self.on_show += self._on_show
         self.on_hide += self._on_hide
@@ -27,11 +29,23 @@ class Gameplay(Screen):
     def color(self):
         return color.gray
 
+    def levelup_score_manager(self):
+        Game.score_manager.add_level(self.player.experience.level)
+
     def _on_show(self):
+        Game.score_manager.reset_score()
         self.map = Game.selected_area
         self.player = Game.user.get_equipped_character()
+        self.player.on_level_up += self.levelup_score_manager
         self.hud = HUD(self.player)
+        if self.test:
+            self.hud.scale = (self.hud.scale[0]*0.8, self.hud.scale[1]*0.8)
+            self.hud.position = (0, -0.1)
+
         self.inventory = Inventory()
+        if self.test:
+            self.inventory.scale = (self.hud.scale[0]*0.75, self.hud.scale[1]*0.75)
+
         self.inventory.update_player()
         self.inventory.disable()
         self.map.load()
@@ -46,7 +60,14 @@ class Gameplay(Screen):
         if self.hud:
             self.hud.end()
 
-        destroy(self.inventory)
+        if self.player:
+            self.player.disable()
+            self.player.on_level_up -= self.levelup_score_manager
+
+        if self.inventory:
+            destroy(self.inventory)
+
+        camera.position = (0, 0)
 
     def toggle_spawned(self):
         self.spawned = False
@@ -67,16 +88,10 @@ class Gameplay(Screen):
         if self.player.spawned:
             camera.position = (self.player.x, self.player.y, -20)
 
-        if self.spawn_ready() and self.map.can_spawn:
+        if self.spawn_ready() and self.map.can_spawn and not self.test:
             self.map.spawn_sequence()
 
-        if self.player != Game.user.get_equipped_character():
-            self.player.despawn()
-            destroy(self.hud)
-            self.player = Game.user.get_equipped_character()
-            self.player.spawn()
-            self.hud = HUD(self.player)
-            self.hud.hide_elements()
+        self.map.artifact_check()
 
     def input(self, key):
         if key == "c":

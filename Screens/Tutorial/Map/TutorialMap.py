@@ -17,7 +17,7 @@ class TutorialMap(Entity):
         self.angry_pedestrian = AngryPedestrian()
         self.angry_pedestrian.disable()
         self.angry_pedestrian.position = (0, 0 , -1)
-        self.angry_pedestrian.can_move = False
+        self.angry_pedestrian.apply_effect(Game.content_manager.get_effect("Stun"))
         self.angry_pedestrian.follow_entity(Game.user.get_equipped_character())
         self.gas_station = GasStation()
         self.parking_lot = ParkingLot()

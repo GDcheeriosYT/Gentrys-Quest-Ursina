@@ -4,7 +4,7 @@ from ursina import *
 
 
 class Burn(Effect):
-    def __init__(self, ticks: int):
+    def __init__(self, ticks: int = 0):
         super().__init__(ticks=ticks, delay=0.3)
         self.on_effect += self.handle_damage
 

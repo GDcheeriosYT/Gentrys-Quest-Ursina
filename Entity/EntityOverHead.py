@@ -26,6 +26,7 @@ class EntityOverhead(Entity):
     def update_data(self):
         self.health_bar.max_value = self._entity.stats.health.get_value()
         self.health_bar.value = self._entity.stats.health.current_value
+        self.entity_name.text = f"{self._entity.name}\nlevel {self._entity.experience.level}"
 
     def change_name(self, name):
         self.entity_name.text = name

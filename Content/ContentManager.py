@@ -12,6 +12,7 @@ from Content.Characters.MasonJames.MasonJames import MasonJames
 
 # Effects
 from Content.Effects.Burn.Burn import Burn
+from Content.Effects.Stun.Stun import Stun
 
 # Enemies
 from Content.Enemies.TestEnemy import TestEnemy
@@ -50,7 +51,8 @@ class ContentManager:
         ]
         
         self.effects = [
-            Burn
+            Burn,
+            Stun
         ]
         
         self.enemies = [
@@ -111,6 +113,12 @@ class ContentManager:
         for location in self.locations:
             if name == location().name:
                 return location()
+
+    def get_effect(self, name):
+        for effect in self.effects:
+            effect = effect()
+            if effect.name == name:
+                return effect
 
     def get_weapon(self, name):
         for weapon in self.weapons:

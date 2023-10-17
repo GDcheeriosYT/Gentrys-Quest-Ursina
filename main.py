@@ -6,6 +6,9 @@ from GameStates import GameStates
 # User
 from User.User import User
 
+# TestCharacter
+from Content.Characters.TestCharacter import TestCharacter
+
 # screens
 from Screens.ScreenManager import ScreenManager
 
@@ -47,6 +50,9 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 if args.debug:
     Game.state = GameStates.testing
     Game.user = User("Test User", True)
+    test_character = TestCharacter()
+    Game.user.add_character(test_character)
+    Game.user.equip_character(test_character)
 else:
     server = ServerConnection(server_url if args.server is None else args.server)
     if GameConfiguration.play_intro:
@@ -54,6 +60,8 @@ else:
     else:
         Game.state = GameStates.mainMenu
 
+# black_thing = Entity(model="quad", scale=(20, 20), color=color.black, position=(0, 0, -3), parent=camera.ui)
+# destroy(black_thing, 3)
 Game.app = app
 
 Game.screen_manager = ScreenManager(app)

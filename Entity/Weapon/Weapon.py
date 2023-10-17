@@ -1,3 +1,4 @@
+import Game
 from ..GameEntityBase import GameEntityBase
 from ursina import *
 from utils.Event import Event
@@ -59,6 +60,10 @@ class Weapon(GameEntityBase):
         raise NotImplementedError
 
     @property
+    def drop_chance(self) -> int:
+        return 0
+
+    @property
     def equipped_entity(self):
         return self._equipped_entity
 
@@ -99,31 +104,61 @@ class Weapon(GameEntityBase):
     def attack_process(self, direction):
         pass
 
-    def manage_collision(self):
+    def manage_collision(self, is_down: bool = True):
         hit_info = raycast(
             self._instance.world_position,
-            self._instance.down,
+            self._instance.down if is_down else self._instance.up,
             ignore=[self],
-            # traverse_target=self.entity_hit_type,
             distance=self.range,
-            debug=True
+            debug=False
            )
-        print(hit_info.hit)
         if hit_info.hit:
             try:
                 hit_entity = hit_info.entity
-                print(hit_entity)
-                if hit_entity not in self.hit_list:
-                    print("list stat", hit_entity in self.hit_list)
+                if hit_entity not in self.hit_list and self.matches_condition(hit_entity):
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
+                    if hit_entity != Game.user.get_equipped_character():
+                         Game.score_manager.add_hit()
+
+                    if is_crit:
+                        Game.score_manager.add_crit()
+
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (
                                 self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
-                    damage = self.damage + int(round(self._equipped_entity.stats.attack.get_value() + crit_damage))
-                    amount = damage - hit_entity.stats.defense.get_value()
+                    damage = self.damage + self._equipped_entity.stats.attack.get_value() + crit_damage
+                    amount = int(round((damage * self.base_speed) - hit_entity.stats.defense.get_value()))
                     hit_entity.damage(amount, color.red if is_crit else color.white)
+
+                    if hit_entity.dead:
+                        loot = hit_entity.get_loot()
+                        self._equipped_entity.add_xp(loot.xp)
+
+                        if random.randint(1, 10000) <= hit_entity.weapon.drop_chance:
+                            Game.user.add_weapon(Game.content_manager.get_weapon(hit_entity.weapon.name))
+
+                        if hit_entity != Game.user.get_equipped_character():
+                            Game.score_manager.add_kill()
+                            Game.user.add_money(loot.money)
+
                     self.hit_list.append(hit_entity)
             except AttributeError as e:
                 print(e)
+
+    def matches_condition(self, entity) -> bool:
+        print(type(self._equipped_entity))
+        print(type(entity))
+        print(entity.affiliation, self._equipped_entity.affiliation)
+        print(entity == self._equipped_entity)
+        print(entity.check_affiliation(self._equipped_entity), Game.rules.friendly_fire)
+        print(id(self._equipped_entity), id(entity))
+
+        if entity == self._equipped_entity:
+            return False
+
+        if entity.check_affiliation(self._equipped_entity) and not Game.rules.friendly_fire:
+            return False
+
+        return True
 
     def jsonify(self):
         return {

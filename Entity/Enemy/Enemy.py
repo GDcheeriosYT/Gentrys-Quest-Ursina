@@ -7,6 +7,7 @@ from ..EntityOverHead import EntityOverhead
 from Entity.TextureMapping import TextureMapping
 from Entity.AudioMapping import AudioMapping
 from Entity.Loot import Loot
+from Entity.Affiliation import Affiliation
 
 
 class Enemy(GameUnit):
@@ -18,12 +19,11 @@ class Enemy(GameUnit):
             **kwargs
         )
         self.set_idle_texture()
+        self.affiliation = Affiliation.Enemy
 
         self._follow_entity = None
         self.not_attacking = True
 
-        self.on_death += lambda: destroy(self)
-        self.on_death += lambda: destroy(self.weapon)
         self.on_level_up += lambda: self._overhead.change_name(self.name + f"\nlevel {self.experience.level}")
 
     @property
@@ -44,10 +44,10 @@ class Enemy(GameUnit):
         self._stats.health.set_default_value(int(calculate(500, self._difficulty) + calculate(self.experience.level, (5 + calculate(self.experience.level, 0.18 + calculate(self._difficulty, 0.09))) + calculate(self.stats.health.points, 5))))
 
         # attack stats
-        self._stats.attack.set_default_value(int(calculate(30, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.04 + calculate(self._difficulty, 0.007))) + calculate(self.stats.attack.points, 2))))
+        self._stats.attack.set_default_value(int(calculate(250, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.04 + calculate(self._difficulty, 0.007))) + calculate(self.stats.attack.points, 2))))
 
         # defense stats
-        self._stats.defense.set_default_value(int(calculate(35, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.03 + calculate(self._difficulty, 0.006))) + calculate(self.stats.defense.points, 2))))
+        self._stats.defense.set_default_value(int(calculate(5, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.03 + calculate(self._difficulty, 0.006))) + calculate(self.stats.defense.points, 2))))
 
         # crit rate stats
         self._stats.crit_rate.set_default_value(20)
@@ -94,11 +94,11 @@ class Enemy(GameUnit):
                 self.weapon.attack(direction)
 
     def update(self):
-        if self.not_attacking:
+        if self.not_attacking and self._follow_entity:
             self.direction = Vec3(self._follow_entity.position - self.position).normalized()  # get the direction we're trying to walk in.
             if sqrt((self._follow_entity.position[0] - self.position[0]) ** 2 + (self._follow_entity.position[1] - self.position[1]) ** 2) <= self.range:
                 self.attack(self.direction)
 
-            if self.can_move and not self.hits(self.direction):
+            if not self.is_effected_by("Stun") and not self.hits(self.direction):
                 self.position += self.direction * self._stats.speed.get_value() * time.dt
                 self.on_move()

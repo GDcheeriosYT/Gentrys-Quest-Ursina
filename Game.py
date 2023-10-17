@@ -1,6 +1,7 @@
 from ursina import *
 
 import GameConfiguration
+from Rules import Rules
 from Overlays.NotificationsManager import NotificationManager
 from Overlays.Notification import Notification
 from GameStates import GameStates
@@ -10,6 +11,7 @@ from GPSystem.GPmain import GPSystem
 from Changelog import *
 from Audio.AudioSystem import AudioSystem
 from utils.ExceptionHandler import ExceptionHandler
+from ScoreManager import ScoreManager
 from Screens.ScreenManager import ScreenManager
 
 state = GameStates.intro
@@ -25,6 +27,8 @@ audio_system = AudioSystem(GameConfiguration.music_volume, GameConfiguration.sou
 selected_area = None
 testing_screen = None
 exception_handler = ExceptionHandler(notification_manager)
+rules = Rules()
+score_manager = ScoreManager()
 language = content_manager.get_language(GameConfiguration.language)
 app = None
 screen_manager = None

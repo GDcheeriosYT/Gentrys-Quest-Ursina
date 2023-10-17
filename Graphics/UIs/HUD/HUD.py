@@ -5,6 +5,7 @@ from .StatusBars import StatusBars
 from .SkillsContainer import SkillsContainer
 from .EffectsContainer import EffectsContainer
 from Entity.Character.Character import Character
+from ...TextStyles.ScoreText import ScoreText
 
 
 class HUD(Container):
@@ -12,6 +13,7 @@ class HUD(Container):
         super().__init__(parent=parent)
         self.player = player
         self._status_bars = StatusBars(self)
+        self._score_display = ScoreText(position=(0.5, 0.5), origin=(0.55, 0.55), scale=(2, 2), parent=self)
         self._stats_container = StatsContainer(self)
         self._skills_container = SkillsContainer(self.player, self)
         self._effects_container = EffectsContainer(self)
@@ -50,6 +52,7 @@ class HUD(Container):
         destroy(self._stats_container)
         destroy(self._skills_container)
         destroy(self._effects_container)
+        destroy(self._score_display)
         destroy(self)
 
         # destroy children and self

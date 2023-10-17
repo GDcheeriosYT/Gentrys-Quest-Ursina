@@ -12,6 +12,7 @@ from Entity.AudioMapping import AudioMapping
 from Entity.Loot import Loot
 from Entity.Artifact.Artifact import Artifact
 from Entity.Buff import Buff
+from Entity.Affiliation import Affiliation
 from Graphics.TextStyles.TitleText import TitleText
 from Graphics.FadeScreen import FadeScreen
 from Content.Effects.Burn.Burn import Burn
@@ -25,6 +26,8 @@ class Character(GameUnit):
             *args,
             **kwargs
         )
+
+        self.affiliation = Affiliation.Player
 
         self.texture = self.texture_mapping.get_idle_texture()
 
@@ -173,21 +176,21 @@ class Character(GameUnit):
             + self.right * (held_keys['d'] - held_keys['a'])
         ).normalized()
 
-        if self.can_move and not self.hits(self.direction):
+        if not self.is_effected_by("Stun") and not self.hits(self.direction):
             self.position += self.direction * self._stats.speed.get_value() * time.dt
             self.on_move()
 
-        if held_keys["left mouse"] and self._weapon:
+        if held_keys["left mouse"] and self._weapon and not self.is_effected_by("Stun"):
             if self._weapon.is_ready():
                 self.attack()
 
-        if held_keys["right mouse"] and self.secondary.is_ready and not self.secondary.disabled:
+        if held_keys["right mouse"] and self.secondary.is_ready and not self.is_effected_by("Stun"):
             self.secondary.activate()
 
-        if held_keys["shift"] and self.utility.is_ready and not self.ultimate.disabled:
+        if held_keys["shift"] and self.utility.is_ready and not self.is_effected_by("Stun"):
             self.utility.activate()
 
-        if held_keys["r"] and self.ultimate.is_ready and not self.ultimate.disabled:
+        if held_keys["r"] and self.ultimate.is_ready and not self.is_effected_by("Stun"):
             self.ultimate.activate()
 
         try:
@@ -220,16 +223,6 @@ class Character(GameUnit):
     def manage_loot(self, loot: Loot):
         self.add_xp(loot.xp)
         Game.user.add_money(loot.money)
-
-    def disable_skills(self):
-        self.secondary.disable()
-        self.utility.disable()
-        self.ultimate.disable()
-
-    def enable_skills(self):
-        self.secondary.enable()
-        self.utility.enable()
-        self.ultimate.enable()
 
     def create_texture_copy(self, delay: Union[int, float]):
         copy = Entity(

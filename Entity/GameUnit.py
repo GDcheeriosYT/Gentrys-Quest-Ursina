@@ -13,6 +13,7 @@ from .EntityOverHead import EntityOverhead
 from ursina import *
 from .Loot import Loot
 from .Effect import Effect
+from .Affiliation import Affiliation
 
 low = GameConfiguration.random_pitch_range[0]
 high = GameConfiguration.random_pitch_range[1]
@@ -34,11 +35,11 @@ class GameUnit(GameEntityBase):
         self._audio_mapping = audio_mapping
         self.direction = Vec3(0, 0, 0).normalized()
         self.dead = False
-        self.can_move = True
         self.spawned = False
         self.range = 1
         self.damage_text_pool = EntityPool(20, DamageText)
         self.effects = []
+        self.affiliation = Affiliation.Neutral
 
         # audio
 
@@ -99,6 +100,7 @@ class GameUnit(GameEntityBase):
         self.texture = self._texture_mapping.get_damage_texture()
 
     def damage(self, amount: int, color: Vec4 = color.white):
+        Game.score_manager.add_damage(amount)
         self._stats.health.current_value -= amount if amount > 0 else 0
         # self.set_damage_texture()
         self.damage_text_pool.get_entity().display(amount if amount > 0 else "miss", color, self)
@@ -135,6 +137,18 @@ class GameUnit(GameEntityBase):
 
         self.on_affected()
 
+    def is_effected_by(self, name: str):
+        for effect in self.effects:
+            if effect.name == name:
+                return True
+
+        return False
+
+    def remove_effect(self, name: str):
+        for effect in self.effects:
+            if effect.name == name:
+                self.effects.remove(effect)
+
     def handle_buffs(self):
         for effect in self.effects:
             effect.effect()
@@ -152,6 +166,7 @@ class GameUnit(GameEntityBase):
                 self.weapon.attack(direction)
 
     def heal(self, amount):
+        Game.score_manager.add_heal(amount)
         self.stats.health.current_value += amount
         self.on_heal()
 
@@ -160,7 +175,9 @@ class GameUnit(GameEntityBase):
         self.on_heal()
 
     def die(self):
-        self.despawn()
+        print(self.name, "died T_T")
+        self.disable()
+        self.dead = True
         self.on_death()
 
     def move_left(self):
@@ -182,17 +199,17 @@ class GameUnit(GameEntityBase):
     def spawn(self) -> None:
         self.enable()
         self.on_spawn()
-        self._overhead.change_name(f"{self.name}\nlevel {self.experience.level}")
         Game.audio_system.play_sound(self._audio_mapping.get_spawn_sound(), True)
         self.update_stats()
         self.stats.health.calculate_value()
+        self._overhead.update_data()
         self.dead = False
         self.spawned = True
 
     def hits(self, direction):
         origin = self.world_position
-        hit_info = raycast(origin, direction, ignore=[self], distance=.1)
-        return hit_info.hits
+        hit_info = raycast(origin, direction, ignore=[self], distance=.1, debug=False)
+        return hit_info.hit
 
     def despawn(self):
         self.disable()
@@ -205,10 +222,10 @@ class GameUnit(GameEntityBase):
     def on_destroy(self):
         self.dead = True
 
-    def toggle_movement(self):
-        self.can_move = not self.can_move
-
     def print_data(self, *_) -> None:
         print(self.name, self._difficulty)
         print(self._experience)
         print(self._stats)
+
+    def check_affiliation(self, entity) -> bool:
+        return entity.affiliation == self.affiliation

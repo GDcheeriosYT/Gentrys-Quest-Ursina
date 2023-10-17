@@ -18,8 +18,7 @@ class Tutorial(Screen):
 
     def _show(self):
         self.player = Game.user.get_equipped_character()
-        self.player.can_move = False
-        self.player.disable_skills()
+        self.player.apply_effect(Game.content_manager.get_effect("Stun"))
         self.map = TutorialMap()
         text_container = TextContainer()
         text_container.set_text("It's 10pm...", 5)

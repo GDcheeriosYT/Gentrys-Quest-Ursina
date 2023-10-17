@@ -1,5 +1,6 @@
 from ursina import *
 
+import Game
 from ...Test import Test
 
 from Entity.Character.Character import Character
@@ -27,8 +28,7 @@ class CharacterTest(Test):
         # test spawn button
         self.make_button("Create Character", create_character)
         self.get_button(index=0).on_click()
-        self.character.can_move = False
-        self.character.disable_skills()
+        self.character.apply_effect(Game.content_manager.get_effect("Stun"))
         self.character.scale = (0.2, 0.2)
 
         self.make_button("Spawn Character", self.character.spawn)

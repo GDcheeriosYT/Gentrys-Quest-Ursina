@@ -67,14 +67,8 @@ class DirectionalContainerTest(Test):
         self.get_button(index=1).on_click()
 
     def update_text(self, container):
-        if self.scale_text:
-            destroy(self.scale_text)
-
-        if self.ratio_text:
-            destroy(self.ratio_text)
-
-        self.scale_text = Text(f"scale: {round(container.formula / container.spacing, 2)}", origin=(0.5, 0.5), position=(0.5, 0.5), parent=Test.screen)
-        self.ratio_text = Text(f"ratio: {round(container.ratio, 2)}({round(container.width, 2)}:{round(container.height, 2)})", origin=(0.5, 0.5), position=(0.5, 0.46), parent=Test.screen)
+        self.info += f"scale: {round(container.formula / container.spacing, 2)}"
+        self.info += f"ratio: {round(container.ratio, 2)}({round(container.width, 2)}:{round(container.height, 2)})"
 
     def _unload(self):
         destroy(self.directional_container_horizontal)
