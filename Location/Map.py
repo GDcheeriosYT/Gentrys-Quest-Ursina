@@ -67,8 +67,8 @@ class Map:
     def load(self):
         start_time = time.time()
         Game.notification_manager.add_notification(Game.Notification(f"loading {self.name}", color.yellow))
-        self.calculate_difficulty(Game.user.get_equipped_character())
         self.enemy_pool = EntityPool(self.enemy_limit, self.enemies, True)
+        self.calculate_difficulty(Game.user.get_equipped_character())
         [entity.enable() for entity in self.entities]
         Game.audio_system.set_music(random.choice(self.music))
         Game.notification_manager.add_notification(Game.Notification(f"Finished in {round(time.time() - start_time, 2)} seconds", color.yellow))
@@ -137,4 +137,13 @@ class Map:
             self.current_difficulty = self.difficulty
 
         if self.enemy_pool:
-            del self.enemy_pool
+            self.enemy_pool.shuffle()
+            level = player.experience.level
+            mod = level % 20
+            min_difference = mod - 3
+            max_difference = mod + 3
+            minimum = min_difference if min_difference >= 0 else 0
+            maximum = max_difference if max_difference <= 19 else 19
+            for enemy in self.enemy_pool.pool:
+                enemy.experience.level = ((self.current_difficulty - 1) * 20) + random.randint(minimum, maximum)
+                enemy.update_stats()

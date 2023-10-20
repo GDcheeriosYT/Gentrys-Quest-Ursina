@@ -48,6 +48,15 @@ class Stats:
         self._speed.boost_stat(percentage)
         self._attack_speed.boost_stat(percentage)
 
+    def restore_stats(self):
+        self._health.restore_value()
+        self._attack.restore_value()
+        self._defense.restore_value()
+        self._crit_rate.restore_value()
+        self._crit_damage.restore_value()
+        self._speed.restore_value()
+        self._attack_speed.restore_value()
+
     @staticmethod
     def get_stat_strings() -> list:
         return [

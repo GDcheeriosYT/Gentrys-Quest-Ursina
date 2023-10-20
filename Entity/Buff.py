@@ -38,7 +38,7 @@ class Buff:
             calculation /= 4
 
         self._value = round(calculation, 2)
-        if Stats().get_stat_by_string(self._stat).is_int() and not self._is_percent: self._value = int(round(self._value, 2))
+        if Stats().get_stat_by_string(self._stat).is_int and not self._is_percent: self._value = int(round(self._value, 2))
         # print(self._stat, self.level, self._value, calculation)
 
     @property

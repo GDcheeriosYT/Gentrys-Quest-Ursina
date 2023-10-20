@@ -14,7 +14,12 @@ class Stat:
         self.calculate_value()
 
     def calculate_value(self):
+        difference = self._value
         self._value = self._minimum_value + self._default_value + self._additional_value
+        difference = self._value - difference
+        self.current_value += difference
+
+    def restore_value(self):
         if self._is_int:
             self.current_value = int(self._value)
         else:
@@ -24,7 +29,7 @@ class Stat:
     def name(self) -> str:
         return self._name
 
-    property
+    @property
     def is_int(self) -> bool:
         return self._is_int
 
@@ -48,8 +53,7 @@ class Stat:
 
     def set_default_value(self, value):
         self._default_value = value
-        if self._name != "Health":
-            self.calculate_value()
+        self.calculate_value()
 
     def get_percent_of_stat(self, percent, include_additional: bool = True):
         if include_additional:
@@ -59,18 +63,15 @@ class Stat:
 
     def set_additional_value(self, value):
         self._additional_value = value
-        if self._name != "Health":
-            self.calculate_value()
+        self.calculate_value()
 
     def boost_stat(self, percentage):
         self._additional_value += self.get_default_value() * (percentage * 0.01)
-        if self._name != "Health":
-            self.calculate_value()
+        self.calculate_value()
 
     def add_value(self, amount):
         self._additional_value += amount
-        if self._name != "Health":
-            self.calculate_value()
+        self.calculate_value()
 
     def remove_value(self, amount):
         if self._additional_value - amount < 0:

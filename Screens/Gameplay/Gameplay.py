@@ -32,6 +32,9 @@ class Gameplay(Screen):
     def levelup_score_manager(self):
         Game.score_manager.add_level(self.player.experience.level)
 
+    def diff_check(self):
+        self.map.calculate_difficulty(self.player)
+
     def _on_show(self):
         Game.score_manager.reset_score()
         self.map = Game.selected_area
@@ -50,6 +53,7 @@ class Gameplay(Screen):
         self.inventory.disable()
         self.map.load()
         self.player.spawn()
+        self.player.on_level_up += self.diff_check
         self.time_started = time.time()
         self.spawned = False
 
@@ -63,6 +67,7 @@ class Gameplay(Screen):
         if self.player:
             self.player.disable()
             self.player.on_level_up -= self.levelup_score_manager
+            self.player.on_level_up -= self.diff_check
 
         if self.inventory:
             destroy(self.inventory)

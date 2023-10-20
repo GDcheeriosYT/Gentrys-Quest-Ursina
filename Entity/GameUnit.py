@@ -201,7 +201,7 @@ class GameUnit(GameEntityBase):
         self.on_spawn()
         Game.audio_system.play_sound(self._audio_mapping.get_spawn_sound(), True)
         self.update_stats()
-        self.stats.health.calculate_value()
+        self._stats.restore_stats()
         self._overhead.update_data()
         self.dead = False
         self.spawned = True
