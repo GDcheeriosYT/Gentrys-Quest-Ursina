@@ -17,7 +17,7 @@ class AngryChineseMan(Enemy):
 
         # stats
         self.stats.attack_speed.points = 2
-        self.stats.speed.points = 5
+        self.stats.speed.points = 2
 
     @property
     def name(self) -> str:
