@@ -1,11 +1,10 @@
 import Game
+from GameStates import GameStates
 from ..GameEntityBase import GameEntityBase
 from ursina import *
 from utils.Event import Event
 from utils.TypeMethods import determine_hit_type
 from Entity.Buff import Buff
-from Entity.EntityPool import EntityPool
-from Graphics.TextStyles.DamageText import DamageText
 
 
 class Weapon(GameEntityBase):
@@ -110,7 +109,7 @@ class Weapon(GameEntityBase):
             self._instance.down if is_down else self._instance.up,
             ignore=[self],
             distance=self.range,
-            debug=False
+            debug=True if Game.state == GameStates.testing else False
            )
         if hit_info.hit:
             try:

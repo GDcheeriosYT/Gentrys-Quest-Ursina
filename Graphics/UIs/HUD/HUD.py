@@ -37,11 +37,13 @@ class HUD(Container):
         self._status_bars.disable()
         self._stats_container.disable()
         self._skills_container.disable()
+        self._score_display.disable()
 
     def show_elements(self):
         self._status_bars.enable()
         self._stats_container.enable()
         self._skills_container.enable()
+        self._score_display.enable()
 
     def end(self):
         self.player.on_add_xp -= self.update_status_bars

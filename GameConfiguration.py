@@ -87,10 +87,9 @@ def save_settings():
 
 
 def apply_settings():
-    window.position = window_position
+    window.windowed_position = window_position
     # window.forced_aspect_ratio = window_ratio
-    window.size = window_size
-    window.fullscreen = fullscreen
+    window.windowed_size = window_size
     print("Applied Settings!")
 
 

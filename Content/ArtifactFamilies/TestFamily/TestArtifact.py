@@ -5,7 +5,7 @@ from Entity.Buff import Buff
 
 
 class TestArtifact(Artifact):
-    def __init__(self):
+    def __init__(self, *args):
         star_rating = random.randint(1, 5)
         super().__init__(
             star_rating=star_rating,
@@ -15,3 +15,7 @@ class TestArtifact(Artifact):
     @property
     def name(self) -> str:
         return "Test Artifact"
+
+    @property
+    def family(self) -> str:
+        return "Test Family"

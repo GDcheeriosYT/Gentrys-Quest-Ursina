@@ -1,3 +1,4 @@
+import Game
 import GameConfiguration
 from Entity.Character.Skill.Skill import Skill
 from ursina import *
@@ -6,8 +7,10 @@ from ursina import *
 class Dash(Skill):
     def __init__(self):
         super().__init__()
+        self._sound = Audio("Audio/Utility.m4a", autoplay=False)
+
         self.on_activate += self._on_activate
-        self.on_activate += lambda: Audio("Audio/Utility.m4a", volume=GameConfiguration.volume)
+        self.on_activate += lambda: Game.audio_system.play_sound(self._sound, True)
 
     @property
     def name(self) -> str:

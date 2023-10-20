@@ -27,6 +27,7 @@ class ScoreManager():
 
     def reset_score(self):
         self._score = 0
+        self._points = 0
 
         self.on_score()
 

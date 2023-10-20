@@ -89,6 +89,7 @@ class Gameplay(Screen):
             camera.position = (self.player.x, self.player.y, -20)
 
         if self.spawn_ready() and self.map.can_spawn and not self.test:
+            self.map.enemy_pool.shuffle()
             self.map.spawn_sequence()
 
         self.map.artifact_check()

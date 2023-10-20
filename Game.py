@@ -50,7 +50,7 @@ def reload_screen():
     notification_manager.add_notification(Notification(language.reloading_screen, color.yellow))
     screen_manager.kill()
     screen_manager = ScreenManager(app)
-    invoke(lambda: change_state(GameStates.mainMenu), delay=GameConfiguration.fade_time)
+    invoke(lambda: change_state(GameStates.mainMenu), delay=GameConfiguration.fade_time*2)
 
 
 # changelog
