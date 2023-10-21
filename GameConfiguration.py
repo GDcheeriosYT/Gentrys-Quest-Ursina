@@ -1,23 +1,28 @@
 import json
 from ursina import *
 
+# settings
 music_volume = 1
 sound_volume = 1
 play_intro = False
 hide_fps = False
 borderless = False
 fullscreen = True
-server = "https://gdcheerios.com"
 extra_ui_info = True
 discord_presence = False
-random_pitch_range = (0.7, 1.3)
-local_dev_branch = True
 language = "English"
-fade_time = 0.6
+font = "Graphics/fonts/JPfont.ttf"
+window_size = 500, 500
 window_position = 0, 0
 window_ratio = 1.333
-window_size = 500, 500
-font = "Graphics/fonts/JPfont.ttf"
+
+# build info
+server = "https://gdcheerios.com"
+local_dev_branch = True
+
+# game config
+random_pitch_range = (0.7, 1.3)
+fade_time = 0.6
 
 
 def update_config(settings: dict):

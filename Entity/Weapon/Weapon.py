@@ -25,6 +25,7 @@ class Weapon(GameEntityBase):
         self.time_started = 0
         self.speed = 0
         self.angle = 0
+        self.scale_override = 1, 1
         self.enable()
         self.update_stats()
 
@@ -148,12 +149,12 @@ class Weapon(GameEntityBase):
                 Game.exception_handler.handle_exception(e)
 
     def matches_condition(self, entity) -> bool:
-        print(type(self._equipped_entity))
-        print(type(entity))
-        print(entity.affiliation, self._equipped_entity.affiliation)
-        print(entity == self._equipped_entity)
-        print(entity.check_affiliation(self._equipped_entity), Game.rules.friendly_fire)
-        print(id(self._equipped_entity), id(entity))
+        # print(type(self._equipped_entity))
+        # print(type(entity))
+        # print(entity.affiliation, self._equipped_entity.affiliation)
+        # print(entity == self._equipped_entity)
+        # print(entity.check_affiliation(self._equipped_entity), Game.rules.friendly_fire)
+        # print(id(self._equipped_entity), id(entity))
 
         if entity == self._equipped_entity:
             return False

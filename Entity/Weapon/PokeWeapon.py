@@ -46,7 +46,7 @@ class PokeWeapon(Weapon):
         self._instance = Entity(
             model='quad',
             texture=self.texture,
-            scale=(1, 1),
+            scale=self.scale_override,
             origin=(0, -0.5),
             rotation=(0, 0, -direction + 90),
             parent=self._equipped_entity

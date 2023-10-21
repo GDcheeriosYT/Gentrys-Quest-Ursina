@@ -2,13 +2,9 @@ import random
 
 from .GachaTypes import GachaTypes
 
-from typing import List
-from Entity.Character.Character import Character
-from Entity.Weapon.Weapon import Weapon
-
 
 class Gacha:
-    def __init__(self, name: str, cost: int, characters: List[Character], weapons: List[Weapon]):
+    def __init__(self, name: str, cost: int, characters: list, weapons: list):
         self.name = name
         self.cost = cost
         self.characters = [character() for character in characters]

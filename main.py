@@ -15,6 +15,9 @@ from Screens.ScreenManager import ScreenManager
 # online packages
 from Online.ServerConnection import ServerConnection
 
+# Languages
+from Content.Languages.English import English
+
 # external packages
 from ursina import *
 import argparse
@@ -49,6 +52,7 @@ server_url = "http://localhost" if GameConfiguration.local_dev_branch else "http
 
 if args.debug:
     Game.state = GameStates.testing
+    Game.language = English()
     Game.user = User("Test User", True)
     test_character = TestCharacter()
     Game.user.add_character(test_character)

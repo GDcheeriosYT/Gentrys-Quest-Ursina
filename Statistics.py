@@ -68,7 +68,7 @@ class Statistics:
     def add_self_hit(self, damage: int):
         self.total_self_hits += 1
         self.total_damage_taken += damage
-        if damage > self.total_damage_taken:
+        if damage > self.most_damage_taken:
             self.most_damage_taken = damage
 
     def add_kill(self):
@@ -81,7 +81,7 @@ class Statistics:
         self.total_money_gained += amount
 
     def spend_money(self, amount: int):
-        print(self.total_money_spent)
+        self.total_money_spent += amount
         if amount > self.most_money_spent:
             self.most_money_spent = amount
 
