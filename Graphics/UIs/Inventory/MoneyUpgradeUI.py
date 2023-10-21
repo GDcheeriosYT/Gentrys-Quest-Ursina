@@ -39,7 +39,7 @@ class MoneyUpgradeUI(Entity):
             if amount > Game.user.user_data.money:
                 Game.notification_manager.add_notification(Notification(Game.language.cant_afford, color=color.red))
             else:
-                Game.user.user_data.remove_money(amount)
+                Game.user.remove_money(amount)
                 entity.add_xp(amount * 10)
                 update_method()
 

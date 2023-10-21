@@ -31,7 +31,6 @@ def update_config(settings: dict):
         elif language == "日本語":
             pass
 
-
         # audio
         global music_volume
         global sound_volume

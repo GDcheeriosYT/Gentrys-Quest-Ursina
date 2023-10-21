@@ -8,5 +8,4 @@ class TwoPiece(TwoPieceBuff):
         )
 
     def apply_buff(self, character):
-        print("I was called")
         character.stats.crit_damage.add_value(20)

@@ -1,6 +1,7 @@
 from ursina import *
 
 import Game
+from Statistics import Statistics
 from .UserData import UserData
 from Entity.Character.Character import Character
 from Entity.Artifact.Artifact import Artifact
@@ -41,9 +42,11 @@ class User:
 
     def add_money(self, amount):
         self._user_data.add_money(amount)
+        Game.stats.add_money(amount)
 
     def remove_money(self, amount):
         self._user_data.remove_money(amount)
+        Game.stats.spend_money(amount)
 
     def get_characters(self) -> List[Character]:
         return self._user_data.characters
@@ -53,6 +56,9 @@ class User:
 
     def get_weapons(self) -> List[Weapon]:
         return self._user_data.weapons
+
+    def get_stats(self) -> Statistics:
+        return self._user_data.statistics
 
     def replace_data(self, json_str):
         self._user_data = UserData(json_str)
@@ -65,9 +71,6 @@ class User:
 
     def add_weapon(self, weapon: Weapon):
         self._user_data.add_weapon(weapon)
-
-    def add_money(self, money: int):
-        self._user_data.add_money(money)
 
     def equip_character(self, character: Character):
         self._user_data.equip_character(character)
@@ -92,6 +95,7 @@ class User:
         self._user_data.load_items()
 
     def save_data(self):
+        Game.migrate_stats_to_user()
         if self._is_guest:
             json.dump(self._user_data.jsonify_data(), open(f"Data/{self._username}.json", "w"), indent=4)
 
@@ -100,7 +104,6 @@ class User:
 
         [destroy(item) for item in self._user_data.characters]
         [destroy(item) for item in self._user_data.weapons]
-        # [destroy(item) for item in self._user_data.artifacts]
 
     def __repr__(self):
         print(self._username, self._gp, "GP")

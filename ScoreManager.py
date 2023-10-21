@@ -68,7 +68,6 @@ class ScoreManager():
         self.add_score(amount)
         self._heal_score += amount
 
-
     def add_damage(self, amount):
         self._damage += amount
         amount = int(amount / 10)

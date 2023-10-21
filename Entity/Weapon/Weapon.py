@@ -116,17 +116,20 @@ class Weapon(GameEntityBase):
                 hit_entity = hit_info.entity
                 if hit_entity not in self.hit_list and self.matches_condition(hit_entity):
                     is_crit = random.randint(0, 100) < self._equipped_entity.stats.crit_rate.get_value()
-                    if hit_entity != Game.user.get_equipped_character():
-                         Game.score_manager.add_hit()
-
-                    if is_crit:
-                        Game.score_manager.add_crit()
-
                     crit_damage = (self._equipped_entity.stats.attack.get_value() * (
                                 self._equipped_entity.stats.crit_damage.get_value() * 0.01)) if is_crit else 1
                     damage = self.damage + self._equipped_entity.stats.attack.get_value() + crit_damage
                     amount = int(round((damage * self.base_speed) - hit_entity.stats.defense.get_value()))
                     hit_entity.damage(amount, color.red if is_crit else color.white)
+
+                    if hit_entity != Game.user.get_equipped_character():
+                        Game.score_manager.add_hit()
+                        if is_crit:
+                            Game.score_manager.add_crit()
+
+                        Game.stats.add_hit(is_crit, amount)
+                    else:
+                        Game.stats.add_self_hit(amount)
 
                     if hit_entity.dead:
                         loot = hit_entity.get_loot()
@@ -136,12 +139,13 @@ class Weapon(GameEntityBase):
                             Game.user.add_weapon(Game.content_manager.get_weapon(hit_entity.weapon.name))
 
                         if hit_entity != Game.user.get_equipped_character():
+                            Game.stats.add_kill()
                             Game.score_manager.add_kill()
                             Game.user.add_money(loot.money)
 
                     self.hit_list.append(hit_entity)
             except AttributeError as e:
-                print(e)
+                Game.exception_handler.handle_exception(e)
 
     def matches_condition(self, entity) -> bool:
         print(type(self._equipped_entity))

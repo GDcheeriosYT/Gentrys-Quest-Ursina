@@ -1,14 +1,15 @@
-from ursina import *
+import json
 from typing import List
 
+from ursina import *
+
 import Game
-from Entity.Character.Character import Character
 from Entity.Artifact.Artifact import Artifact
+from Entity.Character.Character import Character
 from Entity.Weapon.Weapon import Weapon
-from Overlays.NotificationsManager import NotificationManager
-from Overlays.Notification import Notification
 from IO.DataLoader import DataLoader
-import json
+from Overlays.Notification import Notification
+from Statistics import Statistics
 
 
 class UserData:
@@ -22,6 +23,8 @@ class UserData:
             self._equipped_character = None
             self._money = json_data["inventory"]["money"]
             self._startup_amount = json_data["startup amount"]
+            self._statistics = Statistics()
+            self._statistics.load_from_json(json_data["statistics"])
         else:
             self._characters = []
             self._artifacts = []
@@ -30,6 +33,7 @@ class UserData:
             self._weapons = []
             self._money = 0
             self._startup_amount = 0
+            self._statistics = Statistics()
 
         self.data_parsed = False
 
@@ -60,6 +64,10 @@ class UserData:
     @property
     def equipped_character(self) -> Character:
         return self._equipped_character
+
+    @property
+    def statistics(self) -> Statistics:
+        return self._statistics
 
     def load_items(self):
         self._characters = DataLoader.parse_characters(self._characters)
@@ -107,7 +115,8 @@ class UserData:
                 "artifacts": artifacts,
                 "weapons": weapons,
                 "money": self._money
-            }
+            },
+            "statistics": self._statistics.jsonify()
         }
 
     def __repr__(self):

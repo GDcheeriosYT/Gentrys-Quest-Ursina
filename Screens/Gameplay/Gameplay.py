@@ -5,6 +5,7 @@ import Game
 from Screens.Screen import Screen
 from Graphics.UIs.HUD.HUD import HUD
 from Graphics.UIs.Inventory.Inventory import Inventory
+from Statistics import Statistics
 
 
 class Gameplay(Screen):
@@ -55,6 +56,7 @@ class Gameplay(Screen):
         self.player.spawn()
         self.player.on_level_up += self.diff_check
         self.time_started = time.time()
+        Game.migrate_stats_to_user()
         self.spawned = False
 
     def _on_hide(self):
@@ -71,6 +73,9 @@ class Gameplay(Screen):
 
         if self.inventory:
             destroy(self.inventory)
+
+        Game.stats.add_score(Game.score_manager.get_score())
+        Game.migrate_stats_to_user()
 
         camera.position = (0, 0)
 

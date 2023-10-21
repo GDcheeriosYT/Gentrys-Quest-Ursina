@@ -1,7 +1,8 @@
 from ursina import *
-from .Experience import Experience
-from .TextureMapping import TextureMapping
+
+import Game
 from utils.Event import Event
+from .Experience import Experience
 
 
 class GameEntityBase(Entity):
@@ -50,6 +51,7 @@ class GameEntityBase(Entity):
     def level_up(self):
         self.experience.level += 1
         self.experience.xp = 0
+        Game.stats.add_level(self._experience.level)
         self.on_level_up()
 
     def update_stats(self):

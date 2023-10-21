@@ -40,9 +40,10 @@ class GameUnit(GameEntityBase):
         self.damage_text_pool = EntityPool(20, DamageText)
         self.effects = []
         self.affiliation = Affiliation.Neutral
+        self.is_current_player = False
 
         # audio
-
+        # no audio lol
 
         # event initialization
         self.on_heal = Event("OnHeal", 0)
@@ -167,6 +168,9 @@ class GameUnit(GameEntityBase):
 
     def heal(self, amount):
         Game.score_manager.add_heal(amount)
+        if self.is_current_player:
+            Game.stats.add_heal(amount)
+
         self.stats.health.current_value += amount
         self.on_heal()
 
@@ -175,7 +179,6 @@ class GameUnit(GameEntityBase):
         self.on_heal()
 
     def die(self):
-        print(self.name, "died T_T")
         self.disable()
         self.dead = True
         self.on_death()

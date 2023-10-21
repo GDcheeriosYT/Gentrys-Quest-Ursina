@@ -1,4 +1,6 @@
 from ursina import *
+
+import Game
 from ..Stats import Stats
 from typing import List
 from ..Buff import Buff

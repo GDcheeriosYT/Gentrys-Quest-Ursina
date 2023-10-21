@@ -62,9 +62,11 @@ class Character(GameUnit):
 
     def equip(self):
         self._is_equipped = True
+        self.is_current_player = True
 
     def unequip(self):
         self._is_equipped = False
+        self.is_current_player = False
 
     def _on_level_up(self):
         notification = Notification(f"{self.name} is now level {self.experience.level}", color.blue)

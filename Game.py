@@ -10,6 +10,7 @@ from Content.ContentManager import ContentManager
 from GPSystem.GPmain import GPSystem
 from Changelog import *
 from Audio.AudioSystem import AudioSystem
+from Statistics import Statistics
 from utils.ExceptionHandler import ExceptionHandler
 from ScoreManager import ScoreManager
 from Screens.ScreenManager import ScreenManager
@@ -29,9 +30,19 @@ testing_screen = None
 exception_handler = ExceptionHandler(notification_manager)
 rules = Rules()
 score_manager = ScoreManager()
+stats = Statistics()
 language = content_manager.get_language(GameConfiguration.language)
 app = None
 screen_manager = None
+
+
+def migrate_stats_to_user():
+    global user
+    global stats
+    if user:
+        user.get_stats().converge(stats)
+
+    stats = Statistics()
 
 
 def change_state(new_state: GameStates):
@@ -50,7 +61,7 @@ def reload_screen():
     notification_manager.add_notification(Notification(language.reloading_screen, color.yellow))
     screen_manager.kill()
     screen_manager = ScreenManager(app)
-    invoke(lambda: change_state(GameStates.mainMenu), delay=GameConfiguration.fade_time*2)
+    invoke(lambda: change_state(GameStates.mainMenu), delay=GameConfiguration.fade_time * 2)
 
 
 # changelog
