@@ -19,25 +19,19 @@ class Tutorial(Screen):
     def _show(self):
         self.player = Game.user.get_equipped_character()
         self.player.apply_effect(Game.content_manager.get_effect("Stun"))
-        self.map = TutorialMap()
+        self.hud = HUD(self.player)
+        self.hud.hide_elements()
+        self.map = TutorialMap(self.hud)
         text_container = TextContainer()
         text_container.set_text("It's 10pm...", 5)
         camera.position = (0, -10, -20)
         camera.animate_position((0, 0, -20), 4, curve=linear)
         invoke(self.player.spawn, delay=5)
-        invoke(self.player.toggle_movement, delay=10)
-        self.hud = HUD(self.player)
-        self.hud.hide_elements()
+        invoke(lambda: self.player.remove_effect("Stun"), delay=10)
         text_container.schedule_text(f"{self.player.name} is at a\nconvenience store buying ramen noodles.", 5, 5)
         text_container.schedule_text(f"He picks up some ramen.", 10, 5)
         invoke(lambda: Ramen(position=(6, 0)), delay=10)
         invoke(self.show_controls, delay=9)
-        # npc = AngryPedestrian()
-        # npc.stats.attack.points = 57
-        # npc.stats.health.points = 900
-        # npc.experience.level = 20
-        # npc.follow_entity(self.player)
-        # invoke(npc.spawn, delay=12)
 
     def show_controls(self):
         movement = Text(
