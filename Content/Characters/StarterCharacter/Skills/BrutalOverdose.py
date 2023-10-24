@@ -1,5 +1,6 @@
-from Entity.Character.Skill.Skill import Skill
 from ursina import *
+
+from Entity.Character.Skill.Skill import Skill
 
 
 class BrutalOverdose(Skill):
@@ -16,12 +17,18 @@ class BrutalOverdose(Skill):
 
         def hit_check(instance: Entity):
             nonlocal times
-            entity = instance.intersects().entity
+            intersection = instance.intersects()
+            print(intersection.entities)
+            entities = intersection.entities
             try:
-                if entity is not self.character:
-                    entity.damage(self.character.stats.health.get_percent_of_stat(25))
+                for entity in entities:
+                    if entity != self.character:
+                        entity.damage(self.character.stats.attack.get_percent_of_stat(105))
             except AttributeError:
                 pass
+
+            if times > 0:
+                invoke(lambda: hit_check(self._instance), delay=1)
 
             times -= 1
 
@@ -32,6 +39,8 @@ class BrutalOverdose(Skill):
             color=rgb(200, 0, 0, 200),
             position=self.character.position
         )
+
+        self.character.animate_position((self.character.position[0] + 5, self.character.position[1] + 5))
 
         invoke(lambda: hit_check(self._instance), delay=1)
         destroy(self._instance, 10)

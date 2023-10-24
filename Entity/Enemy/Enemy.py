@@ -41,13 +41,13 @@ class Enemy(GameUnit):
         self._difficulty = int(1 + (self.experience.level / 20))
 
         # health stats
-        self._stats.health.set_default_value(int(calculate(500, self._difficulty) + calculate(self.experience.level, (5 + calculate(self.experience.level, 0.18 + calculate(self._difficulty, 0.09))) + calculate(self.stats.health.points, 5))))
+        self._stats.health.set_default_value(int(calculate(500, self._difficulty) + calculate(self.experience.level, (5 + calculate(self.experience.level, 0.2 + calculate(self._difficulty, 0.18))) + calculate(self.stats.health.points, 7))))
 
         # attack stats
-        self._stats.attack.set_default_value(int(calculate(250, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.04 + calculate(self._difficulty, 0.007))) + calculate(self.stats.attack.points, 2))))
+        self._stats.attack.set_default_value(int(calculate(250, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.06 + calculate(self._difficulty, 0.014))) + calculate(self.stats.attack.points, 4))))
 
         # defense stats
-        self._stats.defense.set_default_value(int(calculate(5, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.03 + calculate(self._difficulty, 0.006))) + calculate(self.stats.defense.points, 2))))
+        self._stats.defense.set_default_value(int(calculate(5, self._difficulty) + calculate(self.experience.level, (calculate(self.experience.level, 0.03 + calculate(self._difficulty, 0.012))) + calculate(self.stats.defense.points, 2))))
 
         # crit rate stats
         self._stats.crit_rate.set_default_value(20)
@@ -63,7 +63,8 @@ class Enemy(GameUnit):
         money += self._stats.defense.points * 1.5
         money += self._stats.attack.points * 2.5
         money += self._stats.health.points * 2
-        money += self.experience.level * 2
+        money += self.experience.level * 1.2
+        money = int(money)
 
         xp = 0
         xp += self._stats.defense.points * 0.5
