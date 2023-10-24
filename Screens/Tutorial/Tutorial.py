@@ -1,13 +1,13 @@
 from ursina import *
-from ..Screen import Screen
-from Graphics.UIs.HUD.HUD import HUD
-import Game
-from .Map.TutorialMap import TutorialMap
-from Content.Weapons.BraydensOsuPen.BraydensOsuPen import BraydensOsuPen
-from Content.Enemies.AngryPedestrian.AngryPedestrian import AngryPedestrian
-from Graphics.Containers.TextContainer import TextContainer
-from .Map.Ramen import Ramen
 from ursina.curve import *
+
+import Game
+
+from Graphics.Containers.TextContainer import TextContainer
+
+from ..Screen import Screen
+from .Map.TutorialMap import TutorialMap
+from .Map.Ramen import Ramen
 
 
 class Tutorial(Screen):
@@ -19,17 +19,15 @@ class Tutorial(Screen):
     def _show(self):
         self.player = Game.user.get_equipped_character()
         self.player.apply_effect(Game.content_manager.get_effect("Stun"))
-        self.hud = HUD(self.player)
-        self.hud.hide_elements()
-        self.map = TutorialMap(self.hud)
+        self.map = TutorialMap()
         text_container = TextContainer()
         text_container.set_text("It's 10pm...", 5)
         camera.position = (0, -10, -20)
         camera.animate_position((0, 0, -20), 4, curve=linear)
         invoke(self.player.spawn, delay=5)
         invoke(lambda: self.player.remove_effect("Stun"), delay=10)
-        text_container.schedule_text(f"{self.player.name} is at a\nconvenience store buying ramen noodles.", 5, 5)
-        text_container.schedule_text(f"He picks up some ramen.", 10, 5)
+        text_container.schedule_text(f"{self.player.name} is at a\nconvenience store buying ramen noodles.", 6, 4)
+        text_container.schedule_text(f"He picks up some ramen.", 11, 5)
         invoke(lambda: Ramen(position=(6, 0)), delay=10)
         invoke(self.show_controls, delay=9)
 
@@ -55,7 +53,3 @@ class Tutorial(Screen):
     @property
     def color(self) -> color:
         return rgb(17, 80, 17)
-
-    def input(self, key):
-        if key == "left mouse":
-            self.phase += 1
