@@ -64,6 +64,10 @@ def reload_screen():
     invoke(lambda: change_state(GameStates.mainMenu), delay=GameConfiguration.fade_time * 2)
 
 
+def testing():
+    return state == GameStates.testing
+
+
 # changelog
 game = ChangeCategory("game")
 

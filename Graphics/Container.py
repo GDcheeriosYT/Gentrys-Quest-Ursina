@@ -11,6 +11,7 @@ class Container(Entity):
             **kwargs
         )
 
+        self._property_text = Text(f"{self.scale}\n{self.position}", origin=(-0.5, 0.5), world_scale=(2, 2), position=(-0.5, 0.5), parent=self, enabled=False)
         self._allow_highlighting = allow_highlighting
         self.original_color = self.color
         self.highlighted = False
@@ -25,8 +26,10 @@ class Container(Entity):
 
     def highlight(self):
         self.color = rgb(17, 17, 17, 125)
+        self._property_text.enable()
         self.highlighted = True
 
     def unhighlight(self):
         self.color = self.original_color
+        self._property_text.disable()
         self.highlighted = False

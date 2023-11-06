@@ -1,4 +1,6 @@
 from ursina import *
+
+import Game
 from ...Container import Container
 from .StatsContainer import StatsContainer
 from .StatusBars import StatusBars
@@ -13,17 +15,15 @@ class HUD(Container):
         super().__init__(parent=parent)
         self.player = player
         self._status_bars = StatusBars(self)
-        self._score_display = ScoreText(position=(0.5, 0.5), origin=(0.55, 0.55), scale=(2, 2), parent=self)
+        self._score_display = ScoreText(position=window.top_right if not Game.testing() else (0.5, 0.5), origin=(0.55, 0.55), scale=(2, 2), parent=self)
         self._stats_container = StatsContainer(self)
         self._skills_container = SkillsContainer(self.player, self)
-        self._effects_container = EffectsContainer(self)
-        self._effects_container.parent = self._status_bars
 
         self.player.on_add_xp += self.update_status_bars
         self.player.on_heal += self.update_status_bars
         self.player.on_damage += self.update_status_bars
         self.player.on_update_stats += self.update_status_bars
-        self.player.on_affected += lambda: self._effects_container.update_data(self.player.effects)
+        self.player.on_affected += lambda: self._status_bars.effects_container.update_data(self.player.effects)
 
         self.update_status_bars()
 
@@ -53,7 +53,6 @@ class HUD(Container):
         destroy(self._status_bars)
         destroy(self._stats_container)
         destroy(self._skills_container)
-        destroy(self._effects_container)
         destroy(self._score_display)
         destroy(self)
 

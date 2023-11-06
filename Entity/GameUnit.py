@@ -1,5 +1,3 @@
-import random
-
 import Game
 import GameConfiguration
 from Graphics.TextStyles.DamageText import DamageText

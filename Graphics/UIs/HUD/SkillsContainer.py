@@ -1,4 +1,6 @@
 from ursina import *
+
+import Game
 from Graphics.Container import Container
 from Entity.Character import Character
 
@@ -6,11 +8,12 @@ from Entity.Character import Character
 class SkillsContainer(Container):
     def __init__(self, player, parent):
         super().__init__(
-            position=(0.32, -0.32),
+            position=window.bottom_right if not Game.testing() else (0.32, -0.32),
             scale=(parent.scale_x * 0.5, parent.scale_y * 0.4),
-            origin=(0, 0),
+            origin=(0.5, -3),
             parent=parent
         )
+        Game.notification_manager.add_notification(Game.Notification(f"origin {self.origin}", color.yellow))
         text_size = (2.6, 2.6)
         text_height = 0.2
         self._player = player

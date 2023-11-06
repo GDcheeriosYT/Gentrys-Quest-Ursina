@@ -1,6 +1,11 @@
 from ursina import *
 from ursina.prefabs.health_bar import HealthBar
+
+import Game
+
 from Graphics.Container import Container
+
+from .EffectsContainer import EffectsContainer
 from .ExperienceBar import ExperienceBar
 
 
@@ -9,7 +14,7 @@ class StatusBars(Container):
         super().__init__(
             origin=(-0.5, -0.5),
             scale=(parent.scale_x * 0.35, parent.scale_y * 0.2),
-            position=(-0.5, -0.5),
+            position=window.bottom_left if not Game.testing() else (-0.5, -0.5),
             parent=parent
         )
         self._health_bar = HealthBar(
@@ -23,6 +28,7 @@ class StatusBars(Container):
             scale=(1, 1),
             parent=self._health_bar
         )
+        self.effects_container = EffectsContainer(self)
         self._level = Text(
             "",
             position=(0.9, -0.5),

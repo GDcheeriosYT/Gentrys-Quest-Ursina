@@ -5,8 +5,9 @@ from ursina import *
 class EffectsContainer(Container):
     def __init__(self, parent):
         super().__init__(
-            position=(0.2, 1),
-            scale=(1, 1.5),
+            position=(0, 1),
+            # scale=(1, 1.5),
+            origin=(-0.5, -0.5),
             parent=parent
         )
 

@@ -1,7 +1,8 @@
-import Game
-import GameConfiguration
-from Entity.Character.Skill.Skill import Skill
 from ursina import *
+
+import Game
+
+from Entity.Character.Skill.Skill import Skill
 
 
 class CircleThrow(Skill):
@@ -32,9 +33,16 @@ class CircleThrow(Skill):
 
     def _on_activate(self):
         self._circle = Entity(
-            model='quad',
+            model='circle',
+            collider='sphere',
+            position=self.character.position,
             texture='Textures/Circle.png',
         )
+        mouse_pos = mouse.position
+        new_pos = self._circle.position + mouse_pos
+        print(new_pos)
+        self._circle.animate_position(new_pos, duration=2, curve=curve.linear)
+
         self.deactivate()
         invoke(self._on_deactivate, delay=2)
 

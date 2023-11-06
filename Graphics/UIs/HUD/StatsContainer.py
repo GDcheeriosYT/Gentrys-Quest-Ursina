@@ -1,5 +1,6 @@
 from ursina import *
 
+import Game
 import GameConfiguration
 from Graphics.Container import Container
 
@@ -8,7 +9,7 @@ class StatsContainer(Container):
     def __init__(self, parent):
         super().__init__(
             origin=(-0.5, 0.5),
-            position=(-0.5, 0.5),
+            position=window.top_left if not Game.testing() else (-0.5, 0.5),
             scale=(0.5, 0.5),
             parent=parent
         )

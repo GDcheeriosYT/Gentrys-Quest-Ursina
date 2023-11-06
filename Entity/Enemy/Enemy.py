@@ -83,16 +83,7 @@ class Enemy(GameUnit):
     def attack(self, direction=None):
         self.not_attacking = False
         invoke(lambda: self.attack_switch(True), delay=self.attack_delay)
-        if self._weapon:
-            if self._weapon.is_ready():
-                if not direction:
-                    mouse_pos = mouse.position
-                    direction = math.atan2(mouse_pos[1], mouse_pos[0]) * (180 / 3.14)
-                else:
-                    direction = math.atan2(direction[1], direction[0]) * (180 / 3.14)
-
-                self.on_attack()
-                self.weapon.attack(direction)
+        super().attack(direction)
 
     def update(self):
         if self.not_attacking and self._follow_entity:
